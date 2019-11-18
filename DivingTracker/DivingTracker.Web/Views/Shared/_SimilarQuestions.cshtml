@@ -1,0 +1,10 @@
+﻿@model IEnumerable<DivingTracker.ServiceLayer.Entities.QuestionDto>
+    
+<ul>
+    @foreach (var question in Model)
+    {
+        <li>
+            @Html.ActionLink(question.QuestionText, "Index", "Question", new {area = "", id = question.QuestionId}, null)
+        </li>
+    }
+</ul>

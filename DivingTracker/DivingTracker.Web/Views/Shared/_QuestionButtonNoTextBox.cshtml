@@ -1,0 +1,7 @@
+﻿@using (Html.BeginForm("Create", "Question", null, FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <button id="create-question-button" type="submit" class="popup" title="New Question"
+            data-toggle="modal" data-target="#popup-container">
+        <span class="fa fa-plus"></span> Ask
+    </button>
+}

@@ -1,0 +1,20 @@
+﻿@model DivingTracker.ServiceLayer.Entities.QuestionDto
+
+@using (Html.BeginForm("Submit", "Answer", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.QuestionId)
+    if (Model.Answers == null || !Model.Answers.Any())
+    {
+        @Html.Partial("_AddAnswerButton")
+        <p class="no-answers">&nbsp; &nbsp;<i>No answers yet!</i></p>
+    }
+    else
+    {
+        foreach (var answer in Model.Answers)
+        {
+            @Html.Partial("_AnswerButton", answer)
+        }
+        @Html.Partial("_AddAnswerButton")
+    }
+}

@@ -1,0 +1,18 @@
+﻿@model DivingTracker.Web.Models.LoginModel
+
+@{
+    Layout = "~/Views/Shared/_External.cshtml";
+    ViewBag.Title = ViewBag.SiteName + ": Unauthorised";
+}
+
+<div class="row">
+    <div class="col-xs-12 brand-name">
+        <p>
+            <h2>Oops!</h2>
+        </p>
+        <p>
+            Doesn't look like we recognise you. Were you trying to
+            @Html.ActionLink("login", "Login" ,"Authentication")?
+        </p>
+    </div>
+</div>

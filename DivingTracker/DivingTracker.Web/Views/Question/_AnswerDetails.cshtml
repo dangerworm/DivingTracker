@@ -1,0 +1,14 @@
+﻿@model DivingTracker.ServiceLayer.Entities.QuestionDto
+    
+@if (Model.Answers == null || !Model.Answers.Any())
+{
+    <p><i>No answers yet!</i></p>
+}
+else
+{
+    foreach (var answer in Model.Answers)
+    {
+        @Html.Partial("_AnswerDetail", answer)
+    }
+}
+

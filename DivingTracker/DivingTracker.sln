@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DivingTracker.Web", "DivingTracker.Web\DivingTracker.Web.csproj", "{E4A8C179-4866-4909-BB60-9CBB221E1339}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DivingTracker.DB", "DivingTracker.DB\DivingTracker.DB.sqlproj", "{AF66D70E-5D17-49DD-A7B8-310272ED6001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DivingTracker.ServiceLayer", "DivingTracker.ServiceLayer\DivingTracker.ServiceLayer.csproj", "{79A92885-5879-429D-9610-EDEF2CE9258C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCode.BusinessLayer", "..\CommonCode.BusinessLayer\CommonCode.BusinessLayer.csproj", "{21AE5557-17B1-43BD-BA2B-13DE670F2CA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCode.Web", "..\CommonCode.Web\CommonCode.Web.csproj", "{A3A1EC92-84FF-449B-AE73-3D4961A585A8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4A8C179-4866-4909-BB60-9CBB221E1339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4A8C179-4866-4909-BB60-9CBB221E1339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4A8C179-4866-4909-BB60-9CBB221E1339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4A8C179-4866-4909-BB60-9CBB221E1339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF66D70E-5D17-49DD-A7B8-310272ED6001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF66D70E-5D17-49DD-A7B8-310272ED6001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF66D70E-5D17-49DD-A7B8-310272ED6001}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{AF66D70E-5D17-49DD-A7B8-310272ED6001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF66D70E-5D17-49DD-A7B8-310272ED6001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF66D70E-5D17-49DD-A7B8-310272ED6001}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{79A92885-5879-429D-9610-EDEF2CE9258C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A92885-5879-429D-9610-EDEF2CE9258C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A92885-5879-429D-9610-EDEF2CE9258C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A92885-5879-429D-9610-EDEF2CE9258C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21AE5557-17B1-43BD-BA2B-13DE670F2CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21AE5557-17B1-43BD-BA2B-13DE670F2CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21AE5557-17B1-43BD-BA2B-13DE670F2CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21AE5557-17B1-43BD-BA2B-13DE670F2CA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A1EC92-84FF-449B-AE73-3D4961A585A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3A1EC92-84FF-449B-AE73-3D4961A585A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3A1EC92-84FF-449B-AE73-3D4961A585A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3A1EC92-84FF-449B-AE73-3D4961A585A8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {800B5889-C210-4D68-AD75-318A84E87FB2}
+	EndGlobalSection
+EndGlobal

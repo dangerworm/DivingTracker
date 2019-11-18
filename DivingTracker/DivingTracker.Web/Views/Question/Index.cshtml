@@ -1,0 +1,162 @@
+﻿@using Humanizer
+@model DivingTracker.ServiceLayer.Entities.QuestionDto
+@{
+    ViewBag.Title = ViewBag.SiteName + ": " + Model.QuestionText;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="row question-header">
+            <div class="col-sm-10">
+                <h1 class="question">@Model.QuestionText</h1>
+                <small>@Model.QuestionDescription</small>
+                <br />
+                <small>
+                    @if (Model.User != null)
+                    {
+                        <span class="small">
+                            Asked by
+                            @Html.ActionLink(Model.User.FullName, "Index", "User", new { id = Model.UserId }, new { @class = "user-link" })
+                            @((DateTime.Now - Model.CreatedDate).Humanize()) ago
+                        </span>
+                    }
+                </small>
+            </div>
+            <div class="col-sm-2 edit">
+                <small>
+                    <a class="popup" href="@Url.Action("Edit", "Question", new { questionId = Model.QuestionId })"
+                       title="Edit Question">Edit</a>
+                </small>
+            </div>
+        </div>
+        <div class="row">
+            <div id="answerButtons" class="col-md-12">
+                @Html.Partial("_AnswerButtons")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 chart-area chart-bar">
+                @Html.Partial("_AnswersChart", "bar")
+            </div>
+            <div class="col-md-12 chart-area chart-pie" style="display: none;">
+                @Html.Partial("_AnswersChart", "pie")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 chart-buttons">
+                @using (Html.BeginForm("GetChartData", "Ajax", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.QuestionId)
+                    <button class="btn btn-primary"
+                            data-toggle="tooltip"
+                            data-placement="bottom"
+                            title="Refresh Chart"
+                            name="chartType"
+                            value="bar">
+                        Display as Bar Chart
+                    </button>
+                    <button class="btn btn-primary"
+                            data-toggle="tooltip"
+                            data-placement="bottom"
+                            title="Refresh Chart"
+                            name="chartType"
+                            value="pie">
+                        Display as Pie Chart
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 headed-collection card light-background">
+        <div class="row">
+            <div class="col-md-12 header">
+                <h1 style="color: white;">Answers</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    Show:
+                    <button id="showAnswersAll" class="btn btn-sm btn-warning">All</button>
+                    <button id="showAnswersNumeric" class="btn btn-sm btn-warning">Numeric</button>
+                    <button id="showAnswersText" class="btn btn-sm btn-warning">Text</button>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Partial("_AnswerDetails")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        function getChartData() {
+            var chartData = '';
+
+            $.ajax({
+                async: false,
+                url: url,
+                type: type,
+                data: data,
+                cache: false
+            })
+                .done(function (data) {
+                    chartData = data;
+                });
+
+            return chartData;
+        }
+
+        $('button[name=chartType]').click(function (e) {
+            e.preventDefault();
+            var button = this;
+            ajaxInit(button);
+            var chartData = getChartData();
+            if (chartData == '') {
+                return true;
+            }
+
+            var chartType = $(button)[0].value;
+            $('div.chart-area.chart-' + chartType).slideDown();
+            $('div.chart-area').not('.chart-' + chartType).slideUp();
+
+            if (chartType == 'bar') {
+                chartData.options = Chart.defaults.bar;
+                chartData.options.scales.yAxes[0] = {
+                    type: chartData.options.scales.yAxes[0].type,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                };
+            }
+            else
+                if (chartType == 'pie') {
+                    chartData.options = Chart.defaults.pie;
+                }
+
+            var context = document.getElementById('chart-' + chartType).getContext('2d');
+            var chart = new Chart(context, chartData);
+        });
+
+        $(document).ready(function () {
+            $('button[name=chartType][value=bar]').click();
+
+            $('#showAnswersAll').click(function () {
+                $('button[name=answerId]').show();
+            });
+            $('#showAnswersNumeric').click(function () {
+                $('button.numeric-data[name=answerId]').show();
+                $('button.text-data[name=answerId]').hide();
+            });
+            $('#showAnswersText').click(function () {
+                $('button.text-data[name=answerId]').show();
+                $('button.numeric-data[name=answerId]').hide();
+            });
+        });
+    </script>
+}

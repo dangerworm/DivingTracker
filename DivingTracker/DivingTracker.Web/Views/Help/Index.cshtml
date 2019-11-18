@@ -1,0 +1,27 @@
+﻿@model DivingTracker.Web.Models.DashboardModel
+@{
+    ViewBag.Title = ViewBag.SiteName + ": Help";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h1>What is @ViewBag.SiteName?</h1>
+        <p>
+            @ViewBag.SiteName is a place to ask and respond to questions, whether the answers are binary choices,
+            0-10 ratings, people, phrases, or anything else.
+        </p>
+        <p>
+            Each answer is stored one - if someone else comes along with the same question text, they
+            are just redirected to the original question. Even if it's re-worded, we aim to merge 
+            questions that have the same conceptual meaning.
+        </p>
+        <p>
+            Similarly, each answer is only stored once, and is simply assigned to other questions as
+            necessary. This way we can track the sorts of things people are asking about and look at
+            people's interests in the different concepts as time goes on.
+        </p>
+        <p>
+            If you have other questions, drop me a line at dangerworm1984@gmail.com.
+        </p>
+    </div>
+</div>

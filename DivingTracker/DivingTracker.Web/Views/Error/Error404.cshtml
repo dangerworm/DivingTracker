@@ -1,0 +1,18 @@
+﻿@model DivingTracker.Web.Models.LoginModel
+
+@{
+    Layout = "~/Views/Shared/_External.cshtml";
+    ViewBag.Title = ViewBag.SiteName + ": Page Not Found";
+}
+
+<div class="row">
+    <div class="col-xs-12 brand-name">
+        <p>
+            <h2>Oops!</h2>
+        </p>
+        <p>
+            We can't find that page. Maybe you should 
+            @Html.ActionLink("start again", "Index", "Home").
+        </p>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+﻿@model DivingTracker.Web.Models.LoginModel
+
+@{
+    Layout = "~/Views/Shared/_External.cshtml";
+        ViewBag.Title = ViewBag.SiteName + ": Error";
+}
+
+<div class="row">
+    <div class="col-xs-12 brand-name">
+        <p>
+            <h2>Oops!</h2>
+        </p>
+        <p>
+            Yep, that's a bug.
+            @Html.ActionLink("Start again", "Index", "Home")?
+        </p>
+    </div>
+</div>

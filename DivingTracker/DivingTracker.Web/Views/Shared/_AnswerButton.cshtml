@@ -1,0 +1,20 @@
+﻿@model DivingTracker.ServiceLayer.Entities.AnswerDto
+@using CommonCode.BusinessLayer.Helpers
+
+@{
+    var buttonClass = Model.IsSelected ? "btn-default" : "btn-primary";
+    var dataType = "text";
+    if (Model.AnswerText.IsNumeric())
+    {
+        dataType = "numeric";
+    }
+}
+
+<button class="btn @buttonClass answer-button ajax-submit @(dataType)-data"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="@Model.AnswerDescription"
+        name="answerId"
+        value="@Model.AnswerId">
+    @Model.AnswerText
+</button>

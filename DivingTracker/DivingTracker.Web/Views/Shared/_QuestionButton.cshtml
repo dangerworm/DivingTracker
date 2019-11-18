@@ -1,0 +1,14 @@
+﻿@using (Html.BeginForm("Create", "Question", null, FormMethod.Get, new { @class = "form-horizontal" }))
+{
+    <div class="form-group no-margin">
+        <div class="col-md-11">
+            @Html.TextBox("QuestionText", null, new { @class = "form-control", placeholder = "What's your question?" })
+        </div>
+        <div class="col-md-1">
+            <button type="submit" class="btn btn-primary popup pull-right" title="New Question"
+                    data-toggle="modal" data-target="#popup-container">
+                Ask
+            </button>
+        </div>
+    </div>
+}

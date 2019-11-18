@@ -1,0 +1,19 @@
+﻿@model DivingTracker.ServiceLayer.Entities.AnswerDto
+
+@if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+{
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Create", "Answer", null, FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Partial("_AnswerForm")
+        }
+    </div>
+</div>

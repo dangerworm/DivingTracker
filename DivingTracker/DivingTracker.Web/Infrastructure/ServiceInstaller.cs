@@ -9,11 +9,11 @@ using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using DivingTracker.ServiceLayer.Interfaces;
-using DivingTracker.ServiceLayer.Services;
-using DivingTracker.ServiceLayer.Validators;
 using CommonCode.BusinessLayer;
 using CommonCode.Web.Controllers;
+using DivingTracker.ServiceLayer;
+using DivingTracker.ServiceLayer.Interfaces;
+using DivingTracker.ServiceLayer.Services;
 using DivingTracker.Web.Controllers;
 
 namespace DivingTracker.Web.Infrastructure
@@ -54,9 +54,14 @@ namespace DivingTracker.Web.Infrastructure
                 .LifestyleTransient());
 
             container.Register(Component
-                .For(typeof(IValidator<>))
-                .ImplementedBy(typeof(BaseValidator<>))
+                .For<DivingTrackerEntities>()
+                .ImplementedBy<DivingTrackerEntities>()
                 .LifestyleTransient());
+
+            //container.Register(Component
+            //    .For(typeof(IValidator<>))
+            //    .ImplementedBy(typeof(BaseValidator<>))
+            //    .LifestyleTransient());
 
             container.Register(Classes
                 .FromAssemblyNamed("DivingTracker.ServiceLayer")
@@ -64,21 +69,15 @@ namespace DivingTracker.Web.Infrastructure
                 .WithServiceAllInterfaces()
                 .LifestyleTransient());
 
-            container.Register(Classes
-                .FromAssemblyNamed("DivingTracker.ServiceLayer")
-                .InNamespace("DivingTracker.ServiceLayer.Validators")
-                .WithServiceAllInterfaces()
-                .LifestyleTransient());
+            //container.Register(Classes
+            //    .FromAssemblyNamed("DivingTracker.ServiceLayer")
+            //    .InNamespace("DivingTracker.ServiceLayer.Validators")
+            //    .WithServiceAllInterfaces()
+            //    .LifestyleTransient());
 
             container.Register(Classes
                 .FromAssemblyNamed("DivingTracker.ServiceLayer")
                 .InNamespace("DivingTracker.ServiceLayer.Workflows")
-                .WithServiceAllInterfaces()
-                .LifestyleTransient());
-
-            container.Register(Classes
-                .FromAssemblyNamed("DivingTracker.ServiceLayer")
-                .InNamespace("DivingTracker.ServiceLayer.Consumers")
                 .WithServiceAllInterfaces()
                 .LifestyleTransient());
 
@@ -104,8 +103,8 @@ namespace DivingTracker.Web.Infrastructure
                     .LifestyleTransient());
             }
 
-            var curioControllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(DivingTrackerBaseController)).ToList();
-            foreach (var controller in curioControllers)
+            var divingControllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(DivingTrackerBaseController)).ToList();
+            foreach (var controller in divingControllers)
             {
                 container.Register(Component
                     .For(controller)

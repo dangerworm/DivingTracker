@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
 using CommonCode.BusinessLayer;
@@ -10,12 +11,12 @@ using DivingTracker.ServiceLayer.Workflows;
 
 namespace DivingTracker.ServiceLayer.Services
 {
-    public class EmailService : ServiceBase<SqlConnection, SqlTransaction>, IEmailService
+    public class EmailService : ServiceBase<IDbConnection, IDbTransaction>, IEmailService
     {
         private readonly EmailWorkflow _emailWorkflow;
         private readonly SmtpClient _smtpClient;
 
-        public EmailService(IUnitOfWork<SqlConnection, SqlTransaction> unitOfWork, SmtpClient smtpClient,
+        public EmailService(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork, SmtpClient smtpClient,
             EmailWorkflow emailWorkflow)
             : base(unitOfWork)
         {

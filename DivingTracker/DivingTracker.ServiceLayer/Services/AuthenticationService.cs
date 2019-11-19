@@ -1,28 +1,28 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using CommonCode.BusinessLayer;
 using CommonCode.BusinessLayer.Helpers;
 using CommonCode.BusinessLayer.Services;
-using DivingTracker.ServiceLayer.Entities;
-using DivingTracker.ServiceLayer.Helpers;
+using DivingTracker.ServiceLayer.DataTransferObjects;
 using DivingTracker.ServiceLayer.Interfaces;
 using DivingTracker.ServiceLayer.Workflows;
 
 namespace DivingTracker.ServiceLayer.Services
 {
-    public class AuthenticationService : ServiceBase<SqlConnection, SqlTransaction>, IAuthenticationService
+    public class AuthenticationService : ServiceBase<IDbConnection, IDbTransaction>, IAuthenticationService
     {
         private readonly AuthenticationWorkflow _authenticationWorkflow;
 
-        public AuthenticationService(IUnitOfWork<SqlConnection, SqlTransaction> unitOfWork, AuthenticationWorkflow authenticationWorkflow)
-            :base(unitOfWork)
+        public AuthenticationService(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork, AuthenticationWorkflow authenticationWorkflow)
+            : base(unitOfWork)
         {
             Verify.NotNull(authenticationWorkflow, nameof(authenticationWorkflow));
 
             _authenticationWorkflow = authenticationWorkflow;
         }
 
-        public DataResult<UserDto> Register(UserRegistrationRequestDto registrationRequest)
+        public DataResult<User> Register(UserRegistrationRequestDto registrationRequest)
         {
             UnitOfWork.Begin();
 
@@ -33,7 +33,7 @@ namespace DivingTracker.ServiceLayer.Services
             return result;
         }
 
-        public DataResult<UserDto> ConfirmEmail(Guid emailConfirmationToken)
+        public DataResult<User> ConfirmEmail(Guid emailConfirmationToken)
         {
             UnitOfWork.Begin();
 
@@ -44,7 +44,7 @@ namespace DivingTracker.ServiceLayer.Services
             return result;
         }
 
-        public DataResult<UserDto> Login(string emailAddress, string password)
+        public DataResult<User> Login(string emailAddress, string password)
         {
             UnitOfWork.Begin();
 

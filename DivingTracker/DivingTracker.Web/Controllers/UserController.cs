@@ -1,64 +1,130 @@
-﻿using System.Web.Mvc;
-using CommonCode.BusinessLayer;
-using CommonCode.BusinessLayer.Helpers;
-using DivingTracker.ServiceLayer.Interfaces;
-using DivingTracker.Web.Attributes;
-using DivingTracker.Web.Models;
+﻿using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
+using DivingTracker.ServiceLayer;
 
 namespace DivingTracker.Web.Controllers
 {
-    [Authorise]
     public class UserController : DivingTrackerBaseController
     {
-        private readonly IQuestionService _questionService;
-        private readonly IAnswerService _answerService;
-
-        public UserController(IUserService userService, IQuestionService questionService,
-            IAnswerService answerService)
-            :base (userService)
+        public UserController(DivingTrackerEntities databaseContext)
+            :base (databaseContext)
         {
-            Verify.NotNull(questionService, nameof(questionService));
-            Verify.NotNull(answerService, nameof(answerService));
-
-            _questionService = questionService;
-            _answerService = answerService;
+        }
+        
+        // GET: User
+        public ActionResult Index()
+        {
+            var users = DatabaseContext.Users.Include(u => u.SystemLogin).Include(u => u.SystemRole).Include(u => u.UserCriteria);
+            return View(users.ToList());
         }
 
-        [HttpGet]
-        [Authorise]
-        public ActionResult Index(int id)
+        // GET: User/Details/5
+        public ActionResult Details(int? id)
         {
-            var model = GetProfileModel(id);
-            if (model == null)
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = DatabaseContext.Users.Find(id);
+            if (user == null)
             {
                 return HttpNotFound();
             }
-
-            return View(model);
+            return View(user);
         }
 
-        private ProfileModel GetProfileModel(int userId)
+        // GET: User/Create
+        public ActionResult Create()
         {
-            var userResult = UserService.Read(userId);
-            var questionResult = _questionService.ReadAllByUserId(userId);
-            var answerResult = _answerService.ReadAllByUserId(userId);
-            var responsesResult = UserService.GetResponses(userId);
+            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress");
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description");
+            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId");
+            return View();
+        }
 
-            if (userResult.Type != DataResultType.Success ||
-                responsesResult.Type != DataResultType.Success ||
-                questionResult.Type != DataResultType.Success ||
-                answerResult.Type != DataResultType.Success)
+        // POST: User/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "UserId,CreatedDate,SystemLoginId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
+        {
+            if (ModelState.IsValid)
             {
-                return null;
+                DatabaseContext.Users.Add(user);
+                DatabaseContext.SaveChanges();
+                return RedirectToAction("Index");
             }
 
-            return new ProfileModel
+            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
+            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId", user.UserId);
+            return View(user);
+        }
+
+        // GET: User/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
             {
-                User = userResult.Value,
-                Questions = questionResult.Value,
-                Answers = answerResult.Value,
-                Responses = responsesResult.Value
-            };
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = DatabaseContext.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
+            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId", user.UserId);
+            return View(user);
+        }
+
+        // POST: User/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "UserId,CreatedDate,SystemLoginId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                DatabaseContext.Entry(user).State = EntityState.Modified;
+                DatabaseContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
+            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId", user.UserId);
+            return View(user);
+        }
+
+        // GET: User/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = DatabaseContext.Users.Find(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: User/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            User user = DatabaseContext.Users.Find(id);
+            DatabaseContext.Users.Remove(user);
+            DatabaseContext.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

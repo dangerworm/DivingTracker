@@ -1,4 +1,15 @@
-﻿@import url(colours.less);
+﻿@background: #eeeeee;
+@main-colour: #48c0dc;
+@main-colour-light: #78e0fc;
+@main-colour-lighter: #c4f0fc;
+@secondary-colour: #ffcf41;
+@secondary-colour-light: #ffd866;
+@secondary-colour-lighter: #ffe493;
+
+@black: #020500;
+@dark-grey: #666;
+@grey: #999;
+@white: #fefefe;
 
 .fa-2x {
     margin-top: -8px;
@@ -58,14 +69,31 @@ h3 {
     margin-top: 1pt;
 }
 
-.brand-name {
-    padding-left: 1em;
+.brand-bsac {
+    padding-left: 0.1em;
+}
+
+.brand-musac {
+    padding-right: 0.1em;
+    text-align: right;
+}
+
+.bsac-logo {
+    height: 74px;
+}
+
+.site-title > h2 {
+    margin-top: 0.2em;
+}
+
+.scubee-logo {
+    height: 85px;
 }
 
 .external-container {
     display: flex;
     align-items: center;
-    height: -webkit-fill-available;
+    height: 95vh;
 
     & > .card {
         padding: 1em 2em;
@@ -111,9 +139,9 @@ h3 {
 }
 
 #create-question-button {
-    background: none!important;
+    background: none !important;
     color: @white;
-    border:none; 
+    border: none;
     cursor: pointer;
     font: inherit;
     line-height: 20px;

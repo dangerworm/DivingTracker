@@ -1,53 +1,17 @@
-﻿@model DivingTracker.Web.Models.DashboardModel
+﻿@model DivingTracker.Web.Models.HomeModel
 @{
     ViewBag.Title = ViewBag.SiteName + ": Home";
 }
 <div class="row">
-    <div class="col-md-3 expand-left">
-        <div class="col-md-12 headed-collection card light-background">
-            <div class="row">
-                <div class="col-md-12 header">
-                    <h1 style="color: white;">Top DivingTrackers</h1>
-                </div>
-                <div class="col-md-12">
-                    @if (Model.Questions != null && Model.Questions.Any())
-                    {
-                        foreach (var question in Model.TopQuestions)
-                        {
-                            <div class="headed-item">
-                                <h4>@Html.ActionLink(question.QuestionText, "Index", "Question", new { id = question.QuestionId }, null)</h4>
-                                <small>@question.QuestionDescription</small>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-9">
-        <div class="row">
-            <div class="col-md-12 question card light-background">
-                @Html.Partial("_QuestionButton", true)
-            </div>
-        </div>
-        @if (Model.Questions != null && Model.Questions.Any())
-        {
-            foreach (var question in Model.Questions)
-            {
-                <div class="row">
-                    <div class="col-md-12 question card light-background">
-                        <h4>
-                            @if (question.User != null)
-                            {
-                                <b>@Html.ActionLink(question.User.FullName, "Index", "User", new { id = question.UserId }, new { @class = "user-link" })</b>
-                                <text>asks</text>
-                            }
-                            @Html.ActionLink(question.QuestionText, "Index", "Question", new { id = question.QuestionId }, null)
-                        </h4>
-                        @Html.Partial("_AnswerButtons", question)
-                    </div>
-                </div>
-            }
-        }
+    <div class="col-md-12">
+        <h1>Welcome, @Model.User.FirstName</h1>
+        <p>The current club make-up looks like this:
+            <ul>
+                @foreach (var qualification in Model.ClubQualifications)
+                {
+                    <li>@qualification.Key: @qualification.Value</li>
+                }
+            </ul>
+        </p>
     </div>
 </div>

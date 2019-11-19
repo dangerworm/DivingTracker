@@ -1,0 +1,755 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DivingTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Agencies">
+          <Key>
+            <PropertyRef Name="AgencyId" />
+          </Key>
+          <Property Name="AgencyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Criteria">
+          <Key>
+            <PropertyRef Name="CriterionId" />
+          </Key>
+          <Property Name="CriterionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleSectionId" Type="int" />
+          <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Details" Type="varchar" MaxLength="256" />
+          <Property Name="IncludeInSyllabus" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CriterionStatuses">
+          <Key>
+            <PropertyRef Name="CriterionStatusId" />
+          </Key>
+          <Property Name="CriterionStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Modules">
+          <Key>
+            <PropertyRef Name="ModuleId" />
+          </Key>
+          <Property Name="ModuleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QualificationId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="ModuleSections">
+          <Key>
+            <PropertyRef Name="ModuleSectionId" />
+          </Key>
+          <Property Name="ModuleSectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModuleId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Qualifications">
+          <Key>
+            <PropertyRef Name="QualificationId" />
+          </Key>
+          <Property Name="QualificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgencyId" Type="int" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="SystemLogins">
+          <Key>
+            <PropertyRef Name="SystemLoginId" />
+          </Key>
+          <Property Name="SystemLoginId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="3" />
+          <Property Name="EmailAddress" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="PasswordHash" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="PasswordSalt" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="EmailConfirmationToken" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsEmailConfirmed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SystemRoles">
+          <Key>
+            <PropertyRef Name="SystemRoleId" />
+          </Key>
+          <Property Name="SystemRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserCriteria">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CriterionId" Type="int" />
+          <Property Name="CriterionStatusId" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="UserQualifications">
+          <Key>
+            <PropertyRef Name="UserQualificationId" />
+          </Key>
+          <Property Name="UserQualificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="QualificationId" Type="int" />
+          <Property Name="DateAwarded" Type="datetime2" Precision="3" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime2" Precision="3" />
+          <Property Name="SystemLoginId" Type="int" />
+          <Property Name="SystemRoleId" Type="int" />
+          <Property Name="FirstName" Type="varchar" MaxLength="256" />
+          <Property Name="Surname" Type="varchar" MaxLength="256" />
+          <Property Name="DateOfBirth" Type="datetime2" Precision="3" />
+        </EntityType>
+        <Association Name="Criteria_ModuleSectionId_FK">
+          <End Role="ModuleSections" Type="Self.ModuleSections" Multiplicity="0..1" />
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ModuleSections">
+              <PropertyRef Name="ModuleSectionId" />
+            </Principal>
+            <Dependent Role="Criteria">
+              <PropertyRef Name="ModuleSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Modules_QualificationId_FK">
+          <End Role="Qualifications" Type="Self.Qualifications" Multiplicity="0..1" />
+          <End Role="Modules" Type="Self.Modules" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualifications">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="Modules">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ModuleSections_ModuleId_FK">
+          <End Role="Modules" Type="Self.Modules" Multiplicity="0..1" />
+          <End Role="ModuleSections" Type="Self.ModuleSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modules">
+              <PropertyRef Name="ModuleId" />
+            </Principal>
+            <Dependent Role="ModuleSections">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Qualifications_AgencyId_FK">
+          <End Role="Agencies" Type="Self.Agencies" Multiplicity="0..1" />
+          <End Role="Qualifications" Type="Self.Qualifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agencies">
+              <PropertyRef Name="AgencyId" />
+            </Principal>
+            <Dependent Role="Qualifications">
+              <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_CriterionId_FK">
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="CriterionId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="CriterionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_CriterionStatusId_FK">
+          <End Role="CriterionStatuses" Type="Self.CriterionStatuses" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CriterionStatuses">
+              <PropertyRef Name="CriterionStatusId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="CriterionStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_UserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserQualifications_QualificationId_FK">
+          <End Role="Qualifications" Type="Self.Qualifications" Multiplicity="0..1" />
+          <End Role="UserQualifications" Type="Self.UserQualifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualifications">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="UserQualifications">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserQualifications_UserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserQualifications" Type="Self.UserQualifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserQualifications">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Users_SystemLoginId_FK">
+          <End Role="SystemLogins" Type="Self.SystemLogins" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemLogins">
+              <PropertyRef Name="SystemLoginId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="SystemLoginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Users_SystemRoleId_FK">
+          <End Role="SystemRoles" Type="Self.SystemRoles" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemRoles">
+              <PropertyRef Name="SystemRoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="SystemRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DivingTrackerModelStoreContainer">
+          <EntitySet Name="Agencies" EntityType="Self.Agencies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CriterionStatuses" EntityType="Self.CriterionStatuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Modules" EntityType="Self.Modules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ModuleSections" EntityType="Self.ModuleSections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Qualifications" EntityType="Self.Qualifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemLogins" EntityType="Self.SystemLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemRoles" EntityType="Self.SystemRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserCriteria" EntityType="Self.UserCriteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserQualifications" EntityType="Self.UserQualifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="Criteria_ModuleSectionId_FK" Association="Self.Criteria_ModuleSectionId_FK">
+            <End Role="ModuleSections" EntitySet="ModuleSections" />
+            <End Role="Criteria" EntitySet="Criteria" />
+          </AssociationSet>
+          <AssociationSet Name="Modules_QualificationId_FK" Association="Self.Modules_QualificationId_FK">
+            <End Role="Qualifications" EntitySet="Qualifications" />
+            <End Role="Modules" EntitySet="Modules" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleSections_ModuleId_FK" Association="Self.ModuleSections_ModuleId_FK">
+            <End Role="Modules" EntitySet="Modules" />
+            <End Role="ModuleSections" EntitySet="ModuleSections" />
+          </AssociationSet>
+          <AssociationSet Name="Qualifications_AgencyId_FK" Association="Self.Qualifications_AgencyId_FK">
+            <End Role="Agencies" EntitySet="Agencies" />
+            <End Role="Qualifications" EntitySet="Qualifications" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_CriterionId_FK" Association="Self.UserCriteria_CriterionId_FK">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="UserCriteria" EntitySet="UserCriteria" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_CriterionStatusId_FK" Association="Self.UserCriteria_CriterionStatusId_FK">
+            <End Role="CriterionStatuses" EntitySet="CriterionStatuses" />
+            <End Role="UserCriteria" EntitySet="UserCriteria" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_UserId_FK" Association="Self.UserCriteria_UserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCriteria" EntitySet="UserCriteria" />
+          </AssociationSet>
+          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="Self.UserQualifications_QualificationId_FK">
+            <End Role="Qualifications" EntitySet="Qualifications" />
+            <End Role="UserQualifications" EntitySet="UserQualifications" />
+          </AssociationSet>
+          <AssociationSet Name="UserQualifications_UserId_FK" Association="Self.UserQualifications_UserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserQualifications" EntitySet="UserQualifications" />
+          </AssociationSet>
+          <AssociationSet Name="Users_SystemLoginId_FK" Association="Self.Users_SystemLoginId_FK">
+            <End Role="SystemLogins" EntitySet="SystemLogins" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="Users_SystemRoleId_FK" Association="Self.Users_SystemRoleId_FK">
+            <End Role="SystemRoles" EntitySet="SystemRoles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DivingTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agency">
+          <Key>
+            <PropertyRef Name="AgencyId" />
+          </Key>
+          <Property Name="AgencyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Qualifications" Relationship="Self.Qualifications_AgencyId_FK" FromRole="Agencies" ToRole="Qualifications" />
+        </EntityType>
+        <EntityType Name="Criterion">
+          <Key>
+            <PropertyRef Name="CriterionId" />
+          </Key>
+          <Property Name="CriterionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleSectionId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Details" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="IncludeInSyllabus" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ModuleSection" Relationship="Self.Criteria_ModuleSectionId_FK" FromRole="Criteria" ToRole="ModuleSections" />
+          <NavigationProperty Name="UserCriterias" Relationship="Self.UserCriteria_CriterionId_FK" FromRole="Criteria" ToRole="UserCriteria" />
+        </EntityType>
+        <EntityType Name="CriterionStatus">
+          <Key>
+            <PropertyRef Name="CriterionStatusId" />
+          </Key>
+          <Property Name="CriterionStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="UserCriterias" Relationship="Self.UserCriteria_CriterionStatusId_FK" FromRole="CriterionStatuses" ToRole="UserCriteria" />
+        </EntityType>
+        <EntityType Name="Module">
+          <Key>
+            <PropertyRef Name="ModuleId" />
+          </Key>
+          <Property Name="ModuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QualificationId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Qualification" Relationship="Self.Modules_QualificationId_FK" FromRole="Modules" ToRole="Qualifications" />
+          <NavigationProperty Name="ModuleSections" Relationship="Self.ModuleSections_ModuleId_FK" FromRole="Modules" ToRole="ModuleSections" />
+        </EntityType>
+        <EntityType Name="ModuleSection">
+          <Key>
+            <PropertyRef Name="ModuleSectionId" />
+          </Key>
+          <Property Name="ModuleSectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModuleId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Criteria" Relationship="Self.Criteria_ModuleSectionId_FK" FromRole="ModuleSections" ToRole="Criteria" />
+          <NavigationProperty Name="Module" Relationship="Self.ModuleSections_ModuleId_FK" FromRole="ModuleSections" ToRole="Modules" />
+        </EntityType>
+        <EntityType Name="Qualification">
+          <Key>
+            <PropertyRef Name="QualificationId" />
+          </Key>
+          <Property Name="QualificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgencyId" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Agency" Relationship="Self.Qualifications_AgencyId_FK" FromRole="Qualifications" ToRole="Agencies" />
+          <NavigationProperty Name="Modules" Relationship="Self.Modules_QualificationId_FK" FromRole="Qualifications" ToRole="Modules" />
+          <NavigationProperty Name="UserQualifications" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="Qualification" ToRole="UserQualification" />
+        </EntityType>
+        <EntityType Name="SystemLogin">
+          <Key>
+            <PropertyRef Name="SystemLoginId" />
+          </Key>
+          <Property Name="SystemLoginId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="EmailAddress" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailConfirmationToken" Type="Guid" Nullable="false" />
+          <Property Name="IsEmailConfirmed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.Users_SystemLoginId_FK" FromRole="SystemLogins" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="SystemRole">
+          <Key>
+            <PropertyRef Name="SystemRoleId" />
+          </Key>
+          <Property Name="SystemRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.Users_SystemRoleId_FK" FromRole="SystemRoles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserCriteria">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CriterionId" Type="Int32" />
+          <Property Name="CriterionStatusId" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Criterion" Relationship="Self.UserCriteria_CriterionId_FK" FromRole="UserCriteria" ToRole="Criteria" />
+          <NavigationProperty Name="CriterionStatus" Relationship="Self.UserCriteria_CriterionStatusId_FK" FromRole="UserCriteria" ToRole="CriterionStatuses" />
+          <NavigationProperty Name="User" Relationship="Self.UserCriteria_UserId_FK" FromRole="UserCriteria" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="SystemLoginId" Type="Int32" />
+          <Property Name="SystemRoleId" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SystemLogin" Relationship="Self.Users_SystemLoginId_FK" FromRole="Users" ToRole="SystemLogins" />
+          <NavigationProperty Name="SystemRole" Relationship="Self.Users_SystemRoleId_FK" FromRole="Users" ToRole="SystemRoles" />
+          <NavigationProperty Name="UserCriteria" Relationship="Self.UserCriteria_UserId_FK" FromRole="Users" ToRole="UserCriteria" />
+          <NavigationProperty Name="UserQualifications" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="User" ToRole="UserQualification" />
+        </EntityType>
+        <Association Name="Qualifications_AgencyId_FK">
+          <End Role="Agencies" Type="Self.Agency" Multiplicity="0..1" />
+          <End Role="Qualifications" Type="Self.Qualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agencies">
+              <PropertyRef Name="AgencyId" />
+            </Principal>
+            <Dependent Role="Qualifications">
+              <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Criteria_ModuleSectionId_FK">
+          <End Role="ModuleSections" Type="Self.ModuleSection" Multiplicity="0..1" />
+          <End Role="Criteria" Type="Self.Criterion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ModuleSections">
+              <PropertyRef Name="ModuleSectionId" />
+            </Principal>
+            <Dependent Role="Criteria">
+              <PropertyRef Name="ModuleSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_CriterionId_FK">
+          <End Role="Criteria" Type="Self.Criterion" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="CriterionId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="CriterionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_CriterionStatusId_FK">
+          <End Role="CriterionStatuses" Type="Self.CriterionStatus" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CriterionStatuses">
+              <PropertyRef Name="CriterionStatusId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="CriterionStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Modules_QualificationId_FK">
+          <End Role="Qualifications" Type="Self.Qualification" Multiplicity="0..1" />
+          <End Role="Modules" Type="Self.Module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualifications">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="Modules">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ModuleSections_ModuleId_FK">
+          <End Role="Modules" Type="Self.Module" Multiplicity="0..1" />
+          <End Role="ModuleSections" Type="Self.ModuleSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modules">
+              <PropertyRef Name="ModuleId" />
+            </Principal>
+            <Dependent Role="ModuleSections">
+              <PropertyRef Name="ModuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Users_SystemLoginId_FK">
+          <End Role="SystemLogins" Type="Self.SystemLogin" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemLogins">
+              <PropertyRef Name="SystemLoginId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="SystemLoginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Users_SystemRoleId_FK">
+          <End Role="SystemRoles" Type="Self.SystemRole" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemRoles">
+              <PropertyRef Name="SystemRoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="SystemRoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_UserId_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DivingTrackerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agencies" EntityType="Self.Agency" />
+          <EntitySet Name="Criteria" EntityType="Self.Criterion" />
+          <EntitySet Name="CriterionStatuses" EntityType="Self.CriterionStatus" />
+          <EntitySet Name="Modules" EntityType="Self.Module" />
+          <EntitySet Name="ModuleSections" EntityType="Self.ModuleSection" />
+          <EntitySet Name="Qualifications" EntityType="Self.Qualification" />
+          <EntitySet Name="SystemLogins" EntityType="Self.SystemLogin" />
+          <EntitySet Name="SystemRoles" EntityType="Self.SystemRole" />
+          <EntitySet Name="UserCriterias" EntityType="Self.UserCriteria" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="Qualifications_AgencyId_FK" Association="Self.Qualifications_AgencyId_FK">
+            <End Role="Agencies" EntitySet="Agencies" />
+            <End Role="Qualifications" EntitySet="Qualifications" />
+          </AssociationSet>
+          <AssociationSet Name="Criteria_ModuleSectionId_FK" Association="Self.Criteria_ModuleSectionId_FK">
+            <End Role="ModuleSections" EntitySet="ModuleSections" />
+            <End Role="Criteria" EntitySet="Criteria" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_CriterionId_FK" Association="Self.UserCriteria_CriterionId_FK">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="UserCriteria" EntitySet="UserCriterias" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_CriterionStatusId_FK" Association="Self.UserCriteria_CriterionStatusId_FK">
+            <End Role="CriterionStatuses" EntitySet="CriterionStatuses" />
+            <End Role="UserCriteria" EntitySet="UserCriterias" />
+          </AssociationSet>
+          <AssociationSet Name="Modules_QualificationId_FK" Association="Self.Modules_QualificationId_FK">
+            <End Role="Qualifications" EntitySet="Qualifications" />
+            <End Role="Modules" EntitySet="Modules" />
+          </AssociationSet>
+          <AssociationSet Name="ModuleSections_ModuleId_FK" Association="Self.ModuleSections_ModuleId_FK">
+            <End Role="Modules" EntitySet="Modules" />
+            <End Role="ModuleSections" EntitySet="ModuleSections" />
+          </AssociationSet>
+          <AssociationSet Name="Users_SystemLoginId_FK" Association="Self.Users_SystemLoginId_FK">
+            <End Role="SystemLogins" EntitySet="SystemLogins" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="Users_SystemRoleId_FK" Association="Self.Users_SystemRoleId_FK">
+            <End Role="SystemRoles" EntitySet="SystemRoles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_UserId_FK" Association="Self.UserCriteria_UserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCriteria" EntitySet="UserCriterias" />
+          </AssociationSet>
+          <EntitySet Name="UserQualifications" EntityType="DivingTrackerModel.UserQualification" />
+          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="DivingTrackerModel.UserQualifications_QualificationId_FK">
+            <End Role="Qualification" EntitySet="Qualifications" />
+            <End Role="UserQualification" EntitySet="UserQualifications" />
+          </AssociationSet>
+          <AssociationSet Name="UserQualifications_UserId_FK" Association="DivingTrackerModel.UserQualifications_UserId_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserQualification" EntitySet="UserQualifications" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="UserQualification">
+          <Key>
+            <PropertyRef Name="UserQualificationId" />
+          </Key>
+          <Property Name="UserQualificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="QualificationId" Type="Int32" />
+          <Property Name="DateAwarded" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Qualification" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="UserQualification" ToRole="Qualification" />
+          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="UserQualification" ToRole="User" />
+        </EntityType>
+        <Association Name="UserQualifications_QualificationId_FK">
+          <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualification">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="UserQualification">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserQualifications_UserId_FK">
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserQualification">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DivingTrackerModelStoreContainer" CdmEntityContainer="DivingTrackerEntities">
+          <EntitySetMapping Name="Agencies">
+            <EntityTypeMapping TypeName="DivingTrackerModel.Agency">
+              <MappingFragment StoreEntitySet="Agencies">
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Criteria">
+            <EntityTypeMapping TypeName="DivingTrackerModel.Criterion">
+              <MappingFragment StoreEntitySet="Criteria">
+                <ScalarProperty Name="CriterionId" ColumnName="CriterionId" />
+                <ScalarProperty Name="ModuleSectionId" ColumnName="ModuleSectionId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="IncludeInSyllabus" ColumnName="IncludeInSyllabus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CriterionStatuses">
+            <EntityTypeMapping TypeName="DivingTrackerModel.CriterionStatus">
+              <MappingFragment StoreEntitySet="CriterionStatuses">
+                <ScalarProperty Name="CriterionStatusId" ColumnName="CriterionStatusId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Modules">
+            <EntityTypeMapping TypeName="DivingTrackerModel.Module">
+              <MappingFragment StoreEntitySet="Modules">
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ModuleSections">
+            <EntityTypeMapping TypeName="DivingTrackerModel.ModuleSection">
+              <MappingFragment StoreEntitySet="ModuleSections">
+                <ScalarProperty Name="ModuleSectionId" ColumnName="ModuleSectionId" />
+                <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Qualifications">
+            <EntityTypeMapping TypeName="DivingTrackerModel.Qualification">
+              <MappingFragment StoreEntitySet="Qualifications">
+                <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemLogins">
+            <EntityTypeMapping TypeName="DivingTrackerModel.SystemLogin">
+              <MappingFragment StoreEntitySet="SystemLogins">
+                <ScalarProperty Name="SystemLoginId" ColumnName="SystemLoginId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="EmailConfirmationToken" ColumnName="EmailConfirmationToken" />
+                <ScalarProperty Name="IsEmailConfirmed" ColumnName="IsEmailConfirmed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemRoles">
+            <EntityTypeMapping TypeName="DivingTrackerModel.SystemRole">
+              <MappingFragment StoreEntitySet="SystemRoles">
+                <ScalarProperty Name="SystemRoleId" ColumnName="SystemRoleId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserCriterias">
+            <EntityTypeMapping TypeName="DivingTrackerModel.UserCriteria">
+              <MappingFragment StoreEntitySet="UserCriteria">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CriterionId" ColumnName="CriterionId" />
+                <ScalarProperty Name="CriterionStatusId" ColumnName="CriterionStatusId" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DivingTrackerModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="SystemLoginId" ColumnName="SystemLoginId" />
+                <ScalarProperty Name="SystemRoleId" ColumnName="SystemRoleId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserQualifications">
+            <EntityTypeMapping TypeName="DivingTrackerModel.UserQualification">
+              <MappingFragment StoreEntitySet="UserQualifications">
+                <ScalarProperty Name="DateAwarded" ColumnName="DateAwarded" />
+                <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserQualificationId" ColumnName="UserQualificationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

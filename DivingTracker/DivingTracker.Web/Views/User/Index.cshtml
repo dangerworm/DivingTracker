@@ -1,102 +1,70 @@
-﻿@using Microsoft.Ajax.Utilities
-@using Humanizer
-@model DivingTracker.Web.Models.ProfileModel
-@{
-    ViewBag.Title = ViewBag.SiteName + ": My Profile";
+﻿@model IEnumerable<DivingTracker.ServiceLayer.User>
 
-    var noItemsPrefix = Model.User.UserId == ViewBag.CurrentUserId
-        ? "You haven't"
-        : "This user hasn't";
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-sm-12 card">
-        <div class="col-md-4">
-            <h1>@Model.User.FullName</h1>
-            <p>Member for @Model.User.MemberFor</p>
-        </div>
-        <div class="col-md-2">
-            @if (Model.User.UserId != ViewBag.CurrentUserId)
-            {
-                <h1>
-                    @Html.Partial("_FollowForm", Model.User)
-                </h1>
-            }
-        </div>
-        <div class="col-md-6">
-            <div class="row">
-                <div class="col-md-4">
-                    <h2>@Model.Questions.Count()</h2>
-                    <p>questions</p>
-                </div>
-                <div class="col-md-4">
-                    <h2>@Model.Answers.Count()</h2>
-                    <p>answers</p>
-                </div>
-                <div class="col-md-4">
-                    <h2>@Model.Responses.Count()</h2>
-                    <p>responses</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="col-md-6 expand-left">
-            <h2>
-                Questions Asked
-            </h2>
-            @if (Model.Questions.Any())
-            {
-                foreach (var question in Model.Questions)
-                {
-                    var numberOfResponses = question.Analytics.ResponseData.Sum(x => x?.ResponseCount ?? 0);
-                    var personPeople = numberOfResponses == 1 ? "person" : "people";
+<h2>Index</h2>
 
-                    <p>
-                        @Html.ActionLink(question.QuestionText, "Index", "Question", new { id = question.QuestionId }, null)<br />
-                        <small>
-                            @question.Answers.Count() answers;
-                            responded to by @numberOfResponses @personPeople.
-                        </small>
-                    </p>
-                }
-            }
-            else
-            {
-                <p><i>@noItemsPrefix added any questions yet.</i></p>
-            }
-        </div>
-        <div class="col-md-6">
-            <h2>
-                Answers Given
-            </h2>
-            @if (Model.Answers.Any())
-            {
-                var questions = Model.Answers.SelectMany(x => x.Questions).DistinctBy(x => x.QuestionId);
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SystemLogin.EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SystemRole.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserCriteria.UserId)
+        </th>
+        <th></th>
+    </tr>
 
-                foreach (var question in questions)
-                {
-                    var questionId = question.QuestionId;
-                    var answers = Model.Answers.Where(x => x.Questions.Any(q => q.QuestionId == questionId));
-                    <p>
-                        @Html.ActionLink(question.QuestionText, "Index", "Question", new { id = question.QuestionId }, null)<br />
-                        @foreach (var answer in answers)
-                        {
-                            <small>
-                                - @Html.ActionLink(answer.AnswerText, "Index", "Answer", new { id = answer.AnswerId }, null)
-                                @if (answer.IsSelected)
-                                { <span class="fa fa-star"></span> }
-                            </small><br />
-                        }
-                    </p>
-                }
-            }
-            else
-            {
-                <p><i>@noItemsPrefix added answers to any questions yet.</i></p>
-            }
-        </div>
-    </div>
-</div>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Surname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfBirth)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SystemLogin.EmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SystemRole.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserCriteria.UserId)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.UserId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
+        </td>
+    </tr>
+}
+
+</table>

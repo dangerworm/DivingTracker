@@ -4,34 +4,24 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using CommonCode.BusinessLayer;
-using CommonCode.BusinessLayer.Helpers;
-using DivingTracker.ServiceLayer.DomainModels;
-using DivingTracker.ServiceLayer.Entities;
-using DivingTracker.ServiceLayer.Helpers;
-using DivingTracker.ServiceLayer.Repositories;
+using DivingTracker.ServiceLayer.DataTransferObjects;
 
 namespace DivingTracker.ServiceLayer.Workflows
 {
     public class AuthenticationWorkflow
     {
-        private readonly SystemLoginRepository _systemLoginRepository;
-        private readonly UserRepository _userRepository;
+        private readonly DivingTrackerEntities _databaseContext;
 
-        public AuthenticationWorkflow(SystemLoginRepository systemLoginRepository,
-            UserRepository userRepository)
+        public AuthenticationWorkflow(DivingTrackerEntities databaseContext)
         {
-            Verify.NotNull(systemLoginRepository, nameof(systemLoginRepository));
-            Verify.NotNull(userRepository, nameof(userRepository));
-
-            _systemLoginRepository = systemLoginRepository;
-            _userRepository = userRepository;
+            _databaseContext = databaseContext;
         }
 
-        public DataResult<UserDto> Register(UserRegistrationRequestDto registrationRequest)
+        public DataResult<User> Register(UserRegistrationRequestDto registrationRequest)
         {
             if (!registrationRequest.Password.Equals(registrationRequest.PasswordConfirmation))
             {
-                return new DataResult<UserDto>(DataResultType.ValidationError,
+                return new DataResult<User>(DataResultType.ValidationError,
                     "The password and confirmation password must be the same.");
             }
 
@@ -41,78 +31,66 @@ namespace DivingTracker.ServiceLayer.Workflows
 
             var passwordHash = GetSaltedHash(registrationRequest.Password, saltBytes);
 
-            var systemLogin = new SystemLogin
+            var systemLogin = _databaseContext.SystemLogins.Add(new SystemLogin
             {
                 EmailAddress = registrationRequest.EmailAddress,
                 PasswordHash = Convert.ToBase64String(passwordHash),
                 PasswordSalt = Convert.ToBase64String(saltBytes),
                 EmailConfirmationToken = registrationRequest.ConfirmationToken,
                 IsEmailConfirmed = false
-            };
-
-            var systemLoginResult = _systemLoginRepository.Create(systemLogin);
-            if (systemLoginResult.Type != DataResultType.Success ||
-                !systemLoginResult.Value.SystemLoginId.HasValue)
+            });
+            if (systemLogin == null)
             {
-                return systemLoginResult.Convert<SystemLogin, UserDto>();
+                return new DataResult<User>(DataResultType.UnableToCreateRecord, "Unable to create user");
             }
 
-            var user = new User
+            var user = _databaseContext.Users.Add(new User
             {
-                SystemLoginId = systemLoginResult.Value.SystemLoginId.Value,
+                SystemLoginId = systemLogin.SystemLoginId,
                 FirstName = registrationRequest.FirstName,
                 Surname = registrationRequest.Surname,
                 DateOfBirth = registrationRequest.DateOfBirth
-            };
+            });
 
-            return _userRepository.Create(user).Convert<User, UserDto>();
+            return new DataResult<User>(user, new DataResult(DataResultType.Success, "Successfully created user"));
         }
 
-        public DataResult<UserDto> Confirm(Guid emailConfirmationToken)
+        public DataResult<User> Confirm(Guid emailConfirmationToken)
         {
-            var systemLoginResult = _systemLoginRepository.ConfirmEmail(emailConfirmationToken);
-            if (systemLoginResult.Type != DataResultType.Success ||
-                !systemLoginResult.Value.SystemLoginId.HasValue)
+            var systemLogin = _databaseContext.SystemLogins
+                .FirstOrDefault(x => x.EmailConfirmationToken.Equals(emailConfirmationToken));
+            if (systemLogin == null)
             {
-                return systemLoginResult.Convert<SystemLogin, UserDto>();
+                return new DataResult<User>(DataResultType.NoRecordsFound, "Could not find a login with that email token");
             }
 
-            var userResult = _userRepository.ReadBySystemLoginId(systemLoginResult.Value.SystemLoginId.Value);
-            return userResult.Convert<User, UserDto>();
+            var user = _databaseContext.Users.FirstOrDefault(x => x.SystemLoginId == systemLogin.SystemLoginId);
+            return new DataResult<User>(user, new DataResult(DataResultType.Success, "Successfully confirmed user's email address"));
         }
 
-        public DataResult<UserDto> Login(string emailAddress, string password)
+        public DataResult<User> Login(string emailAddress, string password)
         {
-            var systemLoginResult = _systemLoginRepository.ReadByEmailAddress(emailAddress);
-            if (systemLoginResult.Type != DataResultType.Success)
+            var systemLogin = _databaseContext.SystemLogins
+                .FirstOrDefault(x => x.EmailAddress.Equals(emailAddress));
+            if (systemLogin == null)
             {
-                return systemLoginResult.Convert<SystemLogin, UserDto>();
+                return new DataResult<User>(DataResultType.NoRecordsFound, "No users found with that email address");
             }
 
-            if (systemLoginResult.Value?.SystemLoginId == null)
+            if (!systemLogin.IsEmailConfirmed)
             {
-                systemLoginResult.Type = DataResultType.Unauthorised;
-                systemLoginResult.FriendlyMessage = "The username/password combination is not recognised.";
-                systemLoginResult.InternalMessage = "Authentication failed.";
-                return systemLoginResult.Convert<SystemLogin, UserDto>();
+                return new DataResult<User>(DataResultType.ConfirmationRequired, "This login has not had the email address confirmed");
             }
 
-            var saltBytes = Convert.FromBase64String(systemLoginResult.Value.PasswordSalt);
+            var saltBytes = Convert.FromBase64String(systemLogin.PasswordSalt);
             var saltedHash = GetSaltedHash(password, saltBytes);
-            var dbSaltedHash = Convert.FromBase64String(systemLoginResult.Value.PasswordHash);
+            var dbSaltedHash = Convert.FromBase64String(systemLogin.PasswordHash);
 
-            var userResult = _userRepository.ReadBySystemLoginId(systemLoginResult.Value.SystemLoginId.Value);
-            if (AreByteArraysEqual(saltedHash, dbSaltedHash))
-            {
-                return userResult.Convert<User, UserDto>();
-            }
-
-            userResult.Value = null;
-            userResult.Type = DataResultType.Unauthorised;
-            userResult.FriendlyMessage = "The username/password combination is not recognised.";
-            userResult.InternalMessage = "Authentication failed.";
-
-            return userResult.Convert<User, UserDto>();
+            var user = _databaseContext.Users
+                .FirstOrDefault(x => x.SystemLoginId == systemLogin.SystemLoginId);
+            return AreByteArraysEqual(saltedHash, dbSaltedHash)
+                ? new DataResult<User>(user, new DataResult(DataResultType.Success, "Login successful")) 
+                : new DataResult<User>(DataResultType.Unauthorised, "The username/password combination is not recognised.", "Authentication failed.");
         }
 
         private static bool AreByteArraysEqual(IReadOnlyCollection<byte> value1, IReadOnlyList<byte> value2)

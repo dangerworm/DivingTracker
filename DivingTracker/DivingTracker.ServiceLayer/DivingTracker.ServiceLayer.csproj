@@ -36,6 +36,12 @@
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.2.0.30\lib\net461\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.11.16.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.11.16\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -50,7 +56,10 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
@@ -78,63 +87,73 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Consumers\WebConsumer.cs" />
-    <Compile Include="DomainModels\Answer.cs" />
-    <Compile Include="DomainModels\QuestionAnalytics.cs" />
-    <Compile Include="DomainModels\QuestionAnswer.cs" />
-    <Compile Include="DomainModels\SystemLogin.cs" />
-    <Compile Include="DomainModels\User.cs" />
-    <Compile Include="DomainModels\UserResponse.cs" />
-    <Compile Include="Entities\QuestionAnalyticsDto.cs" />
-    <Compile Include="Entities\SystemLoginDto.cs" />
-    <Compile Include="Entities\UserRegistrationRequestDto.cs" />
-    <Compile Include="Entities\UserResponseDto.cs" />
+    <Compile Include="Agency.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Criterion.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CriterionStatus.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataTransferObjects\UserRegistrationRequestDto.cs" />
     <Compile Include="Enums\EmailType.cs" />
-    <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="Interfaces\IAuthenticationService.cs" />
     <Compile Include="Interfaces\IEmailService.cs" />
-    <Compile Include="Interfaces\IValidator.cs" />
-    <Compile Include="JsonModels\ChartDataModelJdo.cs" />
-    <Compile Include="JsonModels\ChartDataJdo.cs" />
-    <Compile Include="JsonModels\ChartDataSetJdo.cs" />
-    <Compile Include="JsonModels\ChartOptionsJdo.cs" />
-    <Compile Include="JsonModels\MediaWikiPageQueryJdo.cs" />
-    <Compile Include="JsonModels\WikipediaSearchDataJdo.cs" />
-    <Compile Include="Enums\ConceptResourceType.cs" />
-    <Compile Include="Repositories\EntityRepository.cs" />
-    <Compile Include="Repositories\AnswerRepository.cs" />
-    <Compile Include="Repositories\QuestionAnalyticsRepository.cs" />
-    <Compile Include="Repositories\QuestionRepository.cs" />
-    <Compile Include="Repositories\SystemLoginRepository.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Repositories\UserResponseRepository.cs" />
-    <Compile Include="Services\AnswerService.cs" />
-    <Compile Include="Interfaces\IAnswerService.cs" />
-    <Compile Include="Interfaces\ISearchService.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Module.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModuleSection.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Qualification.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\EmailService.cs" />
-    <Compile Include="Services\SearchService.cs" />
-    <Compile Include="Services\UserService.cs" />
-    <Compile Include="DomainModels\Question.cs" />
-    <Compile Include="Entities\AnswerDto.cs" />
-    <Compile Include="Entities\QuestionDto.cs" />
-    <Compile Include="Entities\QuestionEditDto.cs" />
-    <Compile Include="Entities\UserDto.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\IQuestionService.cs" />
-    <Compile Include="Services\QuestionService.cs" />
-    <Compile Include="Validators\QuestionValidator.cs" />
-    <Compile Include="Validators\AnswerValidator.cs" />
-    <Compile Include="Validators\BaseValidator.cs" />
-    <Compile Include="Workflows\AnswerWorkflow.cs" />
+    <Compile Include="SystemLogin.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SystemRole.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCriteria.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserQualification.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Workflows\AuthenticationWorkflow.cs" />
     <Compile Include="Workflows\EmailWorkflow.cs" />
-    <Compile Include="Workflows\QuestionWorkflow.cs" />
-    <Compile Include="Workflows\UserWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <EntityDeploy Include="DataContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DataContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DataContext.edmx.diagram">
+      <DependentUpon>DataContext.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +161,21 @@
       <Project>{21ae5557-17b1-43bd-ba2b-13de670f2ca0}</Project>
       <Name>CommonCode.BusinessLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DataContext.edmx</DependentUpon>
+      <LastGenOutput>DataContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DataContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DataContext.edmx</DependentUpon>
+      <LastGenOutput>DataContext.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

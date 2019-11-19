@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Mail;
 using CommonCode.BusinessLayer;
-using CommonCode.BusinessLayer.Helpers;
-using DivingTracker.ServiceLayer.DomainModels;
-using DivingTracker.ServiceLayer.Helpers;
-using DivingTracker.ServiceLayer.Repositories;
 
 namespace DivingTracker.ServiceLayer.Workflows
 {
     public class EmailWorkflow
     {
-        private readonly UserRepository _userRepository;
-        private readonly SystemLoginRepository _systemLoginRepository;
+        private DivingTrackerEntities _dbContext;
 
-        public EmailWorkflow(UserRepository userRepository,
-            SystemLoginRepository systemLoginRepository)
+        public EmailWorkflow()
         {
-            Verify.NotNull(userRepository, nameof(userRepository));
-            Verify.NotNull(systemLoginRepository, nameof(systemLoginRepository));
-
-            _userRepository = userRepository;
-            _systemLoginRepository = systemLoginRepository;
         }
 
         public DataResult<IEnumerable<MailMessage>> GetConfirmationEmail(int[] userIds)
@@ -30,29 +20,27 @@ namespace DivingTracker.ServiceLayer.Workflows
             var users = new Collection<User>();
             foreach (var userId in userIds)
             {
-                var userResult = _userRepository.Read(userId);
-                if (userResult.Type != DataResultType.Success)
-                {
-                    return userResult.ConvertSingleToEnumerable<User, MailMessage>();
-                }
-                users.Add(userResult.Value);
+                var user = _dbContext.Users.FirstOrDefault(x => x.UserId == userId);
+                if (user == null)
+                    return new DataResult<IEnumerable<MailMessage>>(DataResultType.NoRecordsFound, "", "");
+
+                users.Add(user);
             }
 
             var emails = new Collection<MailMessage>();
             foreach (var user in users)
             {
-                var systemLoginResult = _systemLoginRepository.ReadByEmailAddress(user.EmailAddress);
-                if (systemLoginResult.Type != DataResultType.Success)
-                {
-                    return systemLoginResult.ConvertSingleToEnumerable<SystemLogin, MailMessage>();
-                }
+                var systemLogin = _dbContext.SystemLogins
+                    .FirstOrDefault(x => x.SystemLoginId.Equals(user.SystemLoginId));
+                if (systemLogin == null)
+                    return new DataResult<IEnumerable<MailMessage>>(DataResultType.NoRecordsFound, "", "");
 
-                var email = new MailMessage();
-                email.To.Add(new MailAddress(user.EmailAddress));
+            var email = new MailMessage();
+                email.To.Add(new MailAddress(systemLogin.EmailAddress));
                 email.Subject = "DivingTracker Authentication: New Email Address Added";
                 email.Body =
                     "Thank you for registering with DivingTracker. Please click the link to confirm your email address: " + Environment.NewLine +
-                             $"http://localhost:52505/Authentication/ConfirmEmail?emailConfirmationToken={systemLoginResult.Value.EmailConfirmationToken}";
+                    $"http://localhost:52505/Authentication/ConfirmEmail?emailConfirmationToken={systemLogin.EmailConfirmationToken}";
                 email.From = new MailAddress("noreply@curio.something");
 
                 emails.Add(email);

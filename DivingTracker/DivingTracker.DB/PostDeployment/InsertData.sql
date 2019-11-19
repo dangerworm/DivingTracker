@@ -4,8 +4,8 @@ BEGIN
 		dbo.SystemLogins(EmailAddress, PasswordHash, PasswordSalt, EmailConfirmationToken, IsEmailConfirmed)
 	VALUES
 		('dangerworm@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8B630B25-4289-48E5-A743-D687F539C581', 1),
-		('gandhi.cunn93@gmail.com', 'GgmIpIOajCIh/3592ONUlZOVm9+HLA3WNdi7d4718AUjpkSOc6U583SudGfdgGCwXKAllO1lh9aQZj834PC5Ew==', '2s/HtQX0kU5bJ+ePwJVQMtjnaRobIPYMrdxgdiX0lL4v674ObDVHTDmmtM63nnd1PMKtayffYJNbiHlshBnLonaXZuujfUA5P+O7aJ891UDKqFBK+4cEG5uVdtvEeeA0Y9ORL6MRZza9S2ML0k/RdzI/BjWgigh6nj+i560+LRQ=', '8F356A7D-D0C3-4DCA-BFE9-A078380EC0BF', 1),
-		('blarg1022@gmail.com', 'XbU7KgJy8QM0qs5o21+zb2Ph+eaf7sqG02AU8NZhdzhVqrhHQXCZv0tl7s/08XlrmE4E3hGHPoQKdfNc+g6zKQ==', 'JSbJlaUS7jHuswaXfmZcbjtwdPEJzMu6FFxYzBifhe7aA6HzN+OXyO9EWX+JkX+TdAU1ztUcjaDXbZ4jvmOBZgem4HsUmJtTS4j/r0NrGBCFW6F8xcGW5x8xJn8Cm5xg6cWRa7AsAkPuopoZXZBmQmb8puCTe4WHnMzxG2IhSwE=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1)
+		('drew.g.morgan@gmail.com', 'GgmIpIOajCIh/3592ONUlZOVm9+HLA3WNdi7d4718AUjpkSOc6U583SudGfdgGCwXKAllO1lh9aQZj834PC5Ew==', '2s/HtQX0kU5bJ+ePwJVQMtjnaRobIPYMrdxgdiX0lL4v674ObDVHTDmmtM63nnd1PMKtayffYJNbiHlshBnLonaXZuujfUA5P+O7aJ891UDKqFBK+4cEG5uVdtvEeeA0Y9ORL6MRZza9S2ML0k/RdzI/BjWgigh6nj+i560+LRQ=', '8F356A7D-D0C3-4DCA-BFE9-A078380EC0BF', 1),
+		('codeupmanchester@gmail.com', 'XbU7KgJy8QM0qs5o21+zb2Ph+eaf7sqG02AU8NZhdzhVqrhHQXCZv0tl7s/08XlrmE4E3hGHPoQKdfNc+g6zKQ==', 'JSbJlaUS7jHuswaXfmZcbjtwdPEJzMu6FFxYzBifhe7aA6HzN+OXyO9EWX+JkX+TdAU1ztUcjaDXbZ4jvmOBZgem4HsUmJtTS4j/r0NrGBCFW6F8xcGW5x8xJn8Cm5xg6cWRa7AsAkPuopoZXZBmQmb8puCTe4WHnMzxG2IhSwE=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1)
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.SystemRoles)
@@ -16,7 +16,7 @@ BEGIN
 		('Admin'),
 		('Lead Instructor'),
 		('Instructor'),
-		('Student')
+		('Student');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Users)
@@ -24,9 +24,9 @@ BEGIN
 	INSERT INTO 
 		dbo.Users(SystemLoginId, SystemRoleId, FirstName, Surname, DateOfBirth)
 	VALUES
-		(1, 2, 'Drew', 'Morgan', '19840101'),
-		(2, 3, 'Andy', 'Cunningham', '19930101'),
-		(3, 4, 'Joshua', 'Varley', '19970823')
+		(2, 3, 'Drew', 'Morgan', '19840101'),
+		(1, 2, 'Adam', 'Rhodes', '19830101'),
+		(3, 4, 'Harry', 'Something', '20010823');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Agencies)
@@ -39,7 +39,7 @@ BEGIN
 		('NAUI', 'National Association of Underwater Instructors'),
 		('PADI', 'Professional Association of Diving Instructors'),
 		('SDI', 'Scuba Diving International'),
-		('SSI', 'Scuba Schools International')
+		('SSI', 'Scuba Schools International');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Qualifications)
@@ -48,12 +48,17 @@ BEGIN
 		dbo.Qualifications([AgencyId], [Name], [Description])
 	VALUES
 		/* BSAC */
+		(  1, 'Drysuit Diver', NULL),
 		(  1, 'Ocean Diver', NULL),
 		(  1, 'Sports Diver', NULL),
+		(  1, 'Assistant Diving Instructor (IFC)', NULL),
 		(  1, 'Dive Leader', NULL),
-		(  1, 'Ice Diving', NULL),
+		(  1, 'Assistant Open Water Instructor (OWIC)', NULL),
+		(  1, 'Open Water Instructor', NULL),
 		(  1, 'Advanced Diver', NULL),
+		(  1, 'Advanced Instructor', NULL),
 		(  1, 'First Class Diver', NULL),
+		(  1, 'National Instructor', NULL),
 	
 		/* CMAS */
 		(  2, 'Introductory SCUBA', NULL),
@@ -112,7 +117,24 @@ BEGIN
 		(  6, 'Night Diving', NULL),
 		(  6, 'Wreck Diving', NULL),
 		(  6, 'Deep Diving', NULL),
-		(  6, 'Master Diver', NULL)
+		(  6, 'Master Diver', NULL);
+END
+
+IF NOT EXISTS (SELECT 1 from dbo.UserQualifications)
+BEGIN
+	INSERT INTO
+		dbo.UserQualifications(UserId, QualificationId, DateAwarded)
+	VALUES
+		/* Drew */
+		(  1, 1, '20170818'),
+		(  1, 4, '20171007'),
+		(  1, 5, '20180211'),
+		(  1, 6, '20181024'),
+		
+		/* Adam */
+		(  2, 1, '20191117'),
+		(  2, 8, '20191117'),
+		(  2, 9, '20191117');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Modules)
@@ -136,7 +158,7 @@ BEGIN
 		(  1, 'OO1', 'Introduction to open water'),
 		(  1, 'OO2', 'Developing open water skills'),
 		(  1, 'OO3', 'Open water rescue skills'),
-		(  1, 'OO4', 'Buddy diving skills')
+		(  1, 'OO4', 'Buddy diving skills');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.ModuleSections)
@@ -211,7 +233,7 @@ BEGIN
 		( 15, 'Kit-up and buddy check', NULL),
 		( 15, 'Dive leading practice - 14-17m (maximum)', NULL),
 		( 15, 'Skills practice - 4-6m', NULL),
-		( 15, 'Exit - deep water', NULL)
+		( 15, 'Exit - deep water', NULL);
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Criteria)
@@ -365,5 +387,5 @@ BEGIN
 	
 		( 27, 'Deeper water exit', NULL, 1),
 		( 27, 'Remove equipment', NULL, 1),
-		( 27, 'Wash kit', NULL, 1)
+		( 27, 'Wash kit', NULL, 1);
 END

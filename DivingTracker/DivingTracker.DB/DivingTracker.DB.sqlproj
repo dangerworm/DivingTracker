@@ -62,6 +62,7 @@
     <Folder Include="PostDeployment" />
     <Folder Include="UserDefinedTypes" />
     <Folder Include="Views" />
+    <Folder Include="PreDeployment" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Agencies.sql" />
@@ -75,9 +76,14 @@
     <Build Include="Tables\Users.sql" />
     <Build Include="UserDefinedTypes\UDT_INT_TABLE.sql" />
     <Build Include="Tables\ModuleSections.sql" />
+    <Build Include="Tables\UserQualifications.sql" />
+    <None Include="PreDeployment\DropTables.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployment.sql" />
     <None Include="PostDeployment\InsertData.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="PreDeployment.sql" />
   </ItemGroup>
 </Project>

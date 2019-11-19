@@ -13,12 +13,18 @@
             <div class="container external-container">
                 <div class="card col-md-offset-3 col-md-6">
                     <div class="row">
-                        <div class="col-xs-12 brand-name">
-                            <p>
-                                <h1>@ViewBag.SiteName</h1>
-                            </p>
+                        <div class="col-xs-3 brand-bsac">
+                            <img class="bsac-logo" src="/Content/images/bsac-logo.png" />
                         </div>
-                    </div>
+                        <div class="col-xs-6 site-title text-center">
+                            <h2>
+                                Manchester University Sub Aqua Club <br/>
+                                Diving Tracker
+                            </h2>
+                        </div>
+                        <div class="col-xs-3 brand-musac">
+                            <img class="scubee-logo" src="/Content/images/scubee-musac-logo.jpg" />
+                        </div>
                     @{
                         var messages = (Collection<string>)ViewBag.Messages;
                     }

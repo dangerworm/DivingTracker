@@ -1,13 +1,13 @@
 ﻿using System.Web.Mvc;
-using DivingTracker.ServiceLayer.Interfaces;
+using DivingTracker.ServiceLayer;
 
 namespace DivingTracker.Web.Controllers
 {
     [AllowAnonymous]
     public class ErrorController : DivingTrackerBaseController
     {
-        public ErrorController(IUserService userService) 
-            : base(userService)
+        public ErrorController(DivingTrackerEntities databaseContext)
+            : base(databaseContext)
         {
         }
 

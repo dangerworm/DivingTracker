@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using CommonCode.BusinessLayer;
 using CommonCode.BusinessLayer.Helpers;
-using DivingTracker.ServiceLayer.Entities;
+using DivingTracker.ServiceLayer;
+using DivingTracker.ServiceLayer.DataTransferObjects;
 using DivingTracker.ServiceLayer.Enums;
 using DivingTracker.ServiceLayer.Interfaces;
 using DivingTracker.Web.Attributes;
@@ -19,10 +21,9 @@ namespace DivingTracker.Web.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IEmailService _emailService;
 
-        public AuthenticationController(IUserService userService, IQuestionService questionService,
-            IAnswerService answerService, IAuthenticationService authenticationService,
-            IEmailService emailService)
-            :base (userService)
+        public AuthenticationController(DivingTrackerEntities databaseContext,
+            IAuthenticationService authenticationService, IEmailService emailService)
+            : base(databaseContext)
         {
             Verify.NotNull(authenticationService, nameof(authenticationService));
             Verify.NotNull(emailService, nameof(emailService));
@@ -48,15 +49,14 @@ namespace DivingTracker.Web.Controllers
 
             var request = model.Map<RegistrationModel, UserRegistrationRequestDto>();
             var registrationResult = _authenticationService.Register(request);
-            if (registrationResult.Type != DataResultType.Success ||
-                !registrationResult.Value.UserId.HasValue)
+            if (registrationResult.Type != DataResultType.Success)
             {
                 ModelState.AddModelError("", registrationResult.FriendlyMessage);
                 return View();
             }
 
             var emailResult = _emailService.Send(EmailType.ConfirmEmail,
-                new[] { registrationResult.Value.UserId.Value });
+                new[] { registrationResult.Value.UserId });
             if (emailResult.Type != DataResultType.Success)
             {
                 ModelState.AddModelError("", "We attempted to send an email to you so that " +
@@ -119,14 +119,19 @@ namespace DivingTracker.Web.Controllers
             return RedirectToAction("Login");
         }
 
-        private void DoLogin(UserDto user)
+        private void DoLogin(User user)
         {
+            var systemLogin = DatabaseContext.SystemLogins
+                .FirstOrDefault(x => x.SystemLoginId == user.SystemLoginId);
+            if (systemLogin == null)
+                return;
+
             var ticket = new FormsAuthenticationTicket(
-                1, user.EmailAddress, 
-                DateTime.Now, 
-                DateTime.Now.AddDays(1), 
-                false,  
-                JsonConvert.SerializeObject(user)
+                1, systemLogin.EmailAddress,
+                DateTime.Now,
+                DateTime.Now.AddDays(1),
+                false,
+                JsonConvert.SerializeObject(user.Map<User, UserModel>())
             );
             var encryptedTicket = FormsAuthentication.Encrypt(ticket);
             var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
@@ -137,7 +142,7 @@ namespace DivingTracker.Web.Controllers
                 cookie.Expires = ticket.Expiration;
             }
 
-            FormsAuthentication.SetAuthCookie(user.EmailAddress, false);
+            FormsAuthentication.SetAuthCookie(systemLogin.EmailAddress, false);
         }
     }
 }

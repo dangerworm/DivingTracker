@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
+using CommonCode.BusinessLayer.Helpers;
 
 namespace DivingTracker.Web.Attributes
 {
@@ -8,6 +10,13 @@ namespace DivingTracker.Web.Attributes
     {
         public const string RedirectUrl = "~/Error/Unauthorised";
 
+        protected override bool AuthorizeCore(HttpContextBase httpContext)
+        {
+            Verify.NotNull(httpContext, nameof(httpContext));
+
+            return base.AuthorizeCore(httpContext);
+        }
+        
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             base.HandleUnauthorizedRequest(filterContext);

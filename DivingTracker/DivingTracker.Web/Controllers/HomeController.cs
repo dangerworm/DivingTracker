@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web.Mvc;
 using DivingTracker.ServiceLayer;
@@ -19,19 +20,22 @@ namespace DivingTracker.Web.Controllers
         public ActionResult Index()
         {
             var qualifications = DatabaseContext.UserQualifications.OrderBy(x => x.QualificationId);
-            var clubQualifications = new Dictionary<string, int>();
+            var clubQualifications = new Dictionary<int, QualificationModel>();
 
             foreach (var qualification in qualifications)
             {
-                var key = qualification.Qualification.Name;
+                if (!qualification.QualificationId.HasValue)
+                    continue;
+
+                var key = qualification.QualificationId.Value;
 
                 if (clubQualifications.ContainsKey(key))
                 {
-                    clubQualifications[key] += 1;
+                    clubQualifications[key].Count += 1;
                 }
                 else
                 {
-                    clubQualifications.Add(key, 1);
+                    clubQualifications.Add(key, new QualificationModel(qualification.Qualification));
                 }
             }
 

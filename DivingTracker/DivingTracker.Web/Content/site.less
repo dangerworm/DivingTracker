@@ -29,8 +29,15 @@ input, select, textarea {
     max-width: 280px;
 }
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
     background-color: @background;
+    height: 100%;
+    margin: 0;
     padding-bottom: 20px;
 }
 
@@ -69,6 +76,14 @@ h3 {
     margin-top: 1pt;
 }
 
+footer {
+    position: fixed;
+    bottom: 2em;
+    left: 0;
+    right: 0;
+    height: 5em;
+}
+
 .brand-bsac {
     padding-left: 0.1em;
 }
@@ -82,11 +97,29 @@ h3 {
     height: 74px;
 }
 
+.bsac-logo-footer {
+    bottom: 2em;
+    height: 74px;
+    position: static;
+    right: 2em;
+}
+
+.copyright-notice-footer {
+    bottom: 1em;
+    position: fixed;
+}
+
 .site-title > h2 {
     margin-top: 0.2em;
 }
 
 .scubee-logo {
+    height: 85px;
+}
+
+.scubee-logo-nav {
+    border: 2px solid @secondary-colour;
+    border-radius: 42px;
     height: 85px;
 }
 

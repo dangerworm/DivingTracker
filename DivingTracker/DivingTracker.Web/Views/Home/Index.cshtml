@@ -3,15 +3,24 @@
     ViewBag.Title = ViewBag.SiteName + ": Home";
 }
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <h1>Welcome, @Model.User.FirstName</h1>
-        <p>The current club make-up looks like this:
-            <ul>
-                @foreach (var qualification in Model.ClubQualifications)
+        <p>The current club make-up looks like this:</p>
+
+        <div class="row">
+            <div class="col-md-8 question card light-background">
+                @foreach (var qualification in Model.ClubQualifications.Values)
                 {
-                    <li>@qualification.Key: @qualification.Value</li>
+                    <div class="row">
+                        <div class="col-md-1">
+                            <i class="@qualification.GlyphClass"></i>
+                        </div>
+                        <div class="col-md-11">
+                            <p>@qualification.Qualification: @qualification.Count</p>
+                        </div>
+                    </div>
                 }
-            </ul>
-        </p>
+            </div>
+        </div>
     </div>
 </div>

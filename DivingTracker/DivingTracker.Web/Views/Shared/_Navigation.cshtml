@@ -8,27 +8,19 @@
                 <span class="icon-bar"></span>
             </button>
             <h1>
-                <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand">@ViewBag.Sitename</a>
+                <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand"><img class="scubee-logo-nav" src="/Content/images/scubee-musac-logo.jpg" /></a>
             </h1>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav col-sm-10 expand-right">
                 <li><a href="@Url.Action("Index", "Home", new {area = ""})"><span class="fa fa-home"></span> Home</a></li>
-                <li><a href="@Url.Action("Index", "Help", new {area = ""})"><span class="fa fa-question-circle"></span> Course Setup</a></li>
+                <li><a href="@Url.Action("Index", "ClubMembers", new {area = ""})"><span class="fas fa-users"></span> Club Members</a></li>
                 <li><a href="@Url.Action("Index", "Help", new {area = ""})"><span class="fa fa-question-circle"></span> Reports</a></li>
                 <li class="pull-right"><a href="@Url.Action("Logout", "Authentication", new {area = ""})" class="expand-right"><span class="fa fa-sign-out"></span> Logout</a></li>
                 <li class="pull-right"><a href="@Url.Action("Index", "User", new {area = "", id = ViewBag.CurrentUserId})"><span class="fa fa-user"></span> @ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.Surname</a></li>
-                <li class="col-md-4 pull-right">
-                    @using (Html.BeginForm("SearchQuestions", "Ajax", FormMethod.Post))
-        {
-            @Html.AntiForgeryToken()
-            <div id="search" class="form-group no-margin">
-                <label for="search-query"><i class="fa fa-search"></i></label>
-                @Html.TextBox("term", null, new { id = "search-query", @class = "form-control input ui-autocomplete-input", placeholder = "Search" })
-            </div>
-}
-                </li>
             </ul>
         </div>
     </div>
 </nav>
+<br />
+<br />

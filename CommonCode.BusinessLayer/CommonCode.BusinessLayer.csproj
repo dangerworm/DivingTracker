@@ -43,6 +43,7 @@
       <HintPath>..\..\DivingTracker\DivingTracker\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\CypherHelper.cs" />
+    <Compile Include="Helpers\EnumUtils.cs" />
     <Compile Include="Interfaces\IGraphAuditData.cs" />
     <Compile Include="Interfaces\IIdentifiableByGuid.cs" />
     <Compile Include="Neo4jClientFactory.cs" />

@@ -113,6 +113,11 @@
     </Compile>
     <Compile Include="DataTransferObjects\UserRegistrationRequestDto.cs" />
     <Compile Include="Enums\EmailType.cs" />
+    <Compile Include="Enums\SystemRoleGenerator.generated.cs">
+      <DependentUpon>SystemRoleGenerator.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Interfaces\IAuthenticationService.cs" />
     <Compile Include="Interfaces\IEmailService.cs" />
     <Compile Include="Module.cs">
@@ -175,6 +180,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataContext.edmx</DependentUpon>
       <LastGenOutput>DataContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Enums\SystemRoleGenerator.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SystemRoleGenerator.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,13 +2,18 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using CommonCode.BusinessLayer.Helpers;
 using DivingTracker.ServiceLayer;
+using DivingTracker.ServiceLayer.Enums;
+using DivingTracker.Web.Attributes;
+using DivingTracker.Web.Models;
 
 namespace DivingTracker.Web.Controllers
 {
-    public class UserController : DivingTrackerBaseController
+    [AuthoriseRoles(SystemRoles.Admin, SystemRoles.LeadInstructor, SystemRoles.Instructor)]
+    public class ClubMembersController : DivingTrackerBaseController
     {
-        public UserController(DivingTrackerEntities databaseContext)
+        public ClubMembersController(DivingTrackerEntities databaseContext)
             :base (databaseContext)
         {
         }
@@ -17,7 +22,7 @@ namespace DivingTracker.Web.Controllers
         public ActionResult Index()
         {
             var users = DatabaseContext.Users.Include(u => u.SystemLogin).Include(u => u.SystemRole).Include(u => u.UserCriteria);
-            return View(users.ToList());
+            return View(users.MapAll<User, UserModel>());
         }
 
         // GET: User/Details/5
@@ -32,35 +37,6 @@ namespace DivingTracker.Web.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user);
-        }
-
-        // GET: User/Create
-        public ActionResult Create()
-        {
-            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress");
-            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description");
-            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId");
-            return View();
-        }
-
-        // POST: User/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "UserId,CreatedDate,SystemLoginId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                DatabaseContext.Users.Add(user);
-                DatabaseContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
-            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
-            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId", user.UserId);
             return View(user);
         }
 

@@ -185,14 +185,16 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\AuthoriseAttribute.cs" />
+    <Compile Include="Attributes\AuthoriseRolesAttribute.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\DivingTrackerBaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ClubMembersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClubQualificationsModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
@@ -206,7 +208,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <None Include="Content\bootstrap.min.css.old" />
-    <Content Include="Content\font-awesome.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\bsac-logo.png" />
     <Content Include="Content\images\scubee-musac-logo.jpg" />
@@ -252,9 +253,6 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\fontawesome-webfont.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -279,21 +277,6 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="fonts\FontAwesome.otf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="fonts\fontawesome-webfont.woff2">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="fonts\fontawesome-webfont.woff">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="fonts\fontawesome-webfont.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="fonts\fontawesome-webfont.eot">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
@@ -422,7 +405,6 @@
     <Content Include="Views\Shared\_EditQuestion.cshtml" />
     <Content Include="Views\Shared\_AnswersChart.cshtml" />
     <Content Include="Views\Shared\_Navigation.cshtml" />
-    <Content Include="Views\Userw\Index.cshtml" />
     <Content Include="Views\Shared\_AnswerForm.cshtml" />
     <Content Include="Views\Shared\_WikipediaSearchResults.cshtml" />
     <Content Include="Views\Shared\_SimilarQuestions.cshtml" />
@@ -441,11 +423,10 @@
     <Content Include="Views\Shared\_QuestionButtonNoTextBox.cshtml" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Views\User\Create.cshtml" />
-    <Content Include="Views\User\Delete.cshtml" />
-    <Content Include="Views\User\Details.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
-    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\ClubMembers\Delete.cshtml" />
+    <Content Include="Views\ClubMembers\Details.cshtml" />
+    <Content Include="Views\ClubMembers\Edit.cshtml" />
+    <Content Include="Views\ClubMembers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -456,11 +437,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CommonCode\CommonCode.BusinessLayer\CommonCode.BusinessLayer.csproj">
+    <ProjectReference Include="..\..\CommonCode.BusinessLayer\CommonCode.BusinessLayer.csproj">
       <Project>{21ae5557-17b1-43bd-ba2b-13de670f2ca0}</Project>
       <Name>CommonCode.BusinessLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\CommonCode\CommonCode.Web\CommonCode.Web.csproj">
+    <ProjectReference Include="..\..\CommonCode.Web\CommonCode.Web.csproj">
       <Project>{a3a1ec92-84ff-449b-ae73-3d4961a585a8}</Project>
       <Name>CommonCode.Web</Name>
     </ProjectReference>
@@ -468,6 +449,9 @@
       <Project>{79a92885-5879-429d-9610-edef2ce9258c}</Project>
       <Name>DivingTracker.ServiceLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

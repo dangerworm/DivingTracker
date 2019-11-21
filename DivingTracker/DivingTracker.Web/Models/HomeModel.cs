@@ -6,6 +6,6 @@ namespace DivingTracker.Web.Models
     public class HomeModel
     {
         public User User { get; set; }
-        public Dictionary<string, int> ClubQualifications { get; set; }
+        public Dictionary<int, QualificationModel> ClubQualifications { get; set; }
     }
 }

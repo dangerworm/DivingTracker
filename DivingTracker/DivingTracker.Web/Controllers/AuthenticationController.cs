@@ -131,7 +131,7 @@ namespace DivingTracker.Web.Controllers
                 DateTime.Now,
                 DateTime.Now.AddDays(1),
                 false,
-                JsonConvert.SerializeObject(user.Map<User, UserModel>())
+                user.SystemRole.Description
             );
             var encryptedTicket = FormsAuthentication.Encrypt(ticket);
             var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);

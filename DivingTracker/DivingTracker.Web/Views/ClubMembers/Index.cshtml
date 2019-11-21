@@ -1,0 +1,73 @@
+﻿@model IEnumerable<DivingTracker.Web.Models.UserModel>
+
+@{
+    ViewBag.Title = ViewBag.SiteName + ": Club Members";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Club Members</h2>
+
+<table id="club-members" class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts
+{
+<script>
+    $(document).ready( function () {
+        $('#club-members').DataTable({
+            "order": [[1, "asc"], [0, "asc"]],
+            "scrollY": '60vh',
+            "scrollCollapse": true,
+            "searching": true,
+            "paging": false
+        });
+    } );
+</script>
+}

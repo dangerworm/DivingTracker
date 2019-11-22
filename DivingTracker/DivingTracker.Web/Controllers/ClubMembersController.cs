@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using CommonCode.BusinessLayer.Helpers;
@@ -54,7 +53,7 @@ namespace DivingTracker.Web.Controllers
             }
             ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
             ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
-            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId", user.UserId);
+            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterions, "UserId", "UserId", user.UserId);
             return View(user);
         }
 
@@ -73,7 +72,7 @@ namespace DivingTracker.Web.Controllers
             }
             ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
             ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
-            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterias, "UserId", "UserId", user.UserId);
+            ViewBag.UserId = new SelectList(DatabaseContext.UserCriterions, "UserId", "UserId", user.UserId);
             return View(user);
         }
 

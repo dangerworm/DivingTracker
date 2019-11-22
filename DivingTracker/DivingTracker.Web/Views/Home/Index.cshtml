@@ -2,9 +2,11 @@
 @{
     ViewBag.Title = ViewBag.SiteName + ": Home";
 }
+
+<h1>Welcome, @Model.User.FirstName!</h1>
+
 <div class="row">
     <div class="col-md-6">
-        <h1>Welcome, @Model.User.FirstName</h1>
         <p>The current club make-up looks like this:</p>
 
         <div class="row">

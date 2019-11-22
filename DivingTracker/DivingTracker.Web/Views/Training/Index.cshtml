@@ -1,0 +1,75 @@
+﻿@using DivingTracker.ServiceLayer.Enums
+@using DivingTracker.Web.Models
+@model DivingTracker.Web.Models.TrainingModel
+
+@{
+    ViewBag.Title = ViewBag.SiteName + ": Qualifications and Training";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var lastModuleSectionId = -1;
+}
+
+<h1>Qualifications and Training</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var module in Model.Modules)
+        {
+            <table class="table user-qualifications">
+                <thead>
+                    <tr>
+                        <th>
+                            <h2>@module.Name</h2>
+                        </th>
+                        @foreach (var user in Model.Users)
+                        {
+                            <th style="line-height: 12em;">
+                                <p style="transform: rotate(-90deg);">@user.Name</p>
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var moduleSection in module.ModuleSections)
+                    {
+                        if (lastModuleSectionId == -1 || lastModuleSectionId != moduleSection.ModuleSectionId)
+                        {
+                            <tr>
+                                @*<td colspan="@(Model.Users.Length + 1)">*@
+                                <td style="width: 40%;">
+                                    <h3>@moduleSection.Name</h3>
+                                </td>
+                            </tr>
+                        }
+                        
+                        foreach (var criterion in moduleSection.Criteria)
+                        {
+                            <tr>
+                                <td>
+                                    @criterion.Description
+                                </td>
+                                @foreach (var user in Model.Users)
+                                {
+                                    var userData = Model.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
+
+                                    <td>
+                                        @if (userData != null)
+                                        {
+                                            <i class="@userData.CriterionStatusGlyph"></i>
+                                        }
+                                        else
+                                        {
+                                            <text>&nbsp;</text>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                        lastModuleSectionId = moduleSection.ModuleSectionId;
+                    }
+                </tbody>
+            </table>
+        }
+        <br />
+    </div>
+</div>

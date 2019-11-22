@@ -17,7 +17,7 @@ namespace DivingTracker.ServiceLayer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Criterion()
         {
-            this.UserCriterias = new HashSet<UserCriteria>();
+            this.UserCriterias = new HashSet<UserCriterion>();
         }
     
         public int CriterionId { get; set; }
@@ -28,6 +28,6 @@ namespace DivingTracker.ServiceLayer
     
         public virtual ModuleSection ModuleSection { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserCriteria> UserCriterias { get; set; }
+        public virtual ICollection<UserCriterion> UserCriterias { get; set; }
     }
 }

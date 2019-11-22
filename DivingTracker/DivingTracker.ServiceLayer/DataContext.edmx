@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="DivingTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DivingTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Agencies">
           <Key>
             <PropertyRef Name="AgencyId" />
@@ -83,6 +83,7 @@
           <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CriterionId" Type="int" />
           <Property Name="CriterionStatusId" Type="int" />
+          <Property Name="AwardedByUserId" Type="int" />
           <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
         </EntityType>
         <EntityType Name="UserQualifications">
@@ -92,7 +93,7 @@
           <Property Name="UserQualificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
           <Property Name="QualificationId" Type="int" />
-          <Property Name="DateAwarded" Type="datetime2" Precision="3" />
+          <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -151,6 +152,18 @@
             </Principal>
             <Dependent Role="Qualifications">
               <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_AwardedByUserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="AwardedByUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -266,6 +279,10 @@
             <End Role="Agencies" EntitySet="Agencies" />
             <End Role="Qualifications" EntitySet="Qualifications" />
           </AssociationSet>
+          <AssociationSet Name="UserCriteria_AwardedByUserId_FK" Association="Self.UserCriteria_AwardedByUserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCriteria" EntitySet="UserCriteria" />
+          </AssociationSet>
           <AssociationSet Name="UserCriteria_CriterionId_FK" Association="Self.UserCriteria_CriterionId_FK">
             <End Role="Criteria" EntitySet="Criteria" />
             <End Role="UserCriteria" EntitySet="UserCriteria" />
@@ -295,7 +312,8 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DivingTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -360,7 +378,7 @@
           <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Agency" Relationship="Self.Qualifications_AgencyId_FK" FromRole="Qualifications" ToRole="Agencies" />
           <NavigationProperty Name="Modules" Relationship="Self.Modules_QualificationId_FK" FromRole="Qualifications" ToRole="Modules" />
-          <NavigationProperty Name="UserQualifications" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="Qualification" ToRole="UserQualification" />
+          <NavigationProperty Name="UserQualifications" Relationship="Self.UserQualifications_QualificationId_FK" FromRole="Qualifications" ToRole="UserQualifications" />
         </EntityType>
         <EntityType Name="SystemLogin">
           <Key>
@@ -383,17 +401,30 @@
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.Users_SystemRoleId_FK" FromRole="SystemRoles" ToRole="Users" />
         </EntityType>
-        <EntityType Name="UserCriteria">
+        <EntityType Name="UserCriterion">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CriterionId" Type="Int32" />
           <Property Name="CriterionStatusId" Type="Int32" />
+          <Property Name="AwardedByUserId" Type="Int32" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Criterion" Relationship="Self.UserCriteria_CriterionId_FK" FromRole="UserCriteria" ToRole="Criteria" />
           <NavigationProperty Name="CriterionStatus" Relationship="Self.UserCriteria_CriterionStatusId_FK" FromRole="UserCriteria" ToRole="CriterionStatuses" />
-          <NavigationProperty Name="User" Relationship="Self.UserCriteria_UserId_FK" FromRole="UserCriteria" ToRole="Users" />
+          <NavigationProperty Name="User" Relationship="Self.UserCriteria_AwardedByUserId_FK" FromRole="UserCriteria" ToRole="Users" />
+          <NavigationProperty Name="AwardedByUser" Relationship="Self.UserCriteria_UserId_FK" FromRole="UserCriteria" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserQualification">
+          <Key>
+            <PropertyRef Name="UserQualificationId" />
+          </Key>
+          <Property Name="UserQualificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="QualificationId" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Qualification" Relationship="Self.UserQualifications_QualificationId_FK" FromRole="UserQualifications" ToRole="Qualifications" />
+          <NavigationProperty Name="User" Relationship="Self.UserQualifications_UserId_FK" FromRole="UserQualifications" ToRole="Users" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -408,8 +439,9 @@
           <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
           <NavigationProperty Name="SystemLogin" Relationship="Self.Users_SystemLoginId_FK" FromRole="Users" ToRole="SystemLogins" />
           <NavigationProperty Name="SystemRole" Relationship="Self.Users_SystemRoleId_FK" FromRole="Users" ToRole="SystemRoles" />
+          <NavigationProperty Name="UserCriterias" Relationship="Self.UserCriteria_AwardedByUserId_FK" FromRole="Users" ToRole="UserCriteria" />
           <NavigationProperty Name="UserCriteria" Relationship="Self.UserCriteria_UserId_FK" FromRole="Users" ToRole="UserCriteria" />
-          <NavigationProperty Name="UserQualifications" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="User" ToRole="UserQualification" />
+          <NavigationProperty Name="UserQualifications" Relationship="Self.UserQualifications_UserId_FK" FromRole="Users" ToRole="UserQualifications" />
         </EntityType>
         <Association Name="Qualifications_AgencyId_FK">
           <End Role="Agencies" Type="Self.Agency" Multiplicity="0..1" />
@@ -437,7 +469,7 @@
         </Association>
         <Association Name="UserCriteria_CriterionId_FK">
           <End Role="Criteria" Type="Self.Criterion" Multiplicity="0..1" />
-          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <End Role="UserCriteria" Type="DivingTrackerModel.UserCriterion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Criteria">
               <PropertyRef Name="CriterionId" />
@@ -449,7 +481,7 @@
         </Association>
         <Association Name="UserCriteria_CriterionStatusId_FK">
           <End Role="CriterionStatuses" Type="Self.CriterionStatus" Multiplicity="0..1" />
-          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
+          <End Role="UserCriteria" Type="DivingTrackerModel.UserCriterion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CriterionStatuses">
               <PropertyRef Name="CriterionStatusId" />
@@ -483,6 +515,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="UserQualifications_QualificationId_FK">
+          <End Role="Qualifications" Type="Self.Qualification" Multiplicity="0..1" />
+          <End Role="UserQualifications" Type="Self.UserQualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualifications">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="UserQualifications">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Users_SystemLoginId_FK">
           <End Role="SystemLogins" Type="Self.SystemLogin" Multiplicity="0..1" />
           <End Role="Users" Type="Self.User" Multiplicity="*" />
@@ -507,14 +551,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="UserCriteria_UserId_FK">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="0..1" />
+        <Association Name="UserCriteria_AwardedByUserId_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="DivingTrackerModel.UserCriterion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="UserCriteria">
+              <PropertyRef Name="AwardedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_UserId_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserCriteria" Type="DivingTrackerModel.UserCriterion" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserQualifications_UserId_FK">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="UserQualifications" Type="Self.UserQualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserQualifications">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -528,7 +596,8 @@
           <EntitySet Name="Qualifications" EntityType="Self.Qualification" />
           <EntitySet Name="SystemLogins" EntityType="Self.SystemLogin" />
           <EntitySet Name="SystemRoles" EntityType="Self.SystemRole" />
-          <EntitySet Name="UserCriterias" EntityType="Self.UserCriteria" />
+          <EntitySet Name="UserCriterions" EntityType="DivingTrackerModel.UserCriterion" />
+          <EntitySet Name="UserQualifications" EntityType="Self.UserQualification" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="Qualifications_AgencyId_FK" Association="Self.Qualifications_AgencyId_FK">
             <End Role="Agencies" EntitySet="Agencies" />
@@ -540,11 +609,11 @@
           </AssociationSet>
           <AssociationSet Name="UserCriteria_CriterionId_FK" Association="Self.UserCriteria_CriterionId_FK">
             <End Role="Criteria" EntitySet="Criteria" />
-            <End Role="UserCriteria" EntitySet="UserCriterias" />
+            <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
           <AssociationSet Name="UserCriteria_CriterionStatusId_FK" Association="Self.UserCriteria_CriterionStatusId_FK">
             <End Role="CriterionStatuses" EntitySet="CriterionStatuses" />
-            <End Role="UserCriteria" EntitySet="UserCriterias" />
+            <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
           <AssociationSet Name="Modules_QualificationId_FK" Association="Self.Modules_QualificationId_FK">
             <End Role="Qualifications" EntitySet="Qualifications" />
@@ -554,6 +623,10 @@
             <End Role="Modules" EntitySet="Modules" />
             <End Role="ModuleSections" EntitySet="ModuleSections" />
           </AssociationSet>
+          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="Self.UserQualifications_QualificationId_FK">
+            <End Role="Qualifications" EntitySet="Qualifications" />
+            <End Role="UserQualifications" EntitySet="UserQualifications" />
+          </AssociationSet>
           <AssociationSet Name="Users_SystemLoginId_FK" Association="Self.Users_SystemLoginId_FK">
             <End Role="SystemLogins" EntitySet="SystemLogins" />
             <End Role="Users" EntitySet="Users" />
@@ -562,55 +635,19 @@
             <End Role="SystemRoles" EntitySet="SystemRoles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="UserCriteria_AwardedByUserId_FK" Association="Self.UserCriteria_AwardedByUserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserCriteria" EntitySet="UserCriterions" />
+          </AssociationSet>
           <AssociationSet Name="UserCriteria_UserId_FK" Association="Self.UserCriteria_UserId_FK">
             <End Role="Users" EntitySet="Users" />
-            <End Role="UserCriteria" EntitySet="UserCriterias" />
+            <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
-          <EntitySet Name="UserQualifications" EntityType="DivingTrackerModel.UserQualification" />
-          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="DivingTrackerModel.UserQualifications_QualificationId_FK">
-            <End Role="Qualification" EntitySet="Qualifications" />
-            <End Role="UserQualification" EntitySet="UserQualifications" />
-          </AssociationSet>
-          <AssociationSet Name="UserQualifications_UserId_FK" Association="DivingTrackerModel.UserQualifications_UserId_FK">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserQualification" EntitySet="UserQualifications" />
+          <AssociationSet Name="UserQualifications_UserId_FK" Association="Self.UserQualifications_UserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserQualifications" EntitySet="UserQualifications" />
           </AssociationSet>
         </EntityContainer>
-        <EntityType Name="UserQualification">
-          <Key>
-            <PropertyRef Name="UserQualificationId" />
-          </Key>
-          <Property Name="UserQualificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="QualificationId" Type="Int32" />
-          <Property Name="DateAwarded" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Qualification" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="UserQualification" ToRole="Qualification" />
-          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="UserQualification" ToRole="User" />
-        </EntityType>
-        <Association Name="UserQualifications_QualificationId_FK">
-          <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="0..1" />
-          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Qualification">
-              <PropertyRef Name="QualificationId" />
-            </Principal>
-            <Dependent Role="UserQualification">
-              <PropertyRef Name="QualificationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserQualifications_UserId_FK">
-          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="UserQualification">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -696,12 +733,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserCriterias">
-            <EntityTypeMapping TypeName="DivingTrackerModel.UserCriteria">
+          <EntitySetMapping Name="UserCriterions">
+            <EntityTypeMapping TypeName="DivingTrackerModel.UserCriterion">
               <MappingFragment StoreEntitySet="UserCriteria">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="CriterionId" ColumnName="CriterionId" />
                 <ScalarProperty Name="CriterionStatusId" ColumnName="CriterionStatusId" />
+                <ScalarProperty Name="AwardedByUserId" ColumnName="AwardedByUserId" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserQualifications">
+            <EntityTypeMapping TypeName="DivingTrackerModel.UserQualification">
+              <MappingFragment StoreEntitySet="UserQualifications">
+                <ScalarProperty Name="UserQualificationId" ColumnName="UserQualificationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -716,16 +764,6 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
                 <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="UserQualifications">
-            <EntityTypeMapping TypeName="DivingTrackerModel.UserQualification">
-              <MappingFragment StoreEntitySet="UserQualifications">
-                <ScalarProperty Name="DateAwarded" ColumnName="DateAwarded" />
-                <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserQualificationId" ColumnName="UserQualificationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

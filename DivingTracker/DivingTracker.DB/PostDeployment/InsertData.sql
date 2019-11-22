@@ -3,9 +3,10 @@ BEGIN
 	INSERT INTO 
 		dbo.SystemLogins(EmailAddress, PasswordHash, PasswordSalt, EmailConfirmationToken, IsEmailConfirmed)
 	VALUES
-		('dangerworm@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8B630B25-4289-48E5-A743-D687F539C581', 1),
-		('drew.g.morgan@gmail.com', 'GgmIpIOajCIh/3592ONUlZOVm9+HLA3WNdi7d4718AUjpkSOc6U583SudGfdgGCwXKAllO1lh9aQZj834PC5Ew==', '2s/HtQX0kU5bJ+ePwJVQMtjnaRobIPYMrdxgdiX0lL4v674ObDVHTDmmtM63nnd1PMKtayffYJNbiHlshBnLonaXZuujfUA5P+O7aJ891UDKqFBK+4cEG5uVdtvEeeA0Y9ORL6MRZza9S2ML0k/RdzI/BjWgigh6nj+i560+LRQ=', '8F356A7D-D0C3-4DCA-BFE9-A078380EC0BF', 1),
-		('codeupmanchester@gmail.com', 'XbU7KgJy8QM0qs5o21+zb2Ph+eaf7sqG02AU8NZhdzhVqrhHQXCZv0tl7s/08XlrmE4E3hGHPoQKdfNc+g6zKQ==', 'JSbJlaUS7jHuswaXfmZcbjtwdPEJzMu6FFxYzBifhe7aA6HzN+OXyO9EWX+JkX+TdAU1ztUcjaDXbZ4jvmOBZgem4HsUmJtTS4j/r0NrGBCFW6F8xcGW5x8xJn8Cm5xg6cWRa7AsAkPuopoZXZBmQmb8puCTe4WHnMzxG2IhSwE=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1)
+		('dangerworm+admin@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8B630B25-4289-48E5-A743-D687F539C581', 1),
+		('dangerworm+leadinstructor@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8F356A7D-D0C3-4DCA-BFE9-A078380EC0BF', 1),
+		('dangerworm+instructor@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1),
+		('dangerworm+student@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '9B871B2F-8F15-4310-B43E-D4895D24ACEC', 1)
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.SystemRoles)
@@ -24,9 +25,10 @@ BEGIN
 	INSERT INTO 
 		dbo.Users(SystemLoginId, SystemRoleId, FirstName, Surname, DateOfBirth)
 	VALUES
-		(2, 3, 'Drew', 'Morgan', '19840101'),
-		(1, 2, 'Adam', 'Rhodes', '19830101'),
-		(3, 4, 'Harry', 'Something', '20010823');
+		(1, 1, 'Drew', 'Morgan', '19800101'),
+		(2, 2, 'Drew', 'Morgan', '19800101'),
+		(3, 3, 'Drew', 'Morgan', '19800101'),
+		(4, 4, 'Drew', 'Morgan', '19800101')
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Agencies)
@@ -123,7 +125,7 @@ END
 IF NOT EXISTS (SELECT 1 from dbo.UserQualifications)
 BEGIN
 	INSERT INTO
-		dbo.UserQualifications(UserId, QualificationId, DateAwarded)
+		dbo.UserQualifications(UserId, QualificationId, UpdatedDate)
 	VALUES
 		/* Drew */
 		(  1, 1, '20170818'),
@@ -131,7 +133,7 @@ BEGIN
 		(  1, 5, '20180211'),
 		(  1, 6, '20181024'),
 		
-		/* Adam */
+		/* Drew 2 (Lead Instructor) */
 		(  2, 1, '20191117'),
 		(  2, 8, '20191117'),
 		(  2, 9, '20191117');
@@ -388,4 +390,15 @@ BEGIN
 		( 27, 'Deeper water exit', NULL, 1),
 		( 27, 'Remove equipment', NULL, 1),
 		( 27, 'Wash kit', NULL, 1);
+END
+
+IF NOT EXISTS (SELECT 1 FROM dbo.CriterionStatuses)
+BEGIN
+	INSERT INTO 
+		dbo.CriterionStatuses([Description])
+	VALUES
+		('Unknown'),
+		('Module Started'),
+		('Needs Consolidation'),
+		('Achieved');
 END

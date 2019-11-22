@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using DivingTracker.ServiceLayer;
-using Newtonsoft.Json;
 
 namespace DivingTracker.Web.Models
 {
@@ -19,6 +18,9 @@ namespace DivingTracker.Web.Models
 
         public string Surname { get; set; }
 
+        [DisplayName("Name")]
+        public string Name => $"{FirstName} {Surname}";
+
         [DisplayName("Date of Birth")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? DateOfBirth { get; set; }
@@ -30,5 +32,20 @@ namespace DivingTracker.Web.Models
 
         public SystemLogin SystemLogin { get; set; }
         public SystemRole SystemRole { get; set; }
+
+        public UserModel()
+        {
+        }
+
+        public UserModel(User user)
+        {
+            UserId = user.UserId;
+            CreatedDate = user.CreatedDate;
+            FirstName = user.FirstName;
+            Surname = user.Surname;
+            DateOfBirth = user.DateOfBirth;
+            SystemLogin = user.SystemLogin;
+            SystemRole = user.SystemRole;
+        }
     }
 }

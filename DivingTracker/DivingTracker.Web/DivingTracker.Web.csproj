@@ -191,14 +191,21 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ClubMembersController.cs" />
+    <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ClubQualificationsModel.cs" />
+    <Compile Include="Models\CriterionModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ModuleModel.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
+    <Compile Include="Models\TrainingModel.cs" />
+    <Compile Include="Models\ModuleSectionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\UserCriterionModel.cs" />
+    <Compile Include="Models\UserQualificationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\ServiceInstaller.cs" />
   </ItemGroup>
@@ -393,13 +400,10 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Question\Index.cshtml" />
-    <Content Include="Views\Question\_AnswerDetail.cshtml" />
     <Content Include="Views\Shared\_AnswerButton.cshtml" />
     <Content Include="Views\Shared\_AnswerButtons.cshtml" />
     <Content Include="Views\Shared\_AddQuestion.cshtml" />
     <Content Include="Views\Shared\_AddAnswer.cshtml" />
-    <Content Include="Views\Question\_AnswerDetails.cshtml" />
     <Content Include="Views\Shared\_AddAnswerButton.cshtml" />
     <Content Include="Views\Shared\_QuestionForm.cshtml" />
     <Content Include="Views\Shared\_EditQuestion.cshtml" />
@@ -418,7 +422,6 @@
     <Content Include="Views\Help\Index.cshtml" />
     <Content Include="Views\Shared\_QuestionButton.cshtml" />
     <Content Include="Views\Shared\_FollowForm.cshtml" />
-    <Content Include="Views\Answer\Index.cshtml" />
     <Content Include="Views\Shared\_EditAnswer.cshtml" />
     <Content Include="Views\Shared\_QuestionButtonNoTextBox.cshtml" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
@@ -427,6 +430,7 @@
     <Content Include="Views\ClubMembers\Details.cshtml" />
     <Content Include="Views\ClubMembers\Edit.cshtml" />
     <Content Include="Views\ClubMembers\Index.cshtml" />
+    <Content Include="Views\Training\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

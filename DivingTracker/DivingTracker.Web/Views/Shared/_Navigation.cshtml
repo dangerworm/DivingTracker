@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav col-sm-10 expand-right">
                 <li><a href="@Url.Action("Index", "Home", new {area = ""})"><span class="fa fa-home"></span> Home</a></li>
                 <li><a href="@Url.Action("Index", "ClubMembers", new {area = ""})"><span class="fas fa-users"></span> Club Members</a></li>
-                <li><a href="@Url.Action("Index", "Help", new {area = ""})"><span class="fa fa-question-circle"></span> Reports</a></li>
+                <li><a href="@Url.Action("Index", "Training", new {area = ""})"><span class="fa fa-question-circle"></span> Training</a></li>
                 <li class="pull-right"><a href="@Url.Action("Logout", "Authentication", new {area = ""})" class="expand-right"><span class="fa fa-sign-out"></span> Logout</a></li>
                 <li class="pull-right"><a href="@Url.Action("Index", "User", new {area = "", id = ViewBag.CurrentUserId})"><span class="fa fa-user"></span> @ViewBag.CurrentUser.FirstName @ViewBag.CurrentUser.Surname</a></li>
             </ul>

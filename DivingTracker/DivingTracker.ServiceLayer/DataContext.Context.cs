@@ -33,8 +33,8 @@ namespace DivingTracker.ServiceLayer
         public virtual DbSet<Qualification> Qualifications { get; set; }
         public virtual DbSet<SystemLogin> SystemLogins { get; set; }
         public virtual DbSet<SystemRole> SystemRoles { get; set; }
-        public virtual DbSet<UserCriteria> UserCriterias { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserCriterion> UserCriterions { get; set; }
         public virtual DbSet<UserQualification> UserQualifications { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

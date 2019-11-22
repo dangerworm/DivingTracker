@@ -12,15 +12,17 @@ namespace DivingTracker.ServiceLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class UserCriteria
+    public partial class UserCriterion
     {
         public int UserId { get; set; }
         public Nullable<int> CriterionId { get; set; }
         public Nullable<int> CriterionStatusId { get; set; }
+        public Nullable<int> AwardedByUserId { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         public virtual Criterion Criterion { get; set; }
         public virtual CriterionStatus CriterionStatus { get; set; }
         public virtual User User { get; set; }
+        public virtual User AwardedByUser { get; set; }
     }
 }

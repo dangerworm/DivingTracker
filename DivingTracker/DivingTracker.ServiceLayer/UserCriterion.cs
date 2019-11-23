@@ -23,6 +23,6 @@ namespace DivingTracker.ServiceLayer
         public virtual Criterion Criterion { get; set; }
         public virtual CriterionStatus CriterionStatus { get; set; }
         public virtual User User { get; set; }
-        public virtual User AwardedByUser { get; set; }
+        public virtual User AwaredByUser { get; set; }
     }
 }

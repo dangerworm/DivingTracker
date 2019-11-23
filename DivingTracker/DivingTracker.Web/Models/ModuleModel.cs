@@ -14,18 +14,21 @@ namespace DivingTracker.Web.Models
 
         public QualificationModel Qualification { get; set; }
 
+        public IEnumerable<UserCriterionModel> UserCriteria { get; set; }
+
         public IEnumerable<ModuleSectionModel> ModuleSections { get; set; }
 
         public ModuleModel()
         {
         }
 
-        public ModuleModel(Module module, bool ignoreIncludeInSyllabus = false)
+        public ModuleModel(Module module, IEnumerable<UserCriterion> userCriteria, bool ignoreIncludeInSyllabus = false)
         {
             ModuleId = module.ModuleId;
             Name = module.Name;
             Description = module.Description;
             Qualification = new QualificationModel(module.Qualification);
+            UserCriteria = userCriteria?.Select(x => new UserCriterionModel(x)).ToArray();
             ModuleSections = module.ModuleSections?.Select(x => new ModuleSectionModel(x, ignoreIncludeInSyllabus));
         }
     }

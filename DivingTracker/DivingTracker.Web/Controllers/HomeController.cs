@@ -17,12 +17,9 @@ namespace DivingTracker.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var qualifications = DatabaseContext.UserQualifications.OrderBy(x => x.QualificationId);
-            var model = new HomeModel(CurrentUser, qualifications);
+            var model = new HomeModel(CurrentUser);
 
             return View(model);
         }
-
-        
     }
 }

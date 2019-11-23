@@ -5,29 +5,31 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b11bc161c646494d8b0953ce41af6064" Name="Diagram1">
-        <EntityTypeShape EntityType="DivingTrackerModel.Agency" Width="1.5" PointX="1.5" PointY="18.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.Criterion" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.CriterionStatus" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.Module" Width="1.5" PointX="1.5" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.ModuleSection" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.Qualification" Width="1.5" PointX="1.5" PointY="15.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.SystemLogin" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.SystemRole" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.UserCriterion" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.UserQualification" Width="1.5" PointX="8.25" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="DivingTrackerModel.User" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
-        <AssociationConnector Association="DivingTrackerModel.Qualifications_AgencyId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.Criteria_ModuleSectionId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.UserCriteria_CriterionId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.UserCriteria_CriterionStatusId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.Modules_QualificationId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.ModuleSections_ModuleId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.UserQualifications_QualificationId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.Users_SystemLoginId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.Users_SystemRoleId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.UserCriteria_UserId_FK" ManuallyRouted="false" />
-        <AssociationConnector Association="DivingTrackerModel.UserQualifications_UserId_FK" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DivingTrackerModel.Agency" Width="1.5" PointX="1.5" PointY="23.25" />
+        <EntityTypeShape EntityType="DivingTrackerModel.Criterion" Width="1.5" PointX="3" PointY="11.125" />
+        <EntityTypeShape EntityType="DivingTrackerModel.CriterionStatus" Width="1.5" PointX="3" PointY="7.875" />
+        <EntityTypeShape EntityType="DivingTrackerModel.Module" Width="1.5" PointX="1.5" PointY="15.25" />
+        <EntityTypeShape EntityType="DivingTrackerModel.ModuleSection" Width="1.5" PointX="0.75" PointY="11.25" />
+        <EntityTypeShape EntityType="DivingTrackerModel.Qualification" Width="1.5" PointX="1.5" PointY="18.875" />
+        <EntityTypeShape EntityType="DivingTrackerModel.QualificationType" Width="1.5" PointX="1.5" PointY="25.75" />
+        <EntityTypeShape EntityType="DivingTrackerModel.SystemLogin" Width="1.5" PointX="0.75" PointY="3.25" />
+        <EntityTypeShape EntityType="DivingTrackerModel.SystemRole" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DivingTrackerModel.UserCriterion" Width="1.5" PointX="5.25" PointY="3.125" />
+        <EntityTypeShape EntityType="DivingTrackerModel.UserQualification" Width="1.5" PointX="8.25" PointY="3.5" />
+        <EntityTypeShape EntityType="DivingTrackerModel.User" Width="1.5" PointX="3" PointY="2.875" />
+        <AssociationConnector Association="DivingTrackerModel.Qualifications_AgencyId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.Criteria_ModuleSectionId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserCriteria_CriterionId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserCriteria_CriterionStatusId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.Modules_QualificationId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.ModuleSections_ModuleId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.Qualifications_QualificationTypeId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserQualifications_QualificationId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.Users_SystemLoginId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.Users_SystemRoleId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserCriteria_UserId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserQualifications_UserId_FK" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

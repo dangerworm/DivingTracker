@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CommonCode.BusinessLayer;
 using DivingTracker.ServiceLayer.DataTransferObjects;
+using DivingTracker.ServiceLayer.Enums;
 
 namespace DivingTracker.ServiceLayer.Workflows
 {
@@ -25,32 +26,42 @@ namespace DivingTracker.ServiceLayer.Workflows
                     "The password and confirmation password must be the same.");
             }
 
-            var rngCryptoServiceProvider = new RNGCryptoServiceProvider();
             var saltBytes = new byte[128];
-            rngCryptoServiceProvider.GetBytes(saltBytes);
+            new RNGCryptoServiceProvider().GetBytes(saltBytes);
 
-            var passwordHash = GetSaltedHash(registrationRequest.Password, saltBytes);
-
-            var systemLogin = _databaseContext.SystemLogins.Add(new SystemLogin
+            var systemLogin = new SystemLogin
             {
+                CreatedDate = DateTime.Now,
                 EmailAddress = registrationRequest.EmailAddress,
-                PasswordHash = Convert.ToBase64String(passwordHash),
+                PasswordHash = Convert.ToBase64String(GetSaltedHash(registrationRequest.Password, saltBytes)),
                 PasswordSalt = Convert.ToBase64String(saltBytes),
                 EmailConfirmationToken = registrationRequest.ConfirmationToken,
                 IsEmailConfirmed = false
-            });
-            if (systemLogin == null)
+            };
+
+            _databaseContext.SystemLogins.Add(systemLogin);
+            _databaseContext.SaveChanges();
+            if (systemLogin.SystemLoginId == 0)
             {
-                return new DataResult<User>(DataResultType.UnableToCreateRecord, "Unable to create user");
+                return new DataResult<User>(DataResultType.UnableToCreateRecord, "Unable to create system login");
             }
 
-            var user = _databaseContext.Users.Add(new User
+            var user = new User
             {
+                CreatedDate = DateTime.Now,
                 SystemLoginId = systemLogin.SystemLoginId,
                 FirstName = registrationRequest.FirstName,
                 Surname = registrationRequest.Surname,
-                DateOfBirth = registrationRequest.DateOfBirth
-            });
+                DateOfBirth = registrationRequest.DateOfBirth,
+                SystemRoleId = (int)SystemRoles.Unknown
+            };
+
+            _databaseContext.Users.Add(user);
+            _databaseContext.SaveChanges();
+            if (user.UserId == 0)
+            {
+                return new DataResult<User>(DataResultType.UnableToCreateRecord, "Unable to create user");
+            }
 
             return new DataResult<User>(user, new DataResult(DataResultType.Success, "Successfully created user"));
         }

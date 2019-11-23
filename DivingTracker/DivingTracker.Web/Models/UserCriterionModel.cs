@@ -28,7 +28,7 @@ namespace DivingTracker.Web.Models
             Criterion = new CriterionModel(userCriterion.Criterion);
             CriterionStatus = (CriterionStatuses)userCriterion.CriterionStatus.CriterionStatusId;
             User = new UserModel(userCriterion.User);
-            AwardedByUser = new UserModel(userCriterion.AwardedByUser);
+            AwardedByUser = new UserModel(userCriterion.AwaredByUser);
         }
 
         private string GetCriterionStatusGlyph()

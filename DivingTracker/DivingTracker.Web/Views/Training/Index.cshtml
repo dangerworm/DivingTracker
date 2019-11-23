@@ -1,75 +1,48 @@
-﻿@using DivingTracker.ServiceLayer.Enums
-@using DivingTracker.Web.Models
-@model DivingTracker.Web.Models.TrainingModel
+﻿@using System.Web.Mvc.Html
+@model IEnumerable<DivingTracker.Web.Models.TrainingModel>
 
 @{
-    ViewBag.Title = ViewBag.SiteName + ": Qualifications and Training";
+    ViewBag.Title = ViewBag.SiteName + ": Qualifications and Progress";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var lastModuleSectionId = -1;
 }
-
-<h1>Qualifications and Training</h1>
 
 <div class="row">
     <div class="col-md-12">
-        @foreach (var module in Model.Modules)
-        {
-            <table class="table user-qualifications">
-                <thead>
-                    <tr>
-                        <th>
-                            <h2>@module.Name</h2>
-                        </th>
-                        @foreach (var user in Model.Users)
-                        {
-                            <th style="line-height: 12em;">
-                                <p style="transform: rotate(-90deg);">@user.Name</p>
-                            </th>
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var moduleSection in module.ModuleSections)
-                    {
-                        if (lastModuleSectionId == -1 || lastModuleSectionId != moduleSection.ModuleSectionId)
-                        {
-                            <tr>
-                                @*<td colspan="@(Model.Users.Length + 1)">*@
-                                <td style="width: 40%;">
-                                    <h3>@moduleSection.Name</h3>
-                                </td>
-                            </tr>
-                        }
-                        
-                        foreach (var criterion in moduleSection.Criteria)
-                        {
-                            <tr>
-                                <td>
-                                    @criterion.Description
-                                </td>
-                                @foreach (var user in Model.Users)
-                                {
-                                    var userData = Model.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
-
-                                    <td>
-                                        @if (userData != null)
-                                        {
-                                            <i class="@userData.CriterionStatusGlyph"></i>
-                                        }
-                                        else
-                                        {
-                                            <text>&nbsp;</text>
-                                        }
-                                    </td>
-                                }
-                            </tr>
-                        }
-                        lastModuleSectionId = moduleSection.ModuleSectionId;
-                    }
-                </tbody>
-            </table>
-        }
-        <br />
+        <h1>Qualifications and Progress</h1>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-12">
+        @foreach (var trainingModel in Model)
+        {
+            <h2>@trainingModel.Qualification.Name</h2>
+
+            foreach (var module in trainingModel.Modules)
+            {
+                if (module.Module.UserCriteria.Any())
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.Partial("_TrainingModule", module)
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script language="javascript">
+        $(document).ready(function () {
+            $(".open-close").on("click",
+                function () {
+                    $("div.module-users#" + this.classList[1]).slideToggle();
+                    $("div.module-table#" + this.classList[1]).slideToggle();
+                    $("th.user-name." + this.classList[1]).fadeToggle();
+                });
+        });
+    </script>
+}

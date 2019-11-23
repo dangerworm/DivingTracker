@@ -113,13 +113,8 @@
     </Compile>
     <Compile Include="DataTransferObjects\UserRegistrationRequestDto.cs" />
     <Compile Include="Enums\EmailType.cs" />
-    <Compile Include="Enums\CriterionStatusGenerator.generated.cs">
-      <DependentUpon>CriterionStatusGenerator.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Enums\SystemRoleGenerator.generated.cs">
-      <DependentUpon>SystemRoleGenerator.tt</DependentUpon>
+    <Compile Include="Enums\EnumGenerator.generated.cs">
+      <DependentUpon>EnumGenerator.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
@@ -133,6 +128,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Qualification.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="QualificationType.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Services\AuthenticationService.cs" />
@@ -186,13 +184,9 @@
       <DependentUpon>DataContext.edmx</DependentUpon>
       <LastGenOutput>DataContext.cs</LastGenOutput>
     </Content>
-    <Content Include="Enums\CriterionStatusGenerator.tt">
+    <Content Include="Enums\EnumGenerator.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CriterionStatusGenerator.generated.cs</LastGenOutput>
-    </Content>
-    <Content Include="Enums\SystemRoleGenerator.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SystemRoleGenerator.generated.cs</LastGenOutput>
+      <LastGenOutput>EnumGenerator.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

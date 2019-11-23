@@ -9,7 +9,7 @@ using DivingTracker.Web.Models;
 
 namespace DivingTracker.Web.Controllers
 {
-    [AuthoriseRoles(SystemRoles.Admin, SystemRoles.LeadInstructor, SystemRoles.Instructor)]
+    [AuthoriseRoles(SystemRoles.Admin, SystemRoles.Instructor)]
     public class ClubMembersController : DivingTrackerBaseController
     {
         public ClubMembersController(DivingTrackerEntities databaseContext)
@@ -20,8 +20,12 @@ namespace DivingTracker.Web.Controllers
         // GET: User
         public ActionResult Index()
         {
+            var userQualifications = DatabaseContext.UserQualifications;
             var users = DatabaseContext.Users.Include(u => u.SystemLogin).Include(u => u.SystemRole).Include(u => u.UserCriteria);
-            return View(users.MapAll<User, UserModel>());
+
+            var model = new ClubMembersModel(userQualifications, users);
+
+            return View(model);
         }
 
         // GET: User/Details/5

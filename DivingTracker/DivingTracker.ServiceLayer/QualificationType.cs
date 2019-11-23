@@ -12,26 +12,18 @@ namespace DivingTracker.ServiceLayer
     using System;
     using System.Collections.Generic;
     
-    public partial class Qualification
+    public partial class QualificationType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Qualification()
+        public QualificationType()
         {
-            this.Modules = new HashSet<Module>();
-            this.UserQualifications = new HashSet<UserQualification>();
+            this.Qualifications = new HashSet<Qualification>();
         }
     
-        public int QualificationId { get; set; }
-        public int AgencyId { get; set; }
         public int QualificationTypeId { get; set; }
-        public string Name { get; set; }
         public string Description { get; set; }
     
-        public virtual Agency Agency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Module> Modules { get; set; }
-        public virtual QualificationType QualificationType { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserQualification> UserQualifications { get; set; }
+        public virtual ICollection<Qualification> Qualifications { get; set; }
     }
 }

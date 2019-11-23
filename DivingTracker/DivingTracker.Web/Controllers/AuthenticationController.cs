@@ -121,8 +121,7 @@ namespace DivingTracker.Web.Controllers
 
         private void DoLogin(User user)
         {
-            var systemLogin = DatabaseContext.SystemLogins
-                .FirstOrDefault(x => x.SystemLoginId == user.SystemLoginId);
+            var systemLogin = DatabaseContext.SystemLogins.Find(user.SystemLoginId);
             if (systemLogin == null)
                 return;
 
@@ -133,8 +132,10 @@ namespace DivingTracker.Web.Controllers
                 false,
                 user.SystemRole.Description
             );
+
             var encryptedTicket = FormsAuthentication.Encrypt(ticket);
             var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+
             Response.Cookies.Add(cookie);
 
             if (ticket.IsPersistent)

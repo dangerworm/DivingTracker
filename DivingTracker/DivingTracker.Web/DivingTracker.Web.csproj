@@ -195,12 +195,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClubMembersModel.cs" />
     <Compile Include="Models\ClubQualificationsModel.cs" />
     <Compile Include="Models\CriterionModel.cs" />
     <Compile Include="Models\HomeModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
+    <Compile Include="Models\QualificationsModel.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
+    <Compile Include="Models\TrainingModuleModel.cs" />
     <Compile Include="Models\TrainingModel.cs" />
     <Compile Include="Models\ModuleSectionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -431,6 +434,9 @@
     <Content Include="Views\ClubMembers\Edit.cshtml" />
     <Content Include="Views\ClubMembers\Index.cshtml" />
     <Content Include="Views\Training\Index.cshtml" />
+    <Content Include="Views\Shared\_TrainingModule.cshtml" />
+    <Content Include="Views\Training\Qualification.cshtml" />
+    <Content Include="Views\Training\MyQualifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

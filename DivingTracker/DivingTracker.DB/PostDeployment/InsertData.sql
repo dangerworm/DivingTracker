@@ -4,9 +4,11 @@ BEGIN
 		dbo.SystemLogins(EmailAddress, PasswordHash, PasswordSalt, EmailConfirmationToken, IsEmailConfirmed)
 	VALUES
 		('dangerworm+admin@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8B630B25-4289-48E5-A743-D687F539C581', 1),
-		('dangerworm+leadinstructor@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8F356A7D-D0C3-4DCA-BFE9-A078380EC0BF', 1),
 		('dangerworm+instructor@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1),
-		('dangerworm+student@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '9B871B2F-8F15-4310-B43E-D4895D24ACEC', 1)
+		('dangerworm+student@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '9B871B2F-8F15-4310-B43E-D4895D24ACEC', 1),
+		('dangerworm+gergo@gmail.com', 'Ko6Uu7pJCXdUCXiGLvgBrCnHXAP4ezMDCwPHkePwzSEZvulC3Yg9WtoWyPgpYVJNCWOiMx4Dunb9Vk/eXSNk9g==', 'vUhHimbRTRFlsOMHlZBn8jMCr8luXGyCDDXb2kHFhwvfXX8IY4wwfb3L4zVkbPQEmHsVOLGcstlW2flvCcSBX/Uhuta9U89rrvz2TAKSx9StcugHqQ59PRchN1q4lvduw0GTr3aqfYPp52OJEXRew5eaIXVoHgXdlLYNZIP9oTU=', 'E26DD79B-38C1-45CB-B323-F328D3334B5E', 1),
+		('dangerworm+sam@gmail.com', 'cgAadshEtl6EAsUfW178b34KTYhGfv+W3ArZBpAS85Ji2maGjyxHuOIEW5tkeVO5UbPffWMSuo2UC5jqBU8lhg==', '89Uk+BRJNv5V/OyPtK18JbDIPQ8bCIcxTShXtD1YPJT/t02Ir2iuBkydQUplgrNrGCE6hX3tBsnxTj8ZTO+9Y4JswKIZPW13zIy4QkhZygjfLg3pm4ai6tMpcFTp4dxnZJULkb3K6b/AxOIMlGrJNqYozxqcD7IKT13JOXukx+Y=', '4E83D0B6-EB69-45B8-A268-1DCB85A2300D', 1),
+		('dangerworm+hannah@gmail.com', '544deb0JQb/jbxmB+clhI4rvaGGnkMWQMDYNeOjcpPflDnmEcom/7U+3Zh5dvIqwzEj4jGQBJ+jz7zSXwQfmEA==', '+z1EolMdWnFvyopJ1rxcDaPx+tgMjV6xC9bdi8IzxcwSvnVd4RJ16+O11qicgZ3K+C35BQppVBSRw1O48zlC3UW9gysZzQbfHcxB+58HmPZPBXDbwP8/VI3PN0jrDsbmeLBKnWU1L8/oCzyhqeYdCdWZqy4hhL40/oEcYjpZUDM=', '62F0945D-5DC1-4A8D-9F1B-FD2B3ED0EA82', 1);
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.SystemRoles)
@@ -14,10 +16,10 @@ BEGIN
 	INSERT INTO 
 		dbo.SystemRoles([Description])
 	VALUES
-		('Admin'),
-		('Lead Instructor'),
+        ('Unknown'),
+		('Student'),
 		('Instructor'),
-		('Student');
+		('Admin');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Users)
@@ -28,7 +30,9 @@ BEGIN
 		(1, 1, 'Drew', 'Morgan', '19800101'),
 		(2, 2, 'Drew', 'Morgan', '19800101'),
 		(3, 3, 'Drew', 'Morgan', '19800101'),
-		(4, 4, 'Drew', 'Morgan', '19800101')
+		(4, 3, 'Gergo', 'Pinter', '19800101'),
+		(5, 3, 'Sam', 'Humphreys', '19800101'),
+		(6, 3, 'Hannah', 'Perkins', '19800101');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Agencies)
@@ -44,82 +48,55 @@ BEGIN
 		('SSI', 'Scuba Schools International');
 END
 
+IF NOT EXISTS (SELECT 1 FROM dbo.Clubs)
+BEGIN
+    INSERT INTO dbo.Addresses(OrganisationName, BuildingName, BuildingNumber,
+        Street, Village, Town, City, Postcode, PoBox, Country)
+    VALUES
+        ('Manchester University Sub Aqua Club', 
+         'University of Manchester Students'' Union', NULL, 'Oxford Road', 
+         NULL, NULL, 'Manchester', 'M13 9PR', NULL, 'United Kingdom'),
+        ('Manchester Aquatics Centre', 
+         NULL, '2', 'Booth Street East', 
+         NULL, NULL, 'Manchester', 'M13 9SS', NULL, 'United Kingdom');
+END
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Clubs)
+BEGIN
+	INSERT INTO
+		dbo.Clubs(AgencyId, ChairUserId, SecretaryUserId, TreasurerUserId, DivingOfficerUserId,
+        ContactAddressId, PoolAddressId, ContactEmail, ContactMobile, ContactLandLine)
+	VALUES 
+		(1, 4, 5, 6, 4, 1, 2, 'dangerworm+gergo@gmail.com', '07654 123456', '01234 567890')
+END
+
+IF NOT EXISTS (SELECT 1 FROM dbo.QualificationTypes)
+BEGIN
+	INSERT INTO 
+		dbo.QualificationTypes([Description])
+	VALUES
+		('Diving'),
+		('Instructor')
+END
+
 IF NOT EXISTS (SELECT 1 FROM dbo.Qualifications)
 BEGIN
 	INSERT INTO 
-		dbo.Qualifications([AgencyId], [Name], [Description])
+		dbo.Qualifications([AgencyId], [QualificationTypeId], [Name], [Description])
 	VALUES
 		/* BSAC */
-		(  1, 'Drysuit Diver', NULL),
-		(  1, 'Ocean Diver', NULL),
-		(  1, 'Sports Diver', NULL),
-		(  1, 'Assistant Diving Instructor (IFC)', NULL),
-		(  1, 'Dive Leader', NULL),
-		(  1, 'Assistant Open Water Instructor (OWIC)', NULL),
-		(  1, 'Open Water Instructor', NULL),
-		(  1, 'Advanced Diver', NULL),
-		(  1, 'Advanced Instructor', NULL),
-		(  1, 'First Class Diver', NULL),
-		(  1, 'National Instructor', NULL),
-	
-		/* CMAS */
-		(  2, 'Introductory SCUBA', NULL),
-		(  2, 'Advanced Skills Diver', NULL),
-		(  2, 'Apnoea Diver', NULL),
-		(  2, 'Enriched Air Nitrox Diver', NULL),
-		(  2, 'Underwater Navigation', NULL),
-		(  2, 'Night Diver', NULL),
-		(  2, 'Rescue Diver', NULL),
-		(  2, 'Wreck Diver', NULL),
-		(  2, 'Cave Diver', NULL),
+		(  1, 1, 'Drysuit Diver', NULL),
+		(  1, 1, 'Ocean Diver', NULL),
+		(  1, 1, 'Sports Diver', NULL),
+		(  1, 2, 'Assistant Diving Instructor (IFC)', NULL),
+		(  1, 1, 'Dive Leader', NULL),
+		(  1, 2, 'Assistant Open Water Instructor (OWIC)', NULL),
+		(  1, 2, 'Open Water Instructor', NULL),
+		(  1, 1, 'Advanced Diver', NULL),
+		(  1, 2, 'Advanced Instructor', NULL),
+		(  1, 1, 'First Class Diver', NULL),
+		(  1, 2, 'National Instructor', NULL);
 
-		/* NAUI */
-		(  3, 'Try Scuba/Passport Scuba', NULL),
-		(  3, 'Tandem Scuba Diver', NULL),
-		(  3, 'Scuba Diver', NULL),
-		(  3, 'Enriched Air Nitrox (EANx) Diver', NULL),
-		(  3, 'Advanced Scuba Diver', NULL),
-		(  3, 'Rescue Scuba Diver', NULL),
-		(  3, 'Master Scuba Diver', NULL),
-		(  3, 'First Aid Provider', NULL),
-		(  3, 'Night Diver', NULL),
-		(  3, 'Deep Diver', NULL),
-		(  3, 'Divemaster', NULL),
-		(  3, 'Underwater Imaging', NULL),
-		(  3, 'Public Safety Diver', NULL),
-
-		/* PADI */
-		(  4, 'Open Water Diver', NULL),
-		(  4, 'Advanced Open Water Diver', NULL),
-		(  4, 'Rescue Diver', NULL),
-		(  4, 'Master Scuba Diver', NULL),
-		(  4, 'Divemaster', NULL),
-		(  4, 'Adaptive Support Diver', NULL),
-		(  4, 'Adventure Diver', NULL),
-		(  4, 'Scuba Diver', NULL),
-		(  4, 'Assistant Instructor', NULL),
-	
-		/* SDI */
-		(  5, 'Open Water Scuba Diver', NULL),
-		(  5, 'Advanced Adventure Diver', NULL),
-		(  5, 'Computer Nitrox Diver', NULL),
-		(  5, 'Solo Diver', NULL),
-		(  5, 'Wreck Diver', NULL),
-		(  5, 'Sidemount Diver', NULL),
-		(  5, 'Night/Limited Visibility Diver', NULL),
-		(  5, 'Rescue Diver', NULL),
-		(  5, 'Scubility Diver', NULL),
-		(  5, 'Divemaster', NULL),
-		(  5, 'Scuba Instructor', NULL),
-
-		/* SSI */
-		(  6, 'Scuba Diver', NULL),
-		(  6, 'Open Water Diver', NULL),
-		(  6, 'Enriched Air Nitrox', NULL),
-		(  6, 'Night Diving', NULL),
-		(  6, 'Wreck Diving', NULL),
-		(  6, 'Deep Diving', NULL),
-		(  6, 'Master Diver', NULL);
 END
 
 IF NOT EXISTS (SELECT 1 from dbo.UserQualifications)
@@ -144,23 +121,23 @@ BEGIN
 	INSERT INTO
 		dbo.Modules(QualificationId, [Name], [Description])
 	VALUES
-		(  1, 'OS1', 'Being underwater'),
-		(  1, 'OS2', 'Basic skills'),
-		(  1, 'OS3', 'Developing skills'),
-		(  1, 'OS4', 'Beyond the basics'),
-		(  1, 'OS5', 'Safety skills'),
+		(  2, 'OS1', 'Being underwater'),
+		(  2, 'OS2', 'Basic skills'),
+		(  2, 'OS3', 'Developing skills'),
+		(  2, 'OS4', 'Beyond the basics'),
+		(  2, 'OS5', 'Safety skills'),
 	   
-		(  1, 'OT1', 'Adapting to the underwater world'),
-		(  1, 'OT2', 'The body and effects of diving'),
-		(  1, 'OT3', 'Going diving'),
-		(  1, 'OT4', 'Dive planning'),
-		(  1, 'OT5', 'What happens if?'),
-		(  1, 'OT6', 'Enjoying your diving'),
+		(  2, 'OT1', 'Adapting to the underwater world'),
+		(  2, 'OT2', 'The body and effects of diving'),
+		(  2, 'OT3', 'Going diving'),
+		(  2, 'OT4', 'Dive planning'),
+		(  2, 'OT5', 'What happens if?'),
+		(  2, 'OT6', 'Enjoying your diving'),
 	   
-		(  1, 'OO1', 'Introduction to open water'),
-		(  1, 'OO2', 'Developing open water skills'),
-		(  1, 'OO3', 'Open water rescue skills'),
-		(  1, 'OO4', 'Buddy diving skills');
+		(  2, 'OO1', 'Introduction to open water'),
+		(  2, 'OO2', 'Developing open water skills'),
+		(  2, 'OO3', 'Open water rescue skills'),
+		(  2, 'OO4', 'Buddy diving skills');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.ModuleSections)

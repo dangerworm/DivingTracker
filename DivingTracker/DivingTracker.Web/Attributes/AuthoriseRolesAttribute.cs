@@ -25,7 +25,7 @@ namespace DivingTracker.Web.Attributes
             var systemLogin = new DivingTrackerEntities().SystemLogins
                 .FirstOrDefault(x => x.EmailAddress.Equals(httpContext.User.Identity.Name));
 
-            return systemLogin?.Users.Any(x => _roles.Cast<byte>().Contains((byte)x.SystemRole.SystemRoleId)) ?? false;
+            return systemLogin?.Users.Any(x => _roles.Contains((SystemRoles)x.SystemRole.SystemRoleId)) ?? false;
         }
     }
 }

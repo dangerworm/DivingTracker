@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using DivingTracker.ServiceLayer;
+using DivingTracker.ServiceLayer.Enums;
 
 namespace DivingTracker.Web.Models
 {
@@ -8,19 +9,22 @@ namespace DivingTracker.Web.Models
         [DisplayName("Agency")]
         public string AgencyName => Agency.Name;
 
-        public string Qualification { get; set; }
+        public string Name { get; set; }
+
+        public QualificationTypes QualificationType { get; set; }
 
         public string Description { get; set; }
 
         public int Count { get; set; }
-
+        
         public string GlyphClass { get; set; }
 
         public Agency Agency { get; set; }
 
         public QualificationModel(Qualification qualification)
         {
-            Qualification = qualification.Name;
+            Name = qualification.Name;
+            QualificationType = (QualificationTypes)qualification.QualificationTypeId;
             Description = qualification.Description;
             Agency = qualification.Agency;
             Count = 1;

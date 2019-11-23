@@ -9,10 +9,11 @@ namespace DivingTracker.ServiceLayer.Workflows
 {
     public class EmailWorkflow
     {
-        private DivingTrackerEntities _dbContext;
+        private readonly DivingTrackerEntities _databaseContext;
 
-        public EmailWorkflow()
+        public EmailWorkflow(DivingTrackerEntities databaseContext)
         {
+            _databaseContext = databaseContext;
         }
 
         public DataResult<IEnumerable<MailMessage>> GetConfirmationEmail(int[] userIds)
@@ -20,9 +21,11 @@ namespace DivingTracker.ServiceLayer.Workflows
             var users = new Collection<User>();
             foreach (var userId in userIds)
             {
-                var user = _dbContext.Users.FirstOrDefault(x => x.UserId == userId);
+                var user = _databaseContext.Users.Find(userId);
                 if (user == null)
-                    return new DataResult<IEnumerable<MailMessage>>(DataResultType.NoRecordsFound, "", "");
+                {
+                    return new DataResult<IEnumerable<MailMessage>>(DataResultType.NoRecordsFound, "Could not find user");
+                }
 
                 users.Add(user);
             }
@@ -30,12 +33,13 @@ namespace DivingTracker.ServiceLayer.Workflows
             var emails = new Collection<MailMessage>();
             foreach (var user in users)
             {
-                var systemLogin = _dbContext.SystemLogins
-                    .FirstOrDefault(x => x.SystemLoginId.Equals(user.SystemLoginId));
+                var systemLogin = _databaseContext.SystemLogins.Find(user.SystemLoginId);
                 if (systemLogin == null)
-                    return new DataResult<IEnumerable<MailMessage>>(DataResultType.NoRecordsFound, "", "");
+                {
+                    return new DataResult<IEnumerable<MailMessage>>(DataResultType.NoRecordsFound, "Could not find system login");
+                }
 
-            var email = new MailMessage();
+                var email = new MailMessage();
                 email.To.Add(new MailAddress(systemLogin.EmailAddress));
                 email.Subject = "DivingTracker Authentication: New Email Address Added";
                 email.Body =
@@ -46,8 +50,7 @@ namespace DivingTracker.ServiceLayer.Workflows
                 emails.Add(email);
             }
 
-            return new DataResult<IEnumerable<MailMessage>>(DataResultType.Success,
-                "Emails generated successfully.")
+            return new DataResult<IEnumerable<MailMessage>>(DataResultType.Success, "Emails generated successfully.")
             {
                 Value = emails
             };

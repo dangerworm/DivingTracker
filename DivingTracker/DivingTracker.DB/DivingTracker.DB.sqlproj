@@ -78,6 +78,9 @@
     <Build Include="Tables\ModuleSections.sql" />
     <Build Include="Tables\UserQualifications.sql" />
     <None Include="PreDeployment\DropTables.sql" />
+    <Build Include="Tables\QualificationTypes.sql" />
+    <Build Include="Tables\Clubs.sql" />
+    <Build Include="Tables\Addresses.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployment.sql" />

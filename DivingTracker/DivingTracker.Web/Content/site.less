@@ -158,30 +158,27 @@ footer {
         width: -webkit-fill-available;
     }
 
-    & .navbar-brand, & .navbar-nav > li > a {
-        color: @white;
+    & .navbar-brand, & .navbar-nav {
 
-        &:hover {
-            color: @secondary-colour-light;
+        & i {
+            padding-right: 0.3em;
+        }
+
+        & > li > a {
+            color: @white;
+
+            &:hover {
+                color: @secondary-colour-light;
+            }
+
+            & span {
+                font-size: medium;
+            }
         }
     }
 
     &.navbar-fixed-top {
         position: initial;
-    }
-}
-
-#create-question-button {
-    background: none !important;
-    color: @white;
-    border: none;
-    cursor: pointer;
-    font: inherit;
-    line-height: 20px;
-    padding: 15px;
-
-    &:hover {
-        color: @secondary-colour-light;
     }
 }
 
@@ -234,8 +231,9 @@ footer {
             padding-top: 10px;
             width: auto;
 
-            & h1 {
+            & h1, h2, h3 {
                 margin-top: 0;
+                color: white;
             }
         }
 
@@ -249,6 +247,15 @@ footer {
             & > small {
                 color: @dark-grey;
                 margin: 0;
+            }
+
+            & p {
+                padding: 0.2em 0;
+                margin-bottom: 0.5em;
+            }
+
+            & .fa, .fas {
+                padding-left: 0.2em;
             }
         }
     }
@@ -289,6 +296,45 @@ form .form-group.no-margin {
 
 .form-control {
     max-width: none;
+}
+
+table.user-qualifications {
+    margin-bottom: 0;
+
+    & > thead > tr > th {
+
+        &.module-header {
+            width: 40%;
+
+            & span {
+                font-size: smaller;
+            }
+        }
+
+        &.user-name {
+            text-align: -webkit-center;
+            display: none;
+
+            & > p {
+                margin: 0;
+                transform: rotate(180deg);
+                writing-mode: vertical-lr;
+            }
+        }
+    }
+
+    & > tbody > tr > td.training-status {
+        text-align: -webkit-center;
+
+        & > p {
+            margin: 0;
+        }
+    }
+}
+
+div.module-table {
+    display: none;
+    margin-bottom: 2em;
 }
 
 div.row.question-header {

@@ -1,5 +1,6 @@
 ﻿using System;
 using DivingTracker.ServiceLayer;
+using DivingTracker.ServiceLayer.Enums;
 
 namespace DivingTracker.Web.Models
 {
@@ -7,6 +8,7 @@ namespace DivingTracker.Web.Models
     {
         public UserModel User { get; set; }
         public QualificationModel Qualification { get; set; }
+        public QualificationTypes QualificationType { get; set; }
 
         public DateTime? DateAwarded { get; set; }
 
@@ -14,6 +16,7 @@ namespace DivingTracker.Web.Models
         {
             User = new UserModel(userQualification.User);
             Qualification = new QualificationModel(userQualification.Qualification);
+            QualificationType = (QualificationTypes)userQualification.Qualification.QualificationTypeId;
 
             DateAwarded = userQualification.UpdatedDate;
         }

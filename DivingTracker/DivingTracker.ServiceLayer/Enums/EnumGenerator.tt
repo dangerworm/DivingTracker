@@ -10,10 +10,19 @@
 <#@ import namespace="System.Text.RegularExpressions" #>
 <#
 	string connectionString = $"Data Source={Environment.MachineName};Initial Catalog=DivingTracker;Integrated Security=True";
-	string tableName = "SystemRoles";
-	string columnId = "SystemRoleId";
-	string columnName = "Description";
+	
+	var tables = new string[][]
+	{
+		new[] { "CriterionStatuses", "CriterionStatusId" },
+		new[] { "QualificationTypes", "QualificationTypeId" },
+		new[] { "SystemRoles", "SystemRoleId" }
+	};
+
 	string path = Path.GetDirectoryName(Host.TemplateFile);
+	string tableName = "";
+	string columnId = "";
+	string columnName = "Description";
+
 #>
 // This is a generated file. Do not attempt to modify it as your changes would be overwritten.
 // Connection String Used: <#= connectionString #>
@@ -23,25 +32,32 @@ using System.ComponentModel;
 namespace DivingTracker.ServiceLayer.Enums
 {
 <#	
-	var serviceProvider = Host as IServiceProvider;
-	var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
+	foreach (var table in tables)
+	{
+		tableName = table[0];
+		columnId = table[1];
+ 
+		var serviceProvider = Host as IServiceProvider;
+		var dte = serviceProvider.GetService(typeof(DTE)) as DTE;
 
-	SqlConnection conn = new SqlConnection(connectionString);
-    string command = string.Format("select {0}, {1} from {2} order by {0}", columnId, columnName, tableName);
-    SqlCommand comm = new SqlCommand(command, conn);
+		var conn = new SqlConnection(connectionString);
+		string command = string.Format("select {0}, {1} from {2} order by {0}", columnId, columnName, tableName);
+		SqlCommand comm = new SqlCommand(command, conn);
  
-    conn.Open();
+		conn.Open();
  
-    SqlDataReader reader = comm.ExecuteReader();
-    bool loop = reader.Read();
+		SqlDataReader reader = comm.ExecuteReader();
+		bool loop = reader.Read();
 #>
     /// <summary>
     /// <#= tableName #> auto generated enumeration
     /// </summary>
     [GeneratedCode("TextTemplatingFileGenerator", "10")]
-    public enum <#= tableName #> : byte
+    public enum <#= tableName #> : int
     {
 <#
+   
+ 
     while(loop)
     {
 #>        /// <summary>
@@ -52,6 +68,10 @@ namespace DivingTracker.ServiceLayer.Enums
 <#
     }
 #>	}
+
+<#
+}
+#>
 }
 <#+
     private string Pascalize(object value)

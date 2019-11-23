@@ -1,0 +1,38 @@
+﻿@using DivingTracker.Web.Models
+@model DivingTracker.Web.Models.TrainingModel
+
+@{
+    ViewBag.Title = ViewBag.SiteName + ": Qualifications and Training";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Qualifications and Training</h1>
+@if (Model == null)
+{
+    <p>We couldn't find that qualification. Please go back and try again.</p>
+}
+else
+{
+    foreach (var module in Model.Modules)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                @Html.Partial("_TrainingModule", module)
+            </div>
+        </div>
+    }
+}
+
+@section Scripts
+{
+    <script language="javascript">
+        $(document).ready(function () {
+            $(".open-close").on("click",
+                function () {
+                    $("div.module-users#" + this.classList[1]).slideToggle();
+                    $("div.module-table#" + this.classList[1]).slideToggle();
+                    $("th.user-name." + this.classList[1]).fadeToggle();
+                });
+        });
+    </script>
+}

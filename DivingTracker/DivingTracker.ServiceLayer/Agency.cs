@@ -17,13 +17,21 @@ namespace DivingTracker.ServiceLayer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Agency()
         {
+            this.Branches = new HashSet<Branch>();
             this.Qualifications = new HashSet<Qualification>();
         }
     
         public int AgencyId { get; set; }
+        public Nullable<int> AddressId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string ContactEmail { get; set; }
+        public string ContactMobile { get; set; }
+        public string ContactLandLine { get; set; }
     
+        public virtual Address Address { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Branch> Branches { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Qualification> Qualifications { get; set; }
     }

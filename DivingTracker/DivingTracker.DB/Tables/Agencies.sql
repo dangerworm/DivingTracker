@@ -5,5 +5,8 @@
     [AddressId] INT
 		CONSTRAINT Agencies_AddressId_PK FOREIGN KEY REFERENCES dbo.Addresses(AddressId),
     [Name] VARCHAR(50) NOT NULL,
-    [Description] VARCHAR(256)
+    [Description] VARCHAR(256),
+    ContactEmail VARCHAR(100),
+    ContactMobile VARCHAR(50),
+    ContactLandLine VARCHAR(50)
 );

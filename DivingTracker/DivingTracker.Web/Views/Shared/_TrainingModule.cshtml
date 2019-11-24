@@ -19,17 +19,14 @@
         </tr>
     </thead>
 </table>
-<div id="module-@module.ModuleId" class="module-users">
-    
-</div>
+
 <div id="module-@module.ModuleId" class="module-table">
     <table id="module-@module.ModuleId" class="table user-qualifications">
         <tbody id="module-@module.ModuleId">
             @foreach (var moduleSection in module.ModuleSections)
             {
                 <tr>
-                    @*<td colspan="@(Model.Users.Length + 1)">*@
-                    <td colspan="@(Model.Users.Length + 1)">
+                    <td colspan="@(Model.Users.Length + 1) training-status">
                         <h3>@moduleSection.Name</h3>
                     </td>
                 </tr>
@@ -37,12 +34,12 @@
                 foreach (var criterion in moduleSection.Criteria)
                 {
                     <tr>
-                        <td>
+                        <td class="module-header">
                             @criterion.Description
                         </td>
                         @foreach (var user in Model.Users)
                         {
-                            var userData = Model.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
+                            var userData = criterion.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
 
                             <td class="training-status">
                                 @if (userData != null)

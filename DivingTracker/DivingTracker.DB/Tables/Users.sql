@@ -9,6 +9,8 @@
 		CONSTRAINT Users_SystemLoginId_UQ UNIQUE (SystemLoginId),
     SystemRoleId INT
 		CONSTRAINT Users_SystemRoleId_FK FOREIGN KEY REFERENCES dbo.SystemRoles(SystemRoleId),
+    BranchId INT
+        CONSTRAINT Users_BranchId_FK FOREIGN KEY REFERENCES dbo.Branches(BranchId),
     FirstName VARCHAR(256),
     Surname VARCHAR(256),
     DateOfBirth DATETIME2(3)

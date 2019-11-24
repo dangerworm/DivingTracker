@@ -15,42 +15,40 @@
 </head>
 <body>
     @Html.Partial("_Navigation")
-    <div class="row">
-        <div class="col-xs-12">
-            <main role="main" class="container body-content">
-                <div class="content">
-                    @{
-                        var messages = (Collection<string>)ViewBag.Messages;
-                    }
-                    @if (messages != null && messages.Any())
-                    {
-                        <div class="col-md-12 alert alert-info">
-                            @foreach (var message in messages)
-                            {
-                                <p>message</p>
-                            }
-                        </div>
-                    }
-                    @if (ViewData.ModelState.Any(x => x.Key.Equals("")))
-                    {
-                        <div class="col-md-12">
-                            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
-                        </div>
-                    }
-                    @RenderBody()
-                </div>
-            </main>
-            <footer class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="copyright-notice-footer pull-left">&copy; @DateTime.Now.Year - Drew Morgan</p>
-                            <p class="pull-right"><a href="https://www.bsac.com/home/"><img class="bsac-logo-footer" src="/Content/images/bsac-logo.png" /></a></p>
-                        </div>
+    <div class="col-md-12">
+        <main role="main" class="container body-content">
+            <div class="content">
+                @{
+                    var messages = (Collection<string>)ViewBag.Messages;
+                }
+                @if (messages != null && messages.Any())
+                {
+                    <div class="col-md-12 alert alert-info">
+                        @foreach (var message in messages)
+                        {
+                            <p>message</p>
+                        }
+                    </div>
+                }
+                @if (ViewData.ModelState.Any(x => x.Key.Equals("")))
+                {
+                    <div class="col-md-12">
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </main>
+        @*<footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="copyright-notice-footer pull-left">&copy; @DateTime.Now.Year - Drew Morgan</p>
+                        <p class="pull-right"><a href="https://www.bsac.com/home/"><img class="bsac-logo-footer" src="/Content/images/bsac-logo.png" /></a></p>
                     </div>
                 </div>
-            </footer>
-        </div>
+            </div>
+        </footer>*@
     </div>
     <div id="popup-container" class="modal fade">
         <div class="modal-dialog" role="document">

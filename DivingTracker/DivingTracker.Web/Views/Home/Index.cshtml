@@ -1,7 +1,87 @@
-﻿@model DivingTracker.Web.Models.HomeModel
+﻿@using DivingTracker.ServiceLayer.Enums
+@model DivingTracker.Web.Models.UserQualificationsModel
 @{
     ViewBag.Title = ViewBag.SiteName + ": Home";
 }
 
-<h1>Welcome, @Model.User.FirstName!</h1>
+<div class="row">
+    <div class="col-md-12">
+        <h1>Welcome, @Model.User.FirstName!</h1>
+    </div>
+</div>
 
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Your Current Qualifications</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    @foreach (var qualification in Model.QualificationsCompleted)
+                    {
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
+                            </div>
+                            <div class="col-xs-10">
+                                <p>@qualification.Name: @qualification.Count</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Qualifications In Progress</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    @foreach (var qualification in Model.QualificationsInProgress)
+                    {
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
+                            </div>
+                            <div class="col-xs-10">
+                                <h3>@qualification.Name</h3>
+                                @foreach (var module in qualification.Modules)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            @module.Name
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: @module.Completeness.ToString("P")"
+                                                     aria-valuemin="0" aria-valuenow="@(module.Completeness * 100)" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#Branch-members').DataTable({
+                "order": [[1, "asc"], [0, "asc"]],
+                "scrollY": '60vh',
+                "scrollCollapse": true,
+                "searching": true,
+                "paging": false
+            });
+        });
+    </script>
+}

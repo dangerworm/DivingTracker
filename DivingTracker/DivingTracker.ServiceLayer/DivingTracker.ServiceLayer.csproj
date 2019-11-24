@@ -87,7 +87,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Address.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
     <Compile Include="Agency.cs">
+      <DependentUpon>DataContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Branch.cs">
       <DependentUpon>DataContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Criterion.cs">

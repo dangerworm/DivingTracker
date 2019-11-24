@@ -1,17 +1,21 @@
-﻿@model DivingTracker.ServiceLayer.User
+﻿@model DivingTracker.Web.Models.UserModel
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = ViewBag.SiteName + ": Edit Member Details - " + Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
 
+<div class="row">
+    <div class="col-md-12">
+        <h1>Editing @Model.Name</h1>
+    </div>
+</div>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>User</h4>
         <hr />
@@ -27,18 +31,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SystemLoginId, "SystemLoginId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SystemLogin.SystemLoginId, "SystemLoginId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("SystemLoginId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SystemLoginId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.SystemLogin.SystemLoginId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SystemRoleId, "SystemRoleId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SystemRole.SystemRoleId, "SystemRoleId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("SystemRoleId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SystemRoleId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.SystemRole.SystemRoleId, "", new { @class = "text-danger" })
             </div>
         </div>
 

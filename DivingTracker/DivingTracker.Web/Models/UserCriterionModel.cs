@@ -22,13 +22,13 @@ namespace DivingTracker.Web.Models
 
         public UserCriterionModel(UserCriterion userCriterion)
         {
-            CriterionId = userCriterion.CriterionId ?? -1;
+            CriterionId = userCriterion.CriterionId;
             UpdatedDate = userCriterion.UpdatedDate;
 
             Criterion = new CriterionModel(userCriterion.Criterion);
             CriterionStatus = (CriterionStatuses)userCriterion.CriterionStatus.CriterionStatusId;
             User = new UserModel(userCriterion.User);
-            AwardedByUser = new UserModel(userCriterion.AwaredByUser);
+            AwardedByUser = new UserModel(userCriterion.AwardedByUser);
         }
 
         private string GetCriterionStatusGlyph()
@@ -37,11 +37,11 @@ namespace DivingTracker.Web.Models
             {
                 case CriterionStatuses.Unknown:
                     return "fas fa-question";
-                case CriterionStatuses.ModuleStarted:
-                    return "fas fa-battery-quarter";
+                case CriterionStatuses.NotStarted:
+                    return "fas fa-battery-empty";
                 case CriterionStatuses.NeedsConsolidation:
-                    return "fas fa-battery-three-quarters";
-                case CriterionStatuses.Achieved:
+                    return "fas fa-battery-half";
+                case CriterionStatuses.Complete:
                     return "fas fa-check";
                 default:
                     throw new ArgumentOutOfRangeException();

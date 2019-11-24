@@ -25,7 +25,7 @@ namespace DivingTracker.Web.Models
             ModuleSectionId = moduleSection.ModuleSectionId;
             Name = moduleSection.Name;
             Description = moduleSection.Description;
-            Module = new ModuleModel(moduleSection.Module, null, ignoreIncludeInSyllabus);
+            Module = new ModuleModel(moduleSection.Module, ignoreIncludeInSyllabus);
 
             Criteria = moduleSection.Criteria
                 .Where(x => ignoreIncludeInSyllabus || x.IncludeInSyllabus)

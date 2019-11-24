@@ -25,7 +25,9 @@ namespace DivingTracker.ServiceLayer
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Agency> Agencies { get; set; }
+        public virtual DbSet<Branch> Branches { get; set; }
         public virtual DbSet<Criterion> Criteria { get; set; }
         public virtual DbSet<CriterionStatus> CriterionStatuses { get; set; }
         public virtual DbSet<Module> Modules { get; set; }
@@ -34,8 +36,8 @@ namespace DivingTracker.ServiceLayer
         public virtual DbSet<QualificationType> QualificationTypes { get; set; }
         public virtual DbSet<SystemLogin> SystemLogins { get; set; }
         public virtual DbSet<SystemRole> SystemRoles { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserCriterion> UserCriterions { get; set; }
         public virtual DbSet<UserQualification> UserQualifications { get; set; }
-        public virtual DbSet<User> Users { get; set; }
     }
 }

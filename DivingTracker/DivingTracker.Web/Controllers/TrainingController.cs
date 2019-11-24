@@ -21,7 +21,6 @@ namespace DivingTracker.Web.Controllers
         public ActionResult Index()
         {
             var qualifications = DatabaseContext.Qualifications.ToArray();
-            var userCriteria = DatabaseContext.UserCriterions.ToArray();
             var model = new Collection<TrainingModel>();
 
             if (CurrentUser.SystemRole.SystemRoleId < (int)SystemRoles.Instructor)
@@ -34,7 +33,7 @@ namespace DivingTracker.Web.Controllers
 
             foreach (var qualification in qualifications)
             {
-                model.Add(new TrainingModel(qualification, userCriteria));
+                model.Add(new TrainingModel(qualification));
             }
 
             return View(model);
@@ -42,12 +41,18 @@ namespace DivingTracker.Web.Controllers
 
         public ActionResult Qualification(int qualificationId)
         {
-            var qualification = DatabaseContext.Qualifications.FirstOrDefault(x => x.QualificationId == qualificationId);
-            var userCriteria = DatabaseContext.UserCriterions.Where(x => x.Criterion.ModuleSection.Module.Qualification.QualificationId == qualificationId);
+            var qualification = DatabaseContext.Qualifications.Find(qualificationId);
+            //var criterionIds = qualification.Modules
+            //    .SelectMany(x => x.ModuleSections.SelectMany(
+            //        y => y.Criteria.SelectMany(
+            //            z => z.UserCriterias)))
+            //    .Select(x => x.CriterionId ?? -1);
+
+            //var userCriteria = DatabaseContext.UserCriterions.Where(x => criterionIds.Contains(x.CriterionId))
 
             var model = qualification == null
                 ? new TrainingModel()
-                : new TrainingModel(qualification, userCriteria);
+                : new TrainingModel(qualification);
 
             return View(model);
         }

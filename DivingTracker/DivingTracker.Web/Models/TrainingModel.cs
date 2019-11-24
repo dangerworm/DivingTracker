@@ -14,11 +14,11 @@ namespace DivingTracker.Web.Models
         {
         }
 
-        public TrainingModel(Qualification qualification, IEnumerable<UserCriterion> userCriteria, bool ignoreIncludeInSyllabus = false)
+        public TrainingModel(Qualification qualification, bool ignoreIncludeInSyllabus = false)
         {
             Qualification = new QualificationModel(qualification);
 
-            Modules = qualification.Modules.Select(x => new TrainingModuleModel(x, userCriteria, ignoreIncludeInSyllabus)).ToArray();
+            Modules = qualification.Modules.Select(x => new TrainingModuleModel(x, ignoreIncludeInSyllabus)).ToArray();
         }
     }
 }

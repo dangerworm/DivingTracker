@@ -3,9 +3,9 @@ BEGIN
 	INSERT INTO 
 		dbo.SystemLogins(EmailAddress, PasswordHash, PasswordSalt, EmailConfirmationToken, IsEmailConfirmed)
 	VALUES
-		('dangerworm+admin@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8B630B25-4289-48E5-A743-D687F539C581', 1),
-		('dangerworm+instructor@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1),
 		('dangerworm+student@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '9B871B2F-8F15-4310-B43E-D4895D24ACEC', 1),
+		('dangerworm+instructor@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '45A9BCE2-661F-4980-9106-596984CA5CEC', 1),
+		('dangerworm+admin@gmail.com', '423czO3+n0TCb/Qcu6Ql98zlQRLH592vbFj7P2hd7DeAEtjVU3FktZURIFX6XFKnSMT/yRC4J8pX/xxnIIAVyA==', 'umPnMkUeGxHTVw5FXw5rJaEhUVkC6A5OqyydLJOhnkuO0/6oka4fUHvRr3FZbTBxYS5zZOP/YORHAuhvGh04nCW9RbWYb1Z6QXaTDbjwitddQNddV+FOyvZlT5XMLayj9GgHm18aH2lQ9lHqnr6allM+2Osdm8p3p02UaV0upTU=', '8B630B25-4289-48E5-A743-D687F539C581', 1),
 		('dangerworm+gergo@gmail.com', 'Ko6Uu7pJCXdUCXiGLvgBrCnHXAP4ezMDCwPHkePwzSEZvulC3Yg9WtoWyPgpYVJNCWOiMx4Dunb9Vk/eXSNk9g==', 'vUhHimbRTRFlsOMHlZBn8jMCr8luXGyCDDXb2kHFhwvfXX8IY4wwfb3L4zVkbPQEmHsVOLGcstlW2flvCcSBX/Uhuta9U89rrvz2TAKSx9StcugHqQ59PRchN1q4lvduw0GTr3aqfYPp52OJEXRew5eaIXVoHgXdlLYNZIP9oTU=', 'E26DD79B-38C1-45CB-B323-F328D3334B5E', 1),
 		('dangerworm+sam@gmail.com', 'cgAadshEtl6EAsUfW178b34KTYhGfv+W3ArZBpAS85Ji2maGjyxHuOIEW5tkeVO5UbPffWMSuo2UC5jqBU8lhg==', '89Uk+BRJNv5V/OyPtK18JbDIPQ8bCIcxTShXtD1YPJT/t02Ir2iuBkydQUplgrNrGCE6hX3tBsnxTj8ZTO+9Y4JswKIZPW13zIy4QkhZygjfLg3pm4ai6tMpcFTp4dxnZJULkb3K6b/AxOIMlGrJNqYozxqcD7IKT13JOXukx+Y=', '4E83D0B6-EB69-45B8-A268-1DCB85A2300D', 1),
 		('dangerworm+hannah@gmail.com', '544deb0JQb/jbxmB+clhI4rvaGGnkMWQMDYNeOjcpPflDnmEcom/7U+3Zh5dvIqwzEj4jGQBJ+jz7zSXwQfmEA==', '+z1EolMdWnFvyopJ1rxcDaPx+tgMjV6xC9bdi8IzxcwSvnVd4RJ16+O11qicgZ3K+C35BQppVBSRw1O48zlC3UW9gysZzQbfHcxB+58HmPZPBXDbwP8/VI3PN0jrDsbmeLBKnWU1L8/oCzyhqeYdCdWZqy4hhL40/oEcYjpZUDM=', '62F0945D-5DC1-4A8D-9F1B-FD2B3ED0EA82', 1);
@@ -25,49 +25,47 @@ END
 IF NOT EXISTS (SELECT 1 FROM dbo.Users)
 BEGIN
 	INSERT INTO 
-		dbo.Users(SystemLoginId, SystemRoleId, FirstName, Surname, DateOfBirth)
+		dbo.Users(SystemLoginId, SystemRoleId, BranchId, FirstName, Surname, DateOfBirth)
 	VALUES
-		(1, 1, 'Drew', 'Morgan', '19800101'),
-		(2, 2, 'Drew', 'Morgan', '19800101'),
-		(3, 3, 'Drew', 'Morgan', '19800101'),
-		(4, 3, 'Gergo', 'Pinter', '19800101'),
-		(5, 3, 'Sam', 'Humphreys', '19800101'),
-		(6, 3, 'Hannah', 'Perkins', '19800101');
+		(1, 1, 1, 'Drew', 'Student', '19800101'),
+		(2, 2, 1, 'Drew', 'Instructor', '19800101'),
+		(3, 3, 1, 'Drew', 'Admin', '19800101'),
+		(4, 3, 1, 'Gergo', 'Pinter', '19800101'),
+		(5, 3, 1, 'Sam', 'Humphreys', '19800101'),
+		(6, 3, 1, 'Hannah', 'Perkins', '19800101');
+END
+
+IF NOT EXISTS (SELECT 1 FROM dbo.Addresses)
+BEGIN
+    INSERT INTO 
+        dbo.Addresses(OrganisationName, BuildingName, BuildingNumber, Street, Village, Town, County, Postcode, PoBox, Country)
+    VALUES
+        ('British Sub-Aqua Club', 'Telford''s Quay', NULL, 'South Pier Road', NULL, 'Ellesmere Port', 'Cheshire', 'CH65 4FL', NULL, 'United Kingdom'),
+		('Confédération Mondiale des Activités Subaquatiques (World Underwater Federation)', 'CMAS Headquarters', '74', 'Viale Tiziano', NULL, 'Roma', NULL, '00196', NULL, 'Italy'),
+		('Scuba Diving International', NULL, '1321', 'SE Decker Avenue', NULL, 'Stuart', 'Florida', '34994', NULL, 'United States'),
+		('Scuba Schools International', 'Head UK Ltd.', '2', 'Beezon Road', NULL, 'Kendal', 'Cumbria', 'LA9 6BW', NULL, 'United Kingdom'),
+        ('Manchester University Sub Aqua Branch', 'University of Manchester Students'' Union', NULL, 'Oxford Road', NULL, 'Manchester', NULL, 'M13 9PR', NULL, 'United Kingdom'),
+        ('Manchester Aquatics Centre', NULL, '2', 'Booth Street East', NULL, 'Manchester', NULL, 'M13 9SS', NULL, 'United Kingdom');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Agencies)
 BEGIN
 	INSERT INTO
-		dbo.Agencies([Name], [Description])
+		dbo.Agencies(AddressId, [Name], [Description], ContactEmail, ContactLandLine, ContactMobile)
 	VALUES 
-		('BSAC', 'British Sub Aqua Club'),
-		('CMAS', 'Confédération Mondiale des Activités Subaquatiques (World Underwater Federation)'),
-		('NAUI', 'National Association of Underwater Instructors'),
-		('PADI', 'Professional Association of Diving Instructors'),
-		('SDI', 'Scuba Diving International'),
-		('SSI', 'Scuba Schools International');
+		(1, 'BSAC', 'British Sub-Aqua Club', NULL, '+44 (0) 208 6385934', NULL),
+		(2, 'CMAS', 'Confédération Mondiale des Activités Subaquatiques (World Underwater Federation)', NULL, NULL, NULL),
+		(3, 'SDI', 'Scuba Diving International', NULL, NULL, NULL),
+		(4, 'SSI', 'Scuba Schools International', NULL, NULL, NULL);
 END
 
-IF NOT EXISTS (SELECT 1 FROM dbo.Clubs)
-BEGIN
-    INSERT INTO dbo.Addresses(OrganisationName, BuildingName, BuildingNumber,
-        Street, Village, Town, City, Postcode, PoBox, Country)
-    VALUES
-        ('Manchester University Sub Aqua Club', 
-         'University of Manchester Students'' Union', NULL, 'Oxford Road', 
-         NULL, NULL, 'Manchester', 'M13 9PR', NULL, 'United Kingdom'),
-        ('Manchester Aquatics Centre', 
-         NULL, '2', 'Booth Street East', 
-         NULL, NULL, 'Manchester', 'M13 9SS', NULL, 'United Kingdom');
-END
-
-IF NOT EXISTS (SELECT 1 FROM dbo.Clubs)
+IF NOT EXISTS (SELECT 1 FROM dbo.Branches)
 BEGIN
 	INSERT INTO
-		dbo.Clubs(AgencyId, ChairUserId, SecretaryUserId, TreasurerUserId, DivingOfficerUserId,
-        ContactAddressId, PoolAddressId, ContactEmail, ContactMobile, ContactLandLine)
+		dbo.Branches(AgencyId, ChairUserId, SecretaryUserId, TreasurerUserId, DivingOfficerUserId,
+        ContactAddressId, PoolAddressId, ContactEmail, ContactLandLine, ContactMobile)
 	VALUES 
-		(1, 4, 5, 6, 4, 1, 2, 'dangerworm+gergo@gmail.com', '07654 123456', '01234 567890')
+		(1, 4, 5, 6, 4, 5, 6, 'dangerworm+gergo@gmail.com', '07654 123456', '01234 567890')
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.QualificationTypes)
@@ -104,16 +102,27 @@ BEGIN
 	INSERT INTO
 		dbo.UserQualifications(UserId, QualificationId, UpdatedDate)
 	VALUES
-		/* Drew */
+		/* Drew (Student) */
 		(  1, 1, '20170818'),
-		(  1, 4, '20171007'),
 		(  1, 5, '20180211'),
 		(  1, 6, '20181024'),
 		
-		/* Drew 2 (Lead Instructor) */
-		(  2, 1, '20191117'),
-		(  2, 8, '20191117'),
-		(  2, 9, '20191117');
+		/* Drew (Instructor) */
+		(  2, 7, '20190101'),
+		(  2, 8, '20190101'),
+        
+        /* Drew (Admin) */
+		(  3, 1, '20190101'),
+		(  3, 3, '20190101'),
+
+        /* Gergo */
+		(  4, 1, '20190101'),
+
+        /* Sam */
+		(  5, 1, '20190101'),
+
+        /* Hannah */
+		(  6, 1, '20191117');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Modules)
@@ -375,7 +384,132 @@ BEGIN
 		dbo.CriterionStatuses([Description])
 	VALUES
 		('Unknown'),
-		('Module Started'),
+		('Not Started'),
 		('Needs Consolidation'),
-		('Achieved');
+		('Complete');
 END
+
+IF NOT EXISTS (SELECT 1 FROM dbo.UserCriteria)
+BEGIN
+	INSERT INTO 
+		dbo.UserCriteria(UserId, CriterionId, CriterionStatusId, AwardedByUserId, UpdatedDate)
+	VALUES
+		(1,   1, 3, 2, SYSDATETIME()),
+		(1,   2, 3, 2, SYSDATETIME()),
+		(1,   3, 3, 2, SYSDATETIME()),
+		(1,   4, 3, 2, SYSDATETIME()),
+		(1,   5, 3, 2, SYSDATETIME()),
+		(1,   6, 3, 2, SYSDATETIME()),
+		(1,   7, 3, 2, SYSDATETIME()),
+		(1,   8, 3, 2, SYSDATETIME()),
+		(1,   9, 3, 2, SYSDATETIME()),
+		(1,  10, 3, 2, SYSDATETIME()),
+		(1,  11, 3, 2, SYSDATETIME()),
+		(1,  12, 3, 2, SYSDATETIME()),
+		(1,  13, 3, 2, SYSDATETIME()),
+		(1,  14, 3, 2, SYSDATETIME()),
+		(1,  15, 3, 2, SYSDATETIME()),
+		(1,  16, 3, 2, SYSDATETIME()),
+		(1,  17, 3, 2, SYSDATETIME()),
+		(1,  18, 3, 2, SYSDATETIME()),
+		(1,  19, 3, 2, SYSDATETIME()),
+		(1,  20, 3, 2, SYSDATETIME()),
+        (1,  21, 3, 2, SYSDATETIME()),
+		(1,  22, 3, 2, SYSDATETIME()),
+		(1,  23, 3, 2, SYSDATETIME()),
+		(1,  24, 3, 2, SYSDATETIME()),
+		(1,  25, 3, 2, SYSDATETIME()),
+		(1,  26, 3, 2, SYSDATETIME()),
+		(1,  27, 3, 2, SYSDATETIME()),
+		(1,  28, 3, 2, SYSDATETIME()),
+		(1,  29, 3, 2, SYSDATETIME()),
+		(1,  30, 3, 2, SYSDATETIME()),
+        (1,  31, 3, 2, SYSDATETIME()),
+		(1,  32, 3, 2, SYSDATETIME()),
+		(1,  33, 3, 2, SYSDATETIME()),
+		(1,  34, 3, 2, SYSDATETIME()),
+		(1,  35, 3, 2, SYSDATETIME()),
+		(1,  36, 3, 2, SYSDATETIME()),
+		(1,  37, 3, 2, SYSDATETIME()),
+		(1,  38, 3, 2, SYSDATETIME()),
+		(1,  39, 3, 2, SYSDATETIME()),
+		(1,  40, 3, 2, SYSDATETIME()),
+        (1,  41, 3, 2, SYSDATETIME()),
+		(1,  42, 3, 2, SYSDATETIME()),
+		(1,  43, 3, 2, SYSDATETIME()),
+		(1,  44, 3, 2, SYSDATETIME()),
+		(1,  45, 3, 2, SYSDATETIME()),
+		(1,  46, 3, 2, SYSDATETIME()),
+		(1,  47, 3, 2, SYSDATETIME()),
+		(1,  48, 3, 2, SYSDATETIME()),
+		(1,  49, 3, 2, SYSDATETIME()),
+		(1,  50, 3, 2, SYSDATETIME()),
+        (1,  51, 3, 2, SYSDATETIME()),
+		(1,  52, 3, 2, SYSDATETIME()),
+		(1,  53, 3, 2, SYSDATETIME()),
+		(1,  54, 3, 2, SYSDATETIME()),
+		(1,  55, 3, 2, SYSDATETIME()),
+		(1,  56, 3, 2, SYSDATETIME()),
+		(1,  57, 3, 2, SYSDATETIME()),
+		(1,  58, 3, 2, SYSDATETIME()),
+		(1,  59, 3, 2, SYSDATETIME()),
+		(1,  60, 3, 2, SYSDATETIME()),
+        (1,  61, 3, 2, SYSDATETIME()),
+		(1,  62, 3, 2, SYSDATETIME()),
+		(1,  63, 3, 2, SYSDATETIME()),
+		(1,  64, 3, 2, SYSDATETIME()),
+		(1,  65, 3, 2, SYSDATETIME()),
+		(1,  66, 3, 2, SYSDATETIME()),
+		(1,  67, 3, 2, SYSDATETIME()),
+		(1,  68, 3, 2, SYSDATETIME()),
+		(1,  69, 3, 2, SYSDATETIME()),
+		(1,  70, 3, 2, SYSDATETIME()),
+        (1,  71, 3, 2, SYSDATETIME()),
+		(1,  72, 3, 2, SYSDATETIME()),
+		(1,  73, 3, 2, SYSDATETIME()),
+		(1,  74, 3, 2, SYSDATETIME()),
+		(1,  75, 3, 2, SYSDATETIME()),
+		(1,  76, 3, 2, SYSDATETIME()),
+		(1,  77, 3, 2, SYSDATETIME()),
+		(1,  78, 3, 2, SYSDATETIME()),
+		(1,  79, 3, 2, SYSDATETIME()),
+		(1,  80, 3, 2, SYSDATETIME()),
+        (1,  81, 3, 2, SYSDATETIME()),
+		(1,  82, 3, 2, SYSDATETIME()),
+		(1,  83, 3, 2, SYSDATETIME()),
+		(1,  84, 3, 2, SYSDATETIME()),
+		(1,  85, 3, 2, SYSDATETIME()),
+		(1,  86, 3, 2, SYSDATETIME()),
+		(1,  87, 3, 2, SYSDATETIME()),
+		(1,  88, 3, 2, SYSDATETIME()),
+		(1,  89, 3, 2, SYSDATETIME()),
+		(1,  90, 3, 2, SYSDATETIME()),
+        (1,  91, 3, 2, SYSDATETIME()),
+		(1,  92, 3, 2, SYSDATETIME()),
+		(1,  93, 3, 2, SYSDATETIME()),
+		(1,  94, 3, 2, SYSDATETIME()),
+		(1,  95, 3, 2, SYSDATETIME()),
+		(1,  96, 3, 2, SYSDATETIME()),
+		(1,  97, 3, 2, SYSDATETIME()),
+		(1,  98, 3, 2, SYSDATETIME()),
+		(1,  99, 3, 2, SYSDATETIME()),
+		(1, 100, 3, 2, SYSDATETIME()),
+        (1, 101, 3, 2, SYSDATETIME()),
+		(1, 102, 3, 2, SYSDATETIME()),
+		(1, 103, 3, 2, SYSDATETIME()),
+		(1, 104, 3, 2, SYSDATETIME()),
+		(1, 105, 3, 2, SYSDATETIME()),
+		(1, 106, 3, 2, SYSDATETIME()),
+		(1, 107, 3, 2, SYSDATETIME()),
+		(1, 108, 3, 2, SYSDATETIME()),
+		(1, 109, 3, 2, SYSDATETIME()),
+		(1, 110, 3, 2, SYSDATETIME()),
+        (1, 111, 3, 2, SYSDATETIME()),
+		(1, 112, 3, 2, SYSDATETIME()),
+		(1, 113, 3, 2, SYSDATETIME()),
+		(1, 114, 3, 2, SYSDATETIME()),
+		(1, 115, 3, 2, SYSDATETIME()),
+		(1, 116, 3, 2, SYSDATETIME());
+END
+
+

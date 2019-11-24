@@ -14,22 +14,14 @@
 
 <div class="row">
     <div class="col-md-12">
+        <p>Click on a link below to see the progress tracker for that qualification.</p>
+        <ul>
         @foreach (var trainingModel in Model)
         {
-            <h2>@trainingModel.Qualification.Name</h2>
-
-            foreach (var module in trainingModel.Modules)
-            {
-                if (module.Module.UserCriteria.Any())
-                {
-                    <div class="row">
-                        <div class="col-md-12">
-                            @Html.Partial("_TrainingModule", module)
-                        </div>
-                    </div>
-                }
-            }
+            <li><a href="@Url.Action("Qualification", "Training", new {trainingModel.Qualification.QualificationId})">@trainingModel.Qualification.Name
+                (@trainingModel.Qualification.AgencyName)</a></li>
         }
+        </ul>
     </div>
 </div>
 

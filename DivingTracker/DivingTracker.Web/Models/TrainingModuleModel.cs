@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using DivingTracker.ServiceLayer;
+using DivingTracker.Web.Comparers;
 
 namespace DivingTracker.Web.Models
 {
@@ -12,11 +12,12 @@ namespace DivingTracker.Web.Models
 
         public UserCriterionModel[] UserCriteria { get; set; }
 
-        public TrainingModuleModel(Module module, IEnumerable<UserCriterion> userCriteria, bool ignoreIncludeInSyllabus = false)
+        public TrainingModuleModel(Module module, bool ignoreIncludeInSyllabus = false)
         {
-            Module = new ModuleModel(module, userCriteria, ignoreIncludeInSyllabus);
-            UserCriteria = userCriteria.Select(x => new UserCriterionModel(x)).ToArray();
-            Users = userCriteria.Select(x => new UserModel(x.User)).Distinct().ToArray();
+            Module = new ModuleModel(module, ignoreIncludeInSyllabus);
+            UserCriteria = module.ModuleSections.SelectMany(x => x.Criteria.SelectMany(y => y.UserCriterias))
+                .Select(x => new UserCriterionModel(x)).ToArray();
+            Users = UserCriteria.Select(x => x.User).Distinct(new UserModelComparer()).ToArray();
         }
     }
 }

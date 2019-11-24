@@ -53,7 +53,8 @@ namespace DivingTracker.ServiceLayer.Workflows
                 FirstName = registrationRequest.FirstName,
                 Surname = registrationRequest.Surname,
                 DateOfBirth = registrationRequest.DateOfBirth,
-                SystemRoleId = (int)SystemRoles.Unknown
+                SystemRoleId = (int)SystemRoles.Unknown,
+                BranchId = 1
             };
 
             _databaseContext.Users.Add(user);

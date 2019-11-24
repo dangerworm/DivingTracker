@@ -186,19 +186,24 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Attributes\AuthoriseAttribute.cs" />
     <Compile Include="Attributes\AuthoriseRolesAttribute.cs" />
+    <Compile Include="Comparers\UserModelComparer.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\DivingTrackerBaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ClubMembersController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\TrainingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ClubMembersModel.cs" />
-    <Compile Include="Models\ClubQualificationsModel.cs" />
+    <Compile Include="Models\AddressModel.cs" />
+    <Compile Include="Models\AgencyModel.cs" />
+    <Compile Include="Models\BranchMembersModel.cs" />
+    <Compile Include="Models\BranchModel.cs" />
+    <Compile Include="Models\BranchQualificationsModel.cs" />
     <Compile Include="Models\CriterionModel.cs" />
-    <Compile Include="Models\HomeModel.cs" />
+    <Compile Include="Models\UserQualificationsModel.cs" />
+    <Compile Include="Models\InfoModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
     <Compile Include="Models\QualificationsModel.cs" />
@@ -429,14 +434,15 @@
     <Content Include="Views\Shared\_QuestionButtonNoTextBox.cshtml" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Views\ClubMembers\Delete.cshtml" />
-    <Content Include="Views\ClubMembers\Details.cshtml" />
-    <Content Include="Views\ClubMembers\Edit.cshtml" />
-    <Content Include="Views\ClubMembers\Index.cshtml" />
+    <Content Include="Views\Members\Delete.cshtml" />
+    <Content Include="Views\Members\Details.cshtml" />
+    <Content Include="Views\Members\Edit.cshtml" />
+    <Content Include="Views\Members\Index.cshtml" />
     <Content Include="Views\Training\Index.cshtml" />
     <Content Include="Views\Shared\_TrainingModule.cshtml" />
     <Content Include="Views\Training\Qualification.cshtml" />
     <Content Include="Views\Training\MyQualifications.cshtml" />
+    <Content Include="Views\Home\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

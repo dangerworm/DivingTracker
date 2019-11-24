@@ -15,14 +15,14 @@ namespace DivingTracker.ServiceLayer
     public partial class UserCriterion
     {
         public int UserId { get; set; }
-        public Nullable<int> CriterionId { get; set; }
+        public int CriterionId { get; set; }
         public Nullable<int> CriterionStatusId { get; set; }
         public Nullable<int> AwardedByUserId { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
     
         public virtual Criterion Criterion { get; set; }
         public virtual CriterionStatus CriterionStatus { get; set; }
+        public virtual User AwardedByUser { get; set; }
         public virtual User User { get; set; }
-        public virtual User AwaredByUser { get; set; }
     }
 }

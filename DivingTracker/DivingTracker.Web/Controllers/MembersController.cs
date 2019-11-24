@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using CommonCode.BusinessLayer.Helpers;
 using DivingTracker.ServiceLayer;
 using DivingTracker.ServiceLayer.Enums;
 using DivingTracker.Web.Attributes;
@@ -9,64 +9,75 @@ using DivingTracker.Web.Models;
 
 namespace DivingTracker.Web.Controllers
 {
-    [AuthoriseRoles(SystemRoles.Admin, SystemRoles.Instructor)]
-    public class ClubMembersController : DivingTrackerBaseController
+    public class MembersController : DivingTrackerBaseController
     {
-        public ClubMembersController(DivingTrackerEntities databaseContext)
-            :base (databaseContext)
+        public MembersController(DivingTrackerEntities databaseContext)
+            : base(databaseContext)
         {
         }
-        
-        // GET: User
+
+        [AuthoriseRoles(SystemRoles.Admin, SystemRoles.Instructor)]
         public ActionResult Index()
         {
             var userQualifications = DatabaseContext.UserQualifications;
-            var users = DatabaseContext.Users.Include(u => u.SystemLogin).Include(u => u.SystemRole).Include(u => u.UserCriteria);
+            var users = DatabaseContext.Users;
 
-            var model = new ClubMembersModel(userQualifications, users);
+            var model = new BranchMembersModel(userQualifications, users);
 
             return View(model);
         }
 
-        // GET: User/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = DatabaseContext.Users.Find(id);
+
+            var user = DatabaseContext.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            var qualificationsCompleted = DatabaseContext.UserQualifications.Where(x => x.UserId == CurrentUserId).Select(x => x.Qualification);
+
+            var trainingModuleIds = DatabaseContext.UserCriterions.Select(x => x.Criterion.ModuleSection.Module.ModuleId);
+            var qualifiactionsInProgress = DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != CurrentUserId) && x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
+
+            var model = new UserQualificationsModel(CurrentUser, qualificationsCompleted, qualifiactionsInProgress);
+            return View(model);
         }
 
-        // GET: User/Edit/5
+        [AuthoriseRoles(SystemRoles.Admin)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = DatabaseContext.Users.Find(id);
+
+            var user = DatabaseContext.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
             }
+
+            var model = new UserModel(user);
+
             ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
-            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles.Where(x => x.SystemRoleId > 0), "SystemRoleId", "Description", user.SystemRoleId);
             ViewBag.UserId = new SelectList(DatabaseContext.UserCriterions, "UserId", "UserId", user.UserId);
-            return View(user);
+
+            return View(model);
         }
 
-        // POST: User/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [AuthoriseRoles(SystemRoles.Admin)]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,CreatedDate,SystemLoginId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -74,20 +85,24 @@ namespace DivingTracker.Web.Controllers
                 DatabaseContext.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
-            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description", user.SystemRoleId);
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles.Where(x => x.SystemRoleId > 0), "SystemRoleId", "Description", user.SystemRoleId);
             ViewBag.UserId = new SelectList(DatabaseContext.UserCriterions, "UserId", "UserId", user.UserId);
-            return View(user);
+
+            var model = new UserModel(user);
+            return View(model);
         }
 
-        // GET: User/Delete/5
+        [AuthoriseRoles(SystemRoles.Admin)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = DatabaseContext.Users.Find(id);
+
+            var user = DatabaseContext.Users.Find(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -95,7 +110,7 @@ namespace DivingTracker.Web.Controllers
             return View(user);
         }
 
-        // POST: User/Delete/5
+        [AuthoriseRoles(SystemRoles.Admin)]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -103,6 +118,7 @@ namespace DivingTracker.Web.Controllers
             User user = DatabaseContext.Users.Find(id);
             DatabaseContext.Users.Remove(user);
             DatabaseContext.SaveChanges();
+
             return RedirectToAction("Index");
         }
     }

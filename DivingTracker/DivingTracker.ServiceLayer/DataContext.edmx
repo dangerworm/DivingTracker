@@ -5,13 +5,49 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DivingTrackerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Addresses">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrganisationName" Type="varchar" MaxLength="100" />
+          <Property Name="BuildingName" Type="varchar" MaxLength="60" />
+          <Property Name="BuildingNumber" Type="varchar" MaxLength="10" />
+          <Property Name="Street" Type="varchar" MaxLength="60" />
+          <Property Name="Village" Type="varchar" MaxLength="60" />
+          <Property Name="Town" Type="varchar" MaxLength="60" />
+          <Property Name="Postcode" Type="varchar" MaxLength="10" />
+          <Property Name="County" Type="varchar" MaxLength="60" />
+          <Property Name="Country" Type="varchar" MaxLength="60" />
+          <Property Name="PoBox" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="Agencies">
           <Key>
             <PropertyRef Name="AgencyId" />
           </Key>
           <Property Name="AgencyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddressId" Type="int" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="256" />
+          <Property Name="ContactEmail" Type="varchar" MaxLength="100" />
+          <Property Name="ContactMobile" Type="varchar" MaxLength="50" />
+          <Property Name="ContactLandLine" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Branches">
+          <Key>
+            <PropertyRef Name="BranchId" />
+          </Key>
+          <Property Name="BranchId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgencyId" Type="int" Nullable="false" />
+          <Property Name="ChairUserId" Type="int" />
+          <Property Name="SecretaryUserId" Type="int" />
+          <Property Name="TreasurerUserId" Type="int" />
+          <Property Name="DivingOfficerUserId" Type="int" />
+          <Property Name="ContactAddressId" Type="int" />
+          <Property Name="PoolAddressId" Type="int" />
+          <Property Name="ContactEmail" Type="varchar" MaxLength="100" />
+          <Property Name="ContactLandLine" Type="varchar" MaxLength="50" />
+          <Property Name="ContactMobile" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Criteria">
           <Key>
@@ -84,23 +120,28 @@
           <Property Name="SystemRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DivingTracker.dbo.UserCriteria' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserCriteria">
           <Key>
             <PropertyRef Name="UserId" />
+            <PropertyRef Name="CriterionId" />
           </Key>
-          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CriterionId" Type="int" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="CriterionId" Type="int" Nullable="false" />
           <Property Name="CriterionStatusId" Type="int" />
           <Property Name="AwardedByUserId" Type="int" />
           <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserQualifications">
           <Key>
-            <PropertyRef Name="UserQualificationId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="QualificationId" />
           </Key>
-          <Property Name="UserQualificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" />
-          <Property Name="QualificationId" Type="int" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="QualificationId" Type="int" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
         </EntityType>
         <EntityType Name="Users">
@@ -111,10 +152,107 @@
           <Property Name="CreatedDate" Type="datetime2" Precision="3" />
           <Property Name="SystemLoginId" Type="int" />
           <Property Name="SystemRoleId" Type="int" />
+          <Property Name="BranchId" Type="int" />
           <Property Name="FirstName" Type="varchar" MaxLength="256" />
           <Property Name="Surname" Type="varchar" MaxLength="256" />
           <Property Name="DateOfBirth" Type="datetime2" Precision="3" />
         </EntityType>
+        <Association Name="Agencies_AddressId_PK">
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Agencies" Type="Self.Agencies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Agencies">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_AgencyId_FK">
+          <End Role="Agencies" Type="Self.Agencies" Multiplicity="1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agencies">
+              <PropertyRef Name="AgencyId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_ChairUserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="ChairUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_ContactAddressId_FK">
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="ContactAddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_DivingOfficerUserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="DivingOfficerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_PoolAddressId_FK">
+          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Addresses">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="PoolAddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_SecretaryUserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="SecretaryUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_TreasurerUserId_FK">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Branches" Type="Self.Branches" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branches">
+              <PropertyRef Name="TreasurerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Criteria_ModuleSectionId_FK">
           <End Role="ModuleSections" Type="Self.ModuleSections" Multiplicity="0..1" />
           <End Role="Criteria" Type="Self.Criteria" Multiplicity="*" />
@@ -188,7 +326,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="UserCriteria_CriterionId_FK">
-          <End Role="Criteria" Type="Self.Criteria" Multiplicity="0..1" />
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="1" />
           <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Criteria">
@@ -213,7 +351,7 @@
         </Association>
         <Association Name="UserCriteria_UserId_FK">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="0..1" />
+          <End Role="UserCriteria" Type="Self.UserCriteria" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="UserId" />
@@ -224,7 +362,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="UserQualifications_QualificationId_FK">
-          <End Role="Qualifications" Type="Self.Qualifications" Multiplicity="0..1" />
+          <End Role="Qualifications" Type="Self.Qualifications" Multiplicity="1" />
           <End Role="UserQualifications" Type="Self.UserQualifications" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Qualifications">
@@ -236,7 +374,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="UserQualifications_UserId_FK">
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="UserQualifications" Type="Self.UserQualifications" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
@@ -244,6 +382,18 @@
             </Principal>
             <Dependent Role="UserQualifications">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Users_BranchId_FK">
+          <End Role="Branches" Type="Self.Branches" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branches">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="BranchId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -272,7 +422,9 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DivingTrackerModelStoreContainer">
+          <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Agencies" EntityType="Self.Agencies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CriterionStatuses" EntityType="Self.CriterionStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Modules" EntityType="Self.Modules" Schema="dbo" store:Type="Tables" />
@@ -281,9 +433,55 @@
           <EntitySet Name="QualificationTypes" EntityType="Self.QualificationTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemLogins" EntityType="Self.SystemLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemRoles" EntityType="Self.SystemRoles" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserCriteria" EntityType="Self.UserCriteria" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserQualifications" EntityType="Self.UserQualifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserCriteria" EntityType="Self.UserCriteria" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserCriteria].[UserId] AS [UserId], 
+    [UserCriteria].[CriterionId] AS [CriterionId], 
+    [UserCriteria].[CriterionStatusId] AS [CriterionStatusId], 
+    [UserCriteria].[AwardedByUserId] AS [AwardedByUserId], 
+    [UserCriteria].[UpdatedDate] AS [UpdatedDate]
+    FROM [dbo].[UserCriteria] AS [UserCriteria]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="UserQualifications" EntityType="Self.UserQualifications" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [UserQualifications].[UserId] AS [UserId], 
+    [UserQualifications].[QualificationId] AS [QualificationId], 
+    [UserQualifications].[UpdatedDate] AS [UpdatedDate]
+    FROM [dbo].[UserQualifications] AS [UserQualifications]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="Agencies_AddressId_PK" Association="Self.Agencies_AddressId_PK">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Agencies" EntitySet="Agencies" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_AgencyId_FK" Association="Self.Branches_AgencyId_FK">
+            <End Role="Agencies" EntitySet="Agencies" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_ChairUserId_FK" Association="Self.Branches_ChairUserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_ContactAddressId_FK" Association="Self.Branches_ContactAddressId_FK">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_DivingOfficerUserId_FK" Association="Self.Branches_DivingOfficerUserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_PoolAddressId_FK" Association="Self.Branches_PoolAddressId_FK">
+            <End Role="Addresses" EntitySet="Addresses" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_SecretaryUserId_FK" Association="Self.Branches_SecretaryUserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_TreasurerUserId_FK" Association="Self.Branches_TreasurerUserId_FK">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Branches" EntitySet="Branches" />
+          </AssociationSet>
           <AssociationSet Name="Criteria_ModuleSectionId_FK" Association="Self.Criteria_ModuleSectionId_FK">
             <End Role="ModuleSections" EntitySet="ModuleSections" />
             <End Role="Criteria" EntitySet="Criteria" />
@@ -328,6 +526,10 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserQualifications" EntitySet="UserQualifications" />
           </AssociationSet>
+          <AssociationSet Name="Users_BranchId_FK" Association="Self.Users_BranchId_FK">
+            <End Role="Branches" EntitySet="Branches" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="Users_SystemLoginId_FK" Association="Self.Users_SystemLoginId_FK">
             <End Role="SystemLogins" EntitySet="SystemLogins" />
             <End Role="Users" EntitySet="Users" />
@@ -342,7 +544,9 @@
     <edmx:ConceptualModels>
       <Schema Namespace="DivingTrackerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="DivingTrackerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="DivingTrackerModel.Address" />
           <EntitySet Name="Agencies" EntityType="DivingTrackerModel.Agency" />
+          <EntitySet Name="Branches" EntityType="DivingTrackerModel.Branch" />
           <EntitySet Name="Criteria" EntityType="DivingTrackerModel.Criterion" />
           <EntitySet Name="CriterionStatuses" EntityType="DivingTrackerModel.CriterionStatus" />
           <EntitySet Name="Modules" EntityType="DivingTrackerModel.Module" />
@@ -351,24 +555,50 @@
           <EntitySet Name="QualificationTypes" EntityType="DivingTrackerModel.QualificationType" />
           <EntitySet Name="SystemLogins" EntityType="DivingTrackerModel.SystemLogin" />
           <EntitySet Name="SystemRoles" EntityType="DivingTrackerModel.SystemRole" />
-          <EntitySet Name="UserCriterions" EntityType="DivingTrackerModel.UserCriterion" />
-          <EntitySet Name="UserQualifications" EntityType="DivingTrackerModel.UserQualification" />
           <EntitySet Name="Users" EntityType="DivingTrackerModel.User" />
+          <AssociationSet Name="Agencies_AddressId_PK" Association="DivingTrackerModel.Agencies_AddressId_PK">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Agency" EntitySet="Agencies" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_ContactAddressId_FK" Association="DivingTrackerModel.Branches_ContactAddressId_FK">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_PoolAddressId_FK" Association="DivingTrackerModel.Branches_PoolAddressId_FK">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_AgencyId_FK" Association="DivingTrackerModel.Branches_AgencyId_FK">
+            <End Role="Agency" EntitySet="Agencies" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
           <AssociationSet Name="Qualifications_AgencyId_FK" Association="DivingTrackerModel.Qualifications_AgencyId_FK">
             <End Role="Agency" EntitySet="Agencies" />
             <End Role="Qualification" EntitySet="Qualifications" />
           </AssociationSet>
+          <AssociationSet Name="Branches_ChairUserId_FK" Association="DivingTrackerModel.Branches_ChairUserId_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_DivingOfficerUserId_FK" Association="DivingTrackerModel.Branches_DivingOfficerUserId_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_SecretaryUserId_FK" Association="DivingTrackerModel.Branches_SecretaryUserId_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Branches_TreasurerUserId_FK" Association="DivingTrackerModel.Branches_TreasurerUserId_FK">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Branch" EntitySet="Branches" />
+          </AssociationSet>
+          <AssociationSet Name="Users_BranchId_FK" Association="DivingTrackerModel.Users_BranchId_FK">
+            <End Role="Branch" EntitySet="Branches" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
           <AssociationSet Name="Criteria_ModuleSectionId_FK" Association="DivingTrackerModel.Criteria_ModuleSectionId_FK">
             <End Role="ModuleSection" EntitySet="ModuleSections" />
             <End Role="Criterion" EntitySet="Criteria" />
-          </AssociationSet>
-          <AssociationSet Name="UserCriteria_CriterionId_FK" Association="DivingTrackerModel.UserCriteria_CriterionId_FK">
-            <End Role="Criterion" EntitySet="Criteria" />
-            <End Role="UserCriteria" EntitySet="UserCriterions" />
-          </AssociationSet>
-          <AssociationSet Name="UserCriteria_CriterionStatusId_FK" Association="DivingTrackerModel.UserCriteria_CriterionStatusId_FK">
-            <End Role="CriterionStatus" EntitySet="CriterionStatuses" />
-            <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
           <AssociationSet Name="Modules_QualificationId_FK" Association="DivingTrackerModel.Modules_QualificationId_FK">
             <End Role="Qualification" EntitySet="Qualifications" />
@@ -382,10 +612,6 @@
             <End Role="QualificationType" EntitySet="QualificationTypes" />
             <End Role="Qualification" EntitySet="Qualifications" />
           </AssociationSet>
-          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="DivingTrackerModel.UserQualifications_QualificationId_FK">
-            <End Role="Qualification" EntitySet="Qualifications" />
-            <End Role="UserQualification" EntitySet="UserQualifications" />
-          </AssociationSet>
           <AssociationSet Name="Users_SystemLoginId_FK" Association="DivingTrackerModel.Users_SystemLoginId_FK">
             <End Role="SystemLogin" EntitySet="SystemLogins" />
             <End Role="User" EntitySet="Users" />
@@ -393,6 +619,15 @@
           <AssociationSet Name="Users_SystemRoleId_FK" Association="DivingTrackerModel.Users_SystemRoleId_FK">
             <End Role="SystemRole" EntitySet="SystemRoles" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="UserCriterions" EntityType="DivingTrackerModel.UserCriterion" />
+          <AssociationSet Name="UserCriteria_CriterionId_FK" Association="DivingTrackerModel.UserCriteria_CriterionId_FK">
+            <End Role="Criterion" EntitySet="Criteria" />
+            <End Role="UserCriteria" EntitySet="UserCriterions" />
+          </AssociationSet>
+          <AssociationSet Name="UserCriteria_CriterionStatusId_FK" Association="DivingTrackerModel.UserCriteria_CriterionStatusId_FK">
+            <End Role="CriterionStatus" EntitySet="CriterionStatuses" />
+            <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
           <AssociationSet Name="UserCriteria_AwardedByUserId_FK" Association="DivingTrackerModel.UserCriteria_AwardedByUserId_FK">
             <End Role="User" EntitySet="Users" />
@@ -402,19 +637,73 @@
             <End Role="User" EntitySet="Users" />
             <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
+          <EntitySet Name="UserQualifications" EntityType="DivingTrackerModel.UserQualification" />
+          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="DivingTrackerModel.UserQualifications_QualificationId_FK">
+            <End Role="Qualification" EntitySet="Qualifications" />
+            <End Role="UserQualification" EntitySet="UserQualifications" />
+          </AssociationSet>
           <AssociationSet Name="UserQualifications_UserId_FK" Association="DivingTrackerModel.UserQualifications_UserId_FK">
             <End Role="User" EntitySet="Users" />
             <End Role="UserQualification" EntitySet="UserQualifications" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrganisationName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BuildingName" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="BuildingNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Street" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Village" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Town" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Postcode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="County" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="PoBox" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Agencies" Relationship="DivingTrackerModel.Agencies_AddressId_PK" FromRole="Address" ToRole="Agency" />
+          <NavigationProperty Name="BranchAddress" Relationship="DivingTrackerModel.Branches_ContactAddressId_FK" FromRole="Address" ToRole="Branch" />
+          <NavigationProperty Name="PoolAddress" Relationship="DivingTrackerModel.Branches_PoolAddressId_FK" FromRole="Address" ToRole="Branch" />
+        </EntityType>
         <EntityType Name="Agency">
           <Key>
             <PropertyRef Name="AgencyId" />
           </Key>
           <Property Name="AgencyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddressId" Type="Int32" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ContactEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ContactLandLine" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Address" Relationship="DivingTrackerModel.Agencies_AddressId_PK" FromRole="Agency" ToRole="Address" />
+          <NavigationProperty Name="Branches" Relationship="DivingTrackerModel.Branches_AgencyId_FK" FromRole="Agency" ToRole="Branch" />
           <NavigationProperty Name="Qualifications" Relationship="DivingTrackerModel.Qualifications_AgencyId_FK" FromRole="Agency" ToRole="Qualification" />
+        </EntityType>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="BranchId" />
+          </Key>
+          <Property Name="BranchId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgencyId" Type="Int32" Nullable="false" />
+          <Property Name="ChairUserId" Type="Int32" />
+          <Property Name="SecretaryUserId" Type="Int32" />
+          <Property Name="TreasurerUserId" Type="Int32" />
+          <Property Name="DivingOfficerUserId" Type="Int32" />
+          <Property Name="ContactAddressId" Type="Int32" />
+          <Property Name="PoolAddressId" Type="Int32" />
+          <Property Name="ContactEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ContactLandLine" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ContactMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BranchAddress" Relationship="DivingTrackerModel.Branches_ContactAddressId_FK" FromRole="Branch" ToRole="Address" />
+          <NavigationProperty Name="PoolAddress" Relationship="DivingTrackerModel.Branches_PoolAddressId_FK" FromRole="Branch" ToRole="Address" />
+          <NavigationProperty Name="Agency" Relationship="DivingTrackerModel.Branches_AgencyId_FK" FromRole="Branch" ToRole="Agency" />
+          <NavigationProperty Name="BranchChair" Relationship="DivingTrackerModel.Branches_ChairUserId_FK" FromRole="Branch" ToRole="User" />
+          <NavigationProperty Name="BranchDivingOfficer" Relationship="DivingTrackerModel.Branches_DivingOfficerUserId_FK" FromRole="Branch" ToRole="User" />
+          <NavigationProperty Name="BranchSecretary" Relationship="DivingTrackerModel.Branches_SecretaryUserId_FK" FromRole="Branch" ToRole="User" />
+          <NavigationProperty Name="BranchTreasurer" Relationship="DivingTrackerModel.Branches_TreasurerUserId_FK" FromRole="Branch" ToRole="User" />
+          <NavigationProperty Name="Users" Relationship="DivingTrackerModel.Users_BranchId_FK" FromRole="Branch" ToRole="User" />
         </EntityType>
         <EntityType Name="Criterion">
           <Key>
@@ -501,31 +790,6 @@
           <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Users" Relationship="DivingTrackerModel.Users_SystemRoleId_FK" FromRole="SystemRole" ToRole="User" />
         </EntityType>
-        <EntityType Name="UserCriterion">
-          <Key>
-            <PropertyRef Name="UserId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CriterionId" Type="Int32" />
-          <Property Name="CriterionStatusId" Type="Int32" />
-          <Property Name="AwardedByUserId" Type="Int32" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Criterion" Relationship="DivingTrackerModel.UserCriteria_CriterionId_FK" FromRole="UserCriteria" ToRole="Criterion" />
-          <NavigationProperty Name="CriterionStatus" Relationship="DivingTrackerModel.UserCriteria_CriterionStatusId_FK" FromRole="UserCriteria" ToRole="CriterionStatus" />
-          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="UserCriteria" ToRole="User" />
-          <NavigationProperty Name="AwaredByUser" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="UserCriteria" ToRole="User" />
-        </EntityType>
-        <EntityType Name="UserQualification">
-          <Key>
-            <PropertyRef Name="UserQualificationId" />
-          </Key>
-          <Property Name="UserQualificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="QualificationId" Type="Int32" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Qualification" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="UserQualification" ToRole="Qualification" />
-          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="UserQualification" ToRole="User" />
-        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -534,15 +798,69 @@
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="SystemLoginId" Type="Int32" />
           <Property Name="SystemRoleId" Type="Int32" />
+          <Property Name="BranchId" Type="Int32" />
           <Property Name="FirstName" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Surname" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="BranchChair" Relationship="DivingTrackerModel.Branches_ChairUserId_FK" FromRole="User" ToRole="Branch" />
+          <NavigationProperty Name="BranchDivingOfficer" Relationship="DivingTrackerModel.Branches_DivingOfficerUserId_FK" FromRole="User" ToRole="Branch" />
+          <NavigationProperty Name="BranchSecretary" Relationship="DivingTrackerModel.Branches_SecretaryUserId_FK" FromRole="User" ToRole="Branch" />
+          <NavigationProperty Name="BranchTreasurer" Relationship="DivingTrackerModel.Branches_TreasurerUserId_FK" FromRole="User" ToRole="Branch" />
+          <NavigationProperty Name="Branch" Relationship="DivingTrackerModel.Users_BranchId_FK" FromRole="User" ToRole="Branch" />
           <NavigationProperty Name="SystemLogin" Relationship="DivingTrackerModel.Users_SystemLoginId_FK" FromRole="User" ToRole="SystemLogin" />
           <NavigationProperty Name="SystemRole" Relationship="DivingTrackerModel.Users_SystemRoleId_FK" FromRole="User" ToRole="SystemRole" />
-          <NavigationProperty Name="UserCriterias" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="User" ToRole="UserCriteria" />
-          <NavigationProperty Name="UserCriteria" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="User" ToRole="UserCriteria" />
+          <NavigationProperty Name="CriteriaAwarded" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="User" ToRole="UserCriteria" />
+          <NavigationProperty Name="UserCriterias" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="User" ToRole="UserCriteria" />
           <NavigationProperty Name="UserQualifications" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="User" ToRole="UserQualification" />
         </EntityType>
+        <Association Name="Agencies_AddressId_PK">
+          <End Type="DivingTrackerModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Agency" Role="Agency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Agency">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_ContactAddressId_FK">
+          <End Type="DivingTrackerModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="ContactAddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_PoolAddressId_FK">
+          <End Type="DivingTrackerModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="PoolAddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_AgencyId_FK">
+          <End Type="DivingTrackerModel.Agency" Role="Agency" Multiplicity="1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="AgencyId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Qualifications_AgencyId_FK">
           <End Type="DivingTrackerModel.Agency" Role="Agency" Multiplicity="1" />
           <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="*" />
@@ -555,6 +873,66 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Branches_ChairUserId_FK">
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="ChairUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_DivingOfficerUserId_FK">
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="DivingOfficerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_SecretaryUserId_FK">
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="SecretaryUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Branches_TreasurerUserId_FK">
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Branch">
+              <PropertyRef Name="TreasurerUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Users_BranchId_FK">
+          <End Type="DivingTrackerModel.Branch" Role="Branch" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Branch">
+              <PropertyRef Name="BranchId" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="Criteria_ModuleSectionId_FK">
           <End Type="DivingTrackerModel.ModuleSection" Role="ModuleSection" Multiplicity="0..1" />
           <End Type="DivingTrackerModel.Criterion" Role="Criterion" Multiplicity="*" />
@@ -564,30 +942,6 @@
             </Principal>
             <Dependent Role="Criterion">
               <PropertyRef Name="ModuleSectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserCriteria_CriterionId_FK">
-          <End Type="DivingTrackerModel.Criterion" Role="Criterion" Multiplicity="0..1" />
-          <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Criterion">
-              <PropertyRef Name="CriterionId" />
-            </Principal>
-            <Dependent Role="UserCriteria">
-              <PropertyRef Name="CriterionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="UserCriteria_CriterionStatusId_FK">
-          <End Type="DivingTrackerModel.CriterionStatus" Role="CriterionStatus" Multiplicity="0..1" />
-          <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CriterionStatus">
-              <PropertyRef Name="CriterionStatusId" />
-            </Principal>
-            <Dependent Role="UserCriteria">
-              <PropertyRef Name="CriterionStatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -627,18 +981,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="UserQualifications_QualificationId_FK">
-          <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="0..1" />
-          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Qualification">
-              <PropertyRef Name="QualificationId" />
-            </Principal>
-            <Dependent Role="UserQualification">
-              <PropertyRef Name="QualificationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Users_SystemLoginId_FK">
           <End Type="DivingTrackerModel.SystemLogin" Role="SystemLogin" Multiplicity="0..1" />
           <End Type="DivingTrackerModel.User" Role="User" Multiplicity="*" />
@@ -663,6 +1005,45 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserCriterion">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="CriterionId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="CriterionId" Type="Int32" Nullable="false" />
+          <Property Name="CriterionStatusId" Type="Int32" />
+          <Property Name="AwardedByUserId" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Criterion" Relationship="DivingTrackerModel.UserCriteria_CriterionId_FK" FromRole="UserCriteria" ToRole="Criterion" />
+          <NavigationProperty Name="CriterionStatus" Relationship="DivingTrackerModel.UserCriteria_CriterionStatusId_FK" FromRole="UserCriteria" ToRole="CriterionStatus" />
+          <NavigationProperty Name="AwardedByUser" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="UserCriteria" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="UserCriteria" ToRole="User" />
+        </EntityType>
+        <Association Name="UserCriteria_CriterionId_FK">
+          <End Type="DivingTrackerModel.Criterion" Role="Criterion" Multiplicity="1" />
+          <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criterion">
+              <PropertyRef Name="CriterionId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="CriterionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserCriteria_CriterionStatusId_FK">
+          <End Type="DivingTrackerModel.CriterionStatus" Role="CriterionStatus" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CriterionStatus">
+              <PropertyRef Name="CriterionStatusId" />
+            </Principal>
+            <Dependent Role="UserCriteria">
+              <PropertyRef Name="CriterionStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="UserCriteria_AwardedByUserId_FK">
           <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
           <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
@@ -677,7 +1058,7 @@
         </Association>
         <Association Name="UserCriteria_UserId_FK">
           <End Type="DivingTrackerModel.User" Role="User" Multiplicity="1" />
-          <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserId" />
@@ -687,8 +1068,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserQualification">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="QualificationId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="QualificationId" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Qualification" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="UserQualification" ToRole="Qualification" />
+          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="UserQualification" ToRole="User" />
+        </EntityType>
+        <Association Name="UserQualifications_QualificationId_FK">
+          <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="1" />
+          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualification">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="UserQualification">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="UserQualifications_UserId_FK">
-          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="DivingTrackerModel.User" Role="User" Multiplicity="1" />
           <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
@@ -699,18 +1103,56 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DivingTrackerModelStoreContainer" CdmEntityContainer="DivingTrackerEntities">
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="DivingTrackerModel.Address">
+              <MappingFragment StoreEntitySet="Addresses">
+                <ScalarProperty Name="PoBox" ColumnName="PoBox" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="County" ColumnName="County" />
+                <ScalarProperty Name="Postcode" ColumnName="Postcode" />
+                <ScalarProperty Name="Town" ColumnName="Town" />
+                <ScalarProperty Name="Village" ColumnName="Village" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="BuildingNumber" ColumnName="BuildingNumber" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="OrganisationName" ColumnName="OrganisationName" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Agencies">
             <EntityTypeMapping TypeName="DivingTrackerModel.Agency">
               <MappingFragment StoreEntitySet="Agencies">
+                <ScalarProperty Name="ContactLandLine" ColumnName="ContactLandLine" />
+                <ScalarProperty Name="ContactMobile" ColumnName="ContactMobile" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="DivingTrackerModel.Branch">
+              <MappingFragment StoreEntitySet="Branches">
+                <ScalarProperty Name="ContactMobile" ColumnName="ContactMobile" />
+                <ScalarProperty Name="ContactLandLine" ColumnName="ContactLandLine" />
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="PoolAddressId" ColumnName="PoolAddressId" />
+                <ScalarProperty Name="ContactAddressId" ColumnName="ContactAddressId" />
+                <ScalarProperty Name="DivingOfficerUserId" ColumnName="DivingOfficerUserId" />
+                <ScalarProperty Name="TreasurerUserId" ColumnName="TreasurerUserId" />
+                <ScalarProperty Name="SecretaryUserId" ColumnName="SecretaryUserId" />
+                <ScalarProperty Name="ChairUserId" ColumnName="ChairUserId" />
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -793,6 +1235,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DivingTrackerModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="SystemRoleId" ColumnName="SystemRoleId" />
+                <ScalarProperty Name="SystemLoginId" ColumnName="SystemLoginId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UserCriterions">
             <EntityTypeMapping TypeName="DivingTrackerModel.UserCriterion">
               <MappingFragment StoreEntitySet="UserCriteria">
@@ -809,20 +1265,6 @@
               <MappingFragment StoreEntitySet="UserQualifications">
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="UserQualificationId" ColumnName="UserQualificationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="DivingTrackerModel.User">
-              <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="SystemRoleId" ColumnName="SystemRoleId" />
-                <ScalarProperty Name="SystemLoginId" ColumnName="SystemLoginId" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>

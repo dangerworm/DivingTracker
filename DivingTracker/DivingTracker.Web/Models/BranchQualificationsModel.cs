@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using DivingTracker.ServiceLayer;
 using DivingTracker.ServiceLayer.Enums;
 
@@ -6,8 +8,7 @@ namespace DivingTracker.Web.Models
 {
     public class QualificationModel
     {
-        [DisplayName("Agency")]
-        public string AgencyName => Agency.Name;
+        public int QualificationId { get; set; }
 
         public string Name { get; set; }
 
@@ -15,18 +16,25 @@ namespace DivingTracker.Web.Models
 
         public string Description { get; set; }
 
-        public int Count { get; set; }
-        
-        public string GlyphClass { get; set; }
-
         public Agency Agency { get; set; }
+
+        [DisplayName("Agency")]
+        public string AgencyName => Agency.Name;
+
+        public IEnumerable<ModuleModel> Modules { get; set; }
+
+        public int Count { get; set; }
+
+        public string GlyphClass { get; set; }
 
         public QualificationModel(Qualification qualification)
         {
+            QualificationId = qualification.QualificationId;
             Name = qualification.Name;
             QualificationType = (QualificationTypes)qualification.QualificationTypeId;
             Description = qualification.Description;
             Agency = qualification.Agency;
+            Modules = qualification.Modules.Select(x => new ModuleModel(x));
             Count = 1;
 
             switch (qualification.QualificationId)

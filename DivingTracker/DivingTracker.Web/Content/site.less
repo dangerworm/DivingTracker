@@ -47,6 +47,10 @@ body {
     padding-right: 15px;
 }
 
+.container {
+    border: none;
+}
+
 .content {
     margin-left: 10px;
 }
@@ -74,6 +78,10 @@ h2 {
 h3 {
     font-size: 14pt;
     margin-top: 1pt;
+}
+
+main {
+    padding-bottom: 10em;
 }
 
 footer {
@@ -142,27 +150,52 @@ footer {
 }
 
 .navbar-inverse {
+    border-top: none;
     background: @main-colour;
-    padding-top: 4px;
+    padding-top: 6px;
 
-    & .navbar-header h1 {
-        margin: 0;
+    & .navbar-header {
 
-        & .navbar-brand {
-            font-size: 20pt;
-            padding-top: 10pt;
+        h1 {
+            margin: 0;
+
+            & .navbar-brand {
+                font-size: 20pt;
+                padding-top: 10pt;
+            }
         }
     }
 
     & .navbar-collapse {
         width: -webkit-fill-available;
+
+        & > ul > li.nav-item-right {
+
+            & > a {
+                display: inline;
+                float: right;
+            }
+        }
+
+        &.collapsing, &.collapse.in {
+            border: none;
+
+            & > ul > li:first-child {
+                margin-top: 4em;
+            }
+
+            & > ul > li.nav-item-right {
+                float: none;
+
+                & > a {
+                    display: block;
+                    float: none;
+                }
+            }
+        }
     }
 
     & .navbar-brand, & .navbar-nav {
-
-        & i {
-            padding-right: 0.3em;
-        }
 
         & > li > a {
             color: @white;
@@ -172,6 +205,7 @@ footer {
             }
 
             & span {
+                padding-left: 0.5em;
                 font-size: medium;
             }
         }
@@ -301,9 +335,9 @@ form .form-group.no-margin {
 table.user-qualifications {
     margin-bottom: 0;
 
-    & > thead > tr > th {
+    & > thead > tr {
 
-        &.module-header {
+        & > th.module-header {
             width: 40%;
 
             & span {
@@ -311,9 +345,9 @@ table.user-qualifications {
             }
         }
 
-        &.user-name {
-            text-align: -webkit-center;
+        & th.user-name {
             display: none;
+            text-align: -webkit-center;
 
             & > p {
                 margin: 0;
@@ -323,11 +357,18 @@ table.user-qualifications {
         }
     }
 
-    & > tbody > tr > td.training-status {
-        text-align: -webkit-center;
+    & > tbody > tr {
 
-        & > p {
-            margin: 0;
+        & > td.module-header {
+            width: 40%;
+        }
+
+        & > td.training-status {
+            text-align: -webkit-center;
+
+            & > p {
+                margin: 0;
+            }
         }
     }
 }

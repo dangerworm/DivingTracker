@@ -17,6 +17,11 @@ namespace DivingTracker.ServiceLayer
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
+            this.BranchChair = new HashSet<Branch>();
+            this.BranchDivingOfficer = new HashSet<Branch>();
+            this.BranchSecretary = new HashSet<Branch>();
+            this.BranchTreasurer = new HashSet<Branch>();
+            this.CriteriaAwarded = new HashSet<UserCriterion>();
             this.UserCriterias = new HashSet<UserCriterion>();
             this.UserQualifications = new HashSet<UserQualification>();
         }
@@ -25,15 +30,26 @@ namespace DivingTracker.ServiceLayer
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<int> SystemLoginId { get; set; }
         public Nullable<int> SystemRoleId { get; set; }
+        public Nullable<int> BranchId { get; set; }
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Branch> BranchChair { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Branch> BranchDivingOfficer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Branch> BranchSecretary { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Branch> BranchTreasurer { get; set; }
+        public virtual Branch Branch { get; set; }
         public virtual SystemLogin SystemLogin { get; set; }
         public virtual SystemRole SystemRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserCriterion> CriteriaAwarded { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCriterion> UserCriterias { get; set; }
-        public virtual UserCriterion UserCriteria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserQualification> UserQualifications { get; set; }
     }

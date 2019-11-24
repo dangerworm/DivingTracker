@@ -18,10 +18,10 @@ namespace DivingTracker.ServiceLayer.Enums
         Unknown = 0,
 
         /// <summary>
-        /// Module Started (1)
+        /// Not Started (1)
         /// </summary>
-		[Description("Module Started")]
-        ModuleStarted = 1,
+		[Description("Not Started")]
+        NotStarted = 1,
 
         /// <summary>
         /// Needs Consolidation (2)
@@ -30,10 +30,10 @@ namespace DivingTracker.ServiceLayer.Enums
         NeedsConsolidation = 2,
 
         /// <summary>
-        /// Achieved (3)
+        /// Complete (3)
         /// </summary>
-		[Description("Achieved")]
-        Achieved = 3
+		[Description("Complete")]
+        Complete = 3
 	}
 
     /// <summary>

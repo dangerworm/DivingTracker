@@ -1,0 +1,158 @@
+﻿@model DivingTracker.Web.Models.UserQualificationsModel
+
+@{
+    ViewBag.Title = ViewBag.SiteName + ": Member Details - " + Model.User.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>@Model.User.Name</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Member Details</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p>
+                                <strong>@Html.DisplayNameFor(model => model.User.Role)</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            <p>@Html.DisplayFor(model => model.User.Role)</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p>
+                                <strong>@Html.DisplayNameFor(model => model.User.EmailAddress)</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            <p>
+                                @Html.DisplayFor(model => model.User.EmailAddress)
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p>
+                                <strong>@Html.DisplayNameFor(model => model.User.DateOfBirth)</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            <p>
+                                @Html.DisplayFor(model => model.User.DateOfBirth)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Qualifications</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    @foreach (var qualification in Model.QualificationsCompleted)
+                    {
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <p class="@qualification.GlyphClass fa-2x"></p>
+                            </div>
+                            <div class="col-xs-10">
+                                <p>@qualification.Name
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Training</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    @if (Model.QualificationsInProgress.Select(x => x.Modules).Any())
+                    {
+                        foreach (var qualification in Model.QualificationsInProgress)
+                        {
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3>@qualification.Name</h3>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4>Modules Complete</h4>
+                                            @foreach (var module in qualification.Modules.Where(x => x.Completeness >= 1))
+                                            {
+                                                <p>@module.Name</p>
+                                            }
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4>Modules Remaining</h4>
+                                            @foreach (var module in qualification.Modules.Where(x => x.Completeness < 1))
+                                            {
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <p>@module.Name</p>
+                                                        @foreach (var moduleSection in module.ModuleSections)
+                                                        {
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <h5>@moduleSection.Name</h5>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="row">
+                            <div class="col-md-12">
+                                @{
+                                    var prefix = Model.User.UserId == ViewBag.CurrentUserId
+                                        ? "You are"
+                                        : Model.User.FirstName + " is";
+                                }
+                                <p>@prefix not currently working towards any qualifications.</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.User.UserId }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+        </p>
+    </div>
+</div>

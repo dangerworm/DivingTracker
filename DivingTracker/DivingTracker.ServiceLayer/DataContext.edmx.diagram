@@ -34,12 +34,12 @@
         <AssociationConnector Association="DivingTrackerModel.Users_SystemLoginId_FK" />
         <AssociationConnector Association="DivingTrackerModel.Users_SystemRoleId_FK" />
         <EntityTypeShape EntityType="DivingTrackerModel.UserCriterion" Width="1.5" PointX="17.25" PointY="3.5" />
+        <EntityTypeShape EntityType="DivingTrackerModel.UserQualification" Width="1.5" PointX="10.5" PointY="4" />
         <AssociationConnector Association="DivingTrackerModel.UserCriteria_CriterionId_FK" />
         <AssociationConnector Association="DivingTrackerModel.UserCriteria_CriterionStatusId_FK" />
+        <AssociationConnector Association="DivingTrackerModel.UserQualifications_QualificationId_FK" />
         <AssociationConnector Association="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" />
         <AssociationConnector Association="DivingTrackerModel.UserCriteria_UserId_FK" />
-        <EntityTypeShape EntityType="DivingTrackerModel.UserQualification" Width="1.5" PointX="10.5" PointY="4.125" />
-        <AssociationConnector Association="DivingTrackerModel.UserQualifications_QualificationId_FK" />
         <AssociationConnector Association="DivingTrackerModel.UserQualifications_UserId_FK" />
       </Diagram>
     </edmx:Diagrams>

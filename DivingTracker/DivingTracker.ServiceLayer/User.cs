@@ -21,8 +21,8 @@ namespace DivingTracker.ServiceLayer
             this.BranchDivingOfficer = new HashSet<Branch>();
             this.BranchSecretary = new HashSet<Branch>();
             this.BranchTreasurer = new HashSet<Branch>();
-            this.CriteriaAwarded = new HashSet<UserCriterion>();
             this.UserCriterias = new HashSet<UserCriterion>();
+            this.UserCriterias1 = new HashSet<UserCriterion>();
             this.UserQualifications = new HashSet<UserQualification>();
         }
     
@@ -47,9 +47,9 @@ namespace DivingTracker.ServiceLayer
         public virtual SystemLogin SystemLogin { get; set; }
         public virtual SystemRole SystemRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserCriterion> CriteriaAwarded { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCriterion> UserCriterias { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserCriterion> UserCriterias1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserQualification> UserQualifications { get; set; }
     }

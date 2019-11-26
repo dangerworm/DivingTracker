@@ -190,6 +190,7 @@
     <Compile Include="Attributes\AuthoriseRolesAttribute.cs" />
     <Compile Include="Comparers\UserModelComparer.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\CriteriaController.cs" />
     <Compile Include="Controllers\DivingTrackerBaseController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -464,6 +465,11 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Training\Enrol.cshtml" />
+    <Content Include="Views\Criteria\Create.cshtml" />
+    <Content Include="Views\Criteria\Delete.cshtml" />
+    <Content Include="Views\Criteria\Details.cshtml" />
+    <Content Include="Views\Criteria\Edit.cshtml" />
+    <Content Include="Views\Criteria\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

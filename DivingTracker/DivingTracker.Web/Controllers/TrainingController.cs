@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web.Mvc;
@@ -73,20 +74,19 @@ namespace DivingTracker.Web.Controllers
                     .Where(x => qualificationIds.Contains(x.ModuleSection.Module.Qualification.QualificationId))
                     .Select(x => x.CriterionId);
 
-            var newUserCriteria = new List<UserCriterion>();
             foreach (var criterionId in criterionIds)
             {
                 var newUserCriterion = new UserCriterion
                 {
                     CriterionId = criterionId,
                     CriterionStatusId = (int)CriterionStatuses.NotStarted,
-                    UserId = model.User.UserId
+                    UserId = model.User.UserId,
+                    UpdatedDate = DateTime.Now
                 };
 
-                newUserCriteria.Add(newUserCriterion);
+                DatabaseContext.UserCriterions.Add(newUserCriterion);
             }
 
-            DatabaseContext.UserCriterions.AddRange(newUserCriteria);
             DatabaseContext.SaveChanges();
 
             return RedirectToAction("Details", "Members", new { id = model.User.UserId });

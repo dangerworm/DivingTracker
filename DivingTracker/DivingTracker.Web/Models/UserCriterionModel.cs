@@ -28,6 +28,10 @@ namespace DivingTracker.Web.Models
             Criterion = new CriterionModel(userCriterion.Criterion);
             CriterionStatus = (CriterionStatuses)userCriterion.CriterionStatus.CriterionStatusId;
             User = new UserModel(userCriterion.User);
+
+            if (AwardedByUser == null)
+                return;
+
             AwardedByUser = new UserModel(userCriterion.AwardedByUser);
         }
 
@@ -42,7 +46,7 @@ namespace DivingTracker.Web.Models
                 case CriterionStatuses.NeedsConsolidation:
                     return "fas fa-battery-half";
                 case CriterionStatuses.Complete:
-                    return "fas fa-check";
+                    return "fas fa-battery-full";
                 default:
                     throw new ArgumentOutOfRangeException();
             }

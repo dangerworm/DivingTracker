@@ -14,6 +14,7 @@ namespace DivingTracker.ServiceLayer
     
     public partial class UserQualification
     {
+        public int UserQualificationId { get; set; }
         public int UserId { get; set; }
         public int QualificationId { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

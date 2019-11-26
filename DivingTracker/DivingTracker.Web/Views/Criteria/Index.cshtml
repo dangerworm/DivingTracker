@@ -1,0 +1,52 @@
+﻿@model IEnumerable<DivingTracker.ServiceLayer.Criterion>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Details)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IncludeInSyllabus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModuleSection.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Details)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IncludeInSyllabus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModuleSection.Name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CriterionId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CriterionId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CriterionId })
+        </td>
+    </tr>
+}
+
+</table>

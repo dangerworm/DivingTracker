@@ -98,6 +98,12 @@ namespace DivingTracker.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.Password))
+            {
+                ModelState.AddModelError("", "The password field cannot be blank. Please try again.");
+                return Login();
+            }
+
             var authenticationResult = _authenticationService.Login(model.EmailAddress, model.Password);
             if (authenticationResult.Type != DataResultType.Success)
             {

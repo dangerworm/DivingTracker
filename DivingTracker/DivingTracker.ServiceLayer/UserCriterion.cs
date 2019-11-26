@@ -14,6 +14,7 @@ namespace DivingTracker.ServiceLayer
     
     public partial class UserCriterion
     {
+        public int UserCriterionId { get; set; }
         public int UserId { get; set; }
         public int CriterionId { get; set; }
         public Nullable<int> CriterionStatusId { get; set; }

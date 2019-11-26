@@ -1,5 +1,7 @@
 ﻿CREATE TABLE [dbo].[UserCriteria]
 (
+    [UserCriterionId] INT IDENTITY(1,1)
+        CONSTRAINT UserCriteria_UserCriterionId_PK PRIMARY KEY,
 	[UserId] INT NOT NULL
 		CONSTRAINT UserCriteria_UserId_FK FOREIGN KEY REFERENCES dbo.Users(UserId),
     [CriterionId] INT NOT NULL

@@ -120,26 +120,22 @@
           <Property Name="SystemRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DivingTracker.dbo.UserCriteria' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserCriteria">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="CriterionId" />
+            <PropertyRef Name="UserCriterionId" />
           </Key>
+          <Property Name="UserCriterionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="CriterionId" Type="int" Nullable="false" />
           <Property Name="CriterionStatusId" Type="int" />
           <Property Name="AwardedByUserId" Type="int" />
           <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="UserQualifications">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="QualificationId" />
+            <PropertyRef Name="UserQualificationId" />
           </Key>
+          <Property Name="UserQualificationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="QualificationId" Type="int" Nullable="false" />
           <Property Name="UpdatedDate" Type="datetime2" Precision="3" />
@@ -433,23 +429,9 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
           <EntitySet Name="QualificationTypes" EntityType="Self.QualificationTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemLogins" EntityType="Self.SystemLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemRoles" EntityType="Self.SystemRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserCriteria" EntityType="Self.UserCriteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserQualifications" EntityType="Self.UserQualifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserCriteria" EntityType="Self.UserCriteria" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserCriteria].[UserId] AS [UserId], 
-    [UserCriteria].[CriterionId] AS [CriterionId], 
-    [UserCriteria].[CriterionStatusId] AS [CriterionStatusId], 
-    [UserCriteria].[AwardedByUserId] AS [AwardedByUserId], 
-    [UserCriteria].[UpdatedDate] AS [UpdatedDate]
-    FROM [dbo].[UserCriteria] AS [UserCriteria]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UserQualifications" EntityType="Self.UserQualifications" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserQualifications].[UserId] AS [UserId], 
-    [UserQualifications].[QualificationId] AS [QualificationId], 
-    [UserQualifications].[UpdatedDate] AS [UpdatedDate]
-    FROM [dbo].[UserQualifications] AS [UserQualifications]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="Agencies_AddressId_PK" Association="Self.Agencies_AddressId_PK">
             <End Role="Addresses" EntitySet="Addresses" />
             <End Role="Agencies" EntitySet="Agencies" />
@@ -621,6 +603,7 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="UserCriterions" EntityType="DivingTrackerModel.UserCriterion" />
+          <EntitySet Name="UserQualifications" EntityType="DivingTrackerModel.UserQualification" />
           <AssociationSet Name="UserCriteria_CriterionId_FK" Association="DivingTrackerModel.UserCriteria_CriterionId_FK">
             <End Role="Criterion" EntitySet="Criteria" />
             <End Role="UserCriteria" EntitySet="UserCriterions" />
@@ -628,6 +611,10 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
           <AssociationSet Name="UserCriteria_CriterionStatusId_FK" Association="DivingTrackerModel.UserCriteria_CriterionStatusId_FK">
             <End Role="CriterionStatus" EntitySet="CriterionStatuses" />
             <End Role="UserCriteria" EntitySet="UserCriterions" />
+          </AssociationSet>
+          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="DivingTrackerModel.UserQualifications_QualificationId_FK">
+            <End Role="Qualification" EntitySet="Qualifications" />
+            <End Role="UserQualification" EntitySet="UserQualifications" />
           </AssociationSet>
           <AssociationSet Name="UserCriteria_AwardedByUserId_FK" Association="DivingTrackerModel.UserCriteria_AwardedByUserId_FK">
             <End Role="User" EntitySet="Users" />
@@ -637,16 +624,11 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
             <End Role="User" EntitySet="Users" />
             <End Role="UserCriteria" EntitySet="UserCriterions" />
           </AssociationSet>
-          <EntitySet Name="UserQualifications" EntityType="DivingTrackerModel.UserQualification" />
-          <AssociationSet Name="UserQualifications_QualificationId_FK" Association="DivingTrackerModel.UserQualifications_QualificationId_FK">
-            <End Role="Qualification" EntitySet="Qualifications" />
-            <End Role="UserQualification" EntitySet="UserQualifications" />
-          </AssociationSet>
           <AssociationSet Name="UserQualifications_UserId_FK" Association="DivingTrackerModel.UserQualifications_UserId_FK">
             <End Role="User" EntitySet="Users" />
             <End Role="UserQualification" EntitySet="UserQualifications" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="AddressId" />
@@ -809,8 +791,8 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
           <NavigationProperty Name="Branch" Relationship="DivingTrackerModel.Users_BranchId_FK" FromRole="User" ToRole="Branch" />
           <NavigationProperty Name="SystemLogin" Relationship="DivingTrackerModel.Users_SystemLoginId_FK" FromRole="User" ToRole="SystemLogin" />
           <NavigationProperty Name="SystemRole" Relationship="DivingTrackerModel.Users_SystemRoleId_FK" FromRole="User" ToRole="SystemRole" />
-          <NavigationProperty Name="CriteriaAwarded" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="User" ToRole="UserCriteria" />
-          <NavigationProperty Name="UserCriterias" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="User" ToRole="UserCriteria" />
+          <NavigationProperty Name="UserCriterias" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="User" ToRole="UserCriteria" />
+          <NavigationProperty Name="UserCriterias1" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="User" ToRole="UserCriteria" />
           <NavigationProperty Name="UserQualifications" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="User" ToRole="UserQualification" />
         </EntityType>
         <Association Name="Agencies_AddressId_PK">
@@ -1007,9 +989,9 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
         </Association>
         <EntityType Name="UserCriterion">
           <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="CriterionId" />
+            <PropertyRef Name="UserCriterionId" />
           </Key>
+          <Property Name="UserCriterionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="CriterionId" Type="Int32" Nullable="false" />
           <Property Name="CriterionStatusId" Type="Int32" />
@@ -1019,6 +1001,17 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
           <NavigationProperty Name="CriterionStatus" Relationship="DivingTrackerModel.UserCriteria_CriterionStatusId_FK" FromRole="UserCriteria" ToRole="CriterionStatus" />
           <NavigationProperty Name="AwardedByUser" Relationship="DivingTrackerModel.UserCriteria_AwardedByUserId_FK" FromRole="UserCriteria" ToRole="User" />
           <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserCriteria_UserId_FK" FromRole="UserCriteria" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserQualification">
+          <Key>
+            <PropertyRef Name="UserQualificationId" />
+          </Key>
+          <Property Name="UserQualificationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="QualificationId" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Qualification" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="UserQualification" ToRole="Qualification" />
+          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="UserQualification" ToRole="User" />
         </EntityType>
         <Association Name="UserCriteria_CriterionId_FK">
           <End Type="DivingTrackerModel.Criterion" Role="Criterion" Multiplicity="1" />
@@ -1044,6 +1037,18 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="UserQualifications_QualificationId_FK">
+          <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="1" />
+          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Qualification">
+              <PropertyRef Name="QualificationId" />
+            </Principal>
+            <Dependent Role="UserQualification">
+              <PropertyRef Name="QualificationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="UserCriteria_AwardedByUserId_FK">
           <End Type="DivingTrackerModel.User" Role="User" Multiplicity="0..1" />
           <End Type="DivingTrackerModel.UserCriterion" Role="UserCriteria" Multiplicity="*" />
@@ -1065,29 +1070,6 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
             </Principal>
             <Dependent Role="UserCriteria">
               <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="UserQualification">
-          <Key>
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="QualificationId" />
-          </Key>
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="QualificationId" Type="Int32" Nullable="false" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Qualification" Relationship="DivingTrackerModel.UserQualifications_QualificationId_FK" FromRole="UserQualification" ToRole="Qualification" />
-          <NavigationProperty Name="User" Relationship="DivingTrackerModel.UserQualifications_UserId_FK" FromRole="UserQualification" ToRole="User" />
-        </EntityType>
-        <Association Name="UserQualifications_QualificationId_FK">
-          <End Type="DivingTrackerModel.Qualification" Role="Qualification" Multiplicity="1" />
-          <End Type="DivingTrackerModel.UserQualification" Role="UserQualification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Qualification">
-              <PropertyRef Name="QualificationId" />
-            </Principal>
-            <Dependent Role="UserQualification">
-              <PropertyRef Name="QualificationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1257,6 +1239,7 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
                 <ScalarProperty Name="CriterionStatusId" ColumnName="CriterionStatusId" />
                 <ScalarProperty Name="CriterionId" ColumnName="CriterionId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserCriterionId" ColumnName="UserCriterionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1266,6 +1249,7 @@ warning 6002: The table/view 'DivingTracker.dbo.UserQualifications' does not hav
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="QualificationId" ColumnName="QualificationId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserQualificationId" ColumnName="UserQualificationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

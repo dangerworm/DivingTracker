@@ -1,5 +1,7 @@
 ﻿CREATE TABLE [dbo].[UserQualifications]
 (
+    [UserQualificationId] INT IDENTITY(1,1)
+        CONSTRAINT UserQualifications_UserQualificationId_PK PRIMARY KEY,
     [UserId] INT NOT NULL
 		CONSTRAINT UserQualifications_UserId_FK FOREIGN KEY REFERENCES dbo.Users(UserId),
     [QualificationId] INT NOT NULL

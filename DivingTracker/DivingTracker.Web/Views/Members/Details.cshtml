@@ -111,9 +111,16 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <h4>Modules Complete</h4>
-                                            @foreach (var module in qualification.Modules.Where(x => x.Completeness >= 1))
+                                            @if (!qualification.Modules.Any(x => x.Completeness >= 1))
                                             {
-                                                <p>@module.Name: @module.Description</p>
+                                                <p>No modules completed so far</p>
+                                            }
+                                            else
+                                            {
+                                                 foreach (var module in qualification.Modules.Where(x => x.Completeness >= 1))
+                                                 {
+                                                     <p>@module.Name: @module.Description</p>
+                                                 }
                                             }
                                         </div>
                                         <div class="col-md-9">

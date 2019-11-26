@@ -183,7 +183,11 @@ BEGIN
 		(  2, 'OO1', 'Introduction to open water'),
 		(  2, 'OO2', 'Developing open water skills'),
 		(  2, 'OO3', 'Open water rescue skills'),
-		(  2, 'OO4', 'Buddy diving skills');
+		(  2, 'OO4', 'Buddy diving skills'),
+
+        (  4, 'IFC', 'Instructor Foundation Course'),
+
+        (  6, 'OWIC', 'Open Water Instructor Course');
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.ModuleSections)
@@ -258,7 +262,13 @@ BEGIN
 		( 15, 'Kit-up and buddy check', NULL),
 		( 15, 'Dive leading practice - 14-17m (maximum)', NULL),
 		( 15, 'Skills practice - 4-6m', NULL),
-		( 15, 'Exit - deep water', NULL);
+		( 15, 'Exit - deep water', NULL),
+
+        /* IFC */
+        ( 16, 'Attend IFC', NULL),
+
+        /* OWIC */
+        ( 17, 'Attend OWIC', NULL);
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.Criteria)
@@ -412,7 +422,44 @@ BEGIN
 	
 		( 27, 'Deeper water exit', NULL, 1),
 		( 27, 'Remove equipment', NULL, 1),
-		( 27, 'Wash kit', NULL, 1);
+		( 27, 'Wash kit', NULL, 1),
+
+        ( 28, 'Attend Ocean Diver Theory lecture 1', NULL, 1),
+        ( 29, 'Attend Ocean Diver Theory lecture 2', NULL, 1),
+        ( 30, 'Attend Ocean Diver Theory lecture 3', NULL, 1),
+        ( 31, 'Attend Ocean Diver Theory lecture 4', NULL, 1),
+        ( 32, 'Attend Ocean Diver Theory lecture 5', NULL, 1),
+        ( 33, 'Attend Ocean Diver Theory lecture 6', NULL, 1),
+
+        ( 34, 'Prepare scuba unit, fit wetsuit / dry suit, prepare weights', NULL, 1),
+        ( 34, 'Kit-up', NULL, 1),
+        ( 34, 'Conduct buddy check', NULL, 1),
+        ( 34, 'Dry run of the "inflator hose stuck open" exercise', NULL, 1),
+        ( 34, 'Fit mask and check seal', NULL, 1),
+        ( 34, 'Shore entry by wading or steps into standing depth', NULL, 1),
+        
+        ( 35, 'Buoyancy check and weight adjustment', NULL, 1),
+        ( 35, 'Maintain hover', NULL, 1),
+        ( 35, 'Check trim', NULL, 1),
+        
+        ( 36, 'Signals', NULL, 1),
+        ( 36, 'Buoyancy control & weight check', NULL, 1),
+        ( 36, 'Swimming, orientation, awareness', NULL, 1),
+        
+        ( 37, 'Mask clearing including removal and replacement', NULL, 1),
+        ( 37, 'Demand valve retrieval and clear', NULL, 1),
+        ( 37, 'Dry suit inflator stuck open (if worn)', NULL, 1),
+        ( 37, 'BC inflator stuck open', NULL, 1),
+        ( 37, 'Dry suit inversion recovery (if worn)', NULL, 1),
+
+        ( 38, 'Weight belt / weight jettison', NULL, 1),
+        ( 38, 'Exit water by wading or steps', NULL, 1),
+        ( 38, 'De-kit', NULL, 1),
+        ( 38, 'Report back to Dive Manager', NULL, 1),
+        ( 38, 'Equipment disassembly and care', NULL, 1),
+
+        ( 51, 'Attend the Instructor Foundation Course', NULL, 1),
+        ( 52, 'Attend the Open Water Instructor Course', NULL, 1);
 END
 
 IF NOT EXISTS (SELECT 1 FROM dbo.CriterionStatuses)
@@ -436,9 +483,10 @@ BEGIN
 		(1,   3, 3, 2, SYSDATETIME()),
 		(1,   4, 3, 2, SYSDATETIME()),
 		(1,   5, 3, 2, SYSDATETIME()),
+		(1,   6, 2, 2, SYSDATETIME()),
 		(1,   7, 3, 2, SYSDATETIME()),
 		(1,   8, 3, 2, SYSDATETIME()),
-		(1,   9, 3, 2, SYSDATETIME()),
+		(1,   9, 2, 2, SYSDATETIME()),
 		(1,  10, 3, 2, SYSDATETIME()),
 		(1,  11, 3, 2, SYSDATETIME()),
 		(1,  12, 3, 2, SYSDATETIME()),
@@ -454,17 +502,19 @@ BEGIN
 		(1,  22, 3, 2, SYSDATETIME()),
 		(1,  23, 3, 2, SYSDATETIME()),
 		(1,  24, 3, 2, SYSDATETIME()),
-		(1,  25, 3, 2, SYSDATETIME()),
+		(1,  25, 2, 2, SYSDATETIME()),
 		(1,  26, 3, 2, SYSDATETIME()),
 		(1,  27, 3, 2, SYSDATETIME()),
 		(1,  28, 3, 2, SYSDATETIME()),
 		(1,  29, 3, 2, SYSDATETIME()),
 		(1,  30, 3, 2, SYSDATETIME()),
+		(1,  31, 2, 2, SYSDATETIME()),
 		(1,  32, 3, 2, SYSDATETIME()),
 		(1,  33, 3, 2, SYSDATETIME()),
+		(1,  34, 3, 2, SYSDATETIME()),
 		(1,  35, 3, 2, SYSDATETIME()),
 		(1,  36, 3, 2, SYSDATETIME()),
-		(1,  37, 3, 2, SYSDATETIME()),
+		(1,  37, 2, 2, SYSDATETIME()),
 		(1,  38, 3, 2, SYSDATETIME()),
 		(1,  39, 3, 2, SYSDATETIME()),
 		(1,  40, 3, 2, SYSDATETIME()),
@@ -476,32 +526,36 @@ BEGIN
 		(1,  46, 3, 2, SYSDATETIME()),
 		(1,  47, 3, 2, SYSDATETIME()),
 		(1,  48, 3, 2, SYSDATETIME()),
+		(1,  49, 2, 2, SYSDATETIME()),
 		(1,  50, 3, 2, SYSDATETIME()),
         (1,  51, 3, 2, SYSDATETIME()),
 		(1,  52, 3, 2, SYSDATETIME()),
 		(1,  53, 3, 2, SYSDATETIME()),
 		(1,  54, 3, 2, SYSDATETIME()),
 		(1,  55, 3, 2, SYSDATETIME()),
-		(1,  56, 3, 2, SYSDATETIME()),
+		(1,  56, 2, 2, SYSDATETIME()),
 		(1,  57, 3, 2, SYSDATETIME()),
 		(1,  58, 3, 2, SYSDATETIME()),
+		(1,  59, 2, 2, SYSDATETIME()),
 		(1,  60, 3, 2, SYSDATETIME()),
         (1,  61, 3, 2, SYSDATETIME()),
 		(1,  62, 3, 2, SYSDATETIME()),
 		(1,  63, 3, 2, SYSDATETIME()),
 		(1,  64, 3, 2, SYSDATETIME()),
-		(1,  65, 3, 2, SYSDATETIME()),
+		(1,  65, 2, 2, SYSDATETIME()),
 		(1,  66, 3, 2, SYSDATETIME()),
 		(1,  67, 3, 2, SYSDATETIME()),
 		(1,  68, 3, 2, SYSDATETIME()),
 		(1,  69, 3, 2, SYSDATETIME()),
 		(1,  70, 3, 2, SYSDATETIME()),
+		(1,  71, 2, 2, SYSDATETIME()),
 		(1,  72, 3, 2, SYSDATETIME()),
 		(1,  73, 3, 2, SYSDATETIME()),
 		(1,  74, 3, 2, SYSDATETIME()),
 		(1,  75, 3, 2, SYSDATETIME()),
-		(1,  76, 3, 2, SYSDATETIME()),
+		(1,  76, 2, 2, SYSDATETIME()),
 		(1,  77, 3, 2, SYSDATETIME()),
+		(1,  78, 2, 2, SYSDATETIME()),
 		(1,  79, 3, 2, SYSDATETIME()),
 		(1,  80, 3, 2, SYSDATETIME()),
         (1,  81, 3, 2, SYSDATETIME()),
@@ -516,26 +570,29 @@ BEGIN
 		(1,  90, 3, 2, SYSDATETIME()),
         (1,  91, 3, 2, SYSDATETIME()),
 		(1,  92, 3, 2, SYSDATETIME()),
+		(1,  93, 3, 2, SYSDATETIME()),
 		(1,  94, 3, 2, SYSDATETIME()),
-		(1,  95, 3, 2, SYSDATETIME()),
-		(1,  96, 3, 2, SYSDATETIME()),
-		(1,  97, 3, 2, SYSDATETIME()),
-		(1,  98, 3, 2, SYSDATETIME()),
-		(1,  99, 3, 2, SYSDATETIME()),
-        (1, 101, 3, 2, SYSDATETIME()),
-		(1, 102, 3, 2, SYSDATETIME()),
-		(1, 103, 3, 2, SYSDATETIME()),
-		(1, 105, 3, 2, SYSDATETIME()),
-		(1, 106, 3, 2, SYSDATETIME()),
-		(1, 107, 3, 2, SYSDATETIME()),
-		(1, 108, 3, 2, SYSDATETIME()),
-		(1, 109, 3, 2, SYSDATETIME()),
-		(1, 110, 3, 2, SYSDATETIME()),
-		(1, 112, 3, 2, SYSDATETIME()),
-		(1, 113, 3, 2, SYSDATETIME()),
-		(1, 114, 3, 2, SYSDATETIME()),
-		(1, 115, 3, 2, SYSDATETIME()),
-		(1, 116, 3, 2, SYSDATETIME());
+		(1,  95, 1, NULL, SYSDATETIME()),
+		(1,  96, 1, NULL, SYSDATETIME()),
+		(1,  97, 1, NULL, SYSDATETIME()),
+		(1,  98, 1, NULL, SYSDATETIME()),
+		(1,  99, 1, NULL, SYSDATETIME()),
+        (1, 101, 1, NULL, SYSDATETIME()),
+        (1, 102, 1, NULL, SYSDATETIME()),
+		(1, 103, 1, NULL, SYSDATETIME()),
+		(1, 104, 1, NULL, SYSDATETIME()),
+		(1, 105, 1, NULL, SYSDATETIME()),
+		(1, 106, 1, NULL, SYSDATETIME()),
+		(1, 107, 1, NULL, SYSDATETIME()),
+		(1, 108, 1, NULL, SYSDATETIME()),
+		(1, 109, 1, NULL, SYSDATETIME()),
+		(1, 110, 1, NULL, SYSDATETIME()),
+		(1, 111, 1, NULL, SYSDATETIME()),
+		(1, 112, 1, NULL, SYSDATETIME()),
+		(1, 113, 1, NULL, SYSDATETIME()),
+		(1, 114, 1, NULL, SYSDATETIME()),
+		(1, 115, 1, NULL, SYSDATETIME()),
+		(1, 116, 1, NULL, SYSDATETIME());
 END
 
 

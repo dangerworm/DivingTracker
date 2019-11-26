@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Web.Mvc;
 using DivingTracker.ServiceLayer;
@@ -42,19 +43,53 @@ namespace DivingTracker.Web.Controllers
         public ActionResult Qualification(int qualificationId)
         {
             var qualification = DatabaseContext.Qualifications.Find(qualificationId);
-            //var criterionIds = qualification.Modules
-            //    .SelectMany(x => x.ModuleSections.SelectMany(
-            //        y => y.Criteria.SelectMany(
-            //            z => z.UserCriterias)))
-            //    .Select(x => x.CriterionId ?? -1);
-
-            //var userCriteria = DatabaseContext.UserCriterions.Where(x => criterionIds.Contains(x.CriterionId))
 
             var model = qualification == null
                 ? new TrainingModel()
                 : new TrainingModel(qualification);
 
             return View(model);
+        }
+
+        public ActionResult Enrol(int id)
+        {
+            var user = DatabaseContext.Users.Find(id);
+            var qualifications = DatabaseContext.Qualifications.Where(x => !x.UserQualifications.Select(y => y.UserId).Contains(CurrentUserId));
+
+            var model = new EnrolModel(user, qualifications);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Enrol(EnrolModel model)
+        {
+            var qualificationIds = model.EnrolPostModels
+                .Where(x => x.Selected)
+                .Select(x => x.Qualification.QualificationId);
+
+            var criterionIds = DatabaseContext.Criteria
+                    .Where(x => qualificationIds.Contains(x.ModuleSection.Module.Qualification.QualificationId))
+                    .Select(x => x.CriterionId);
+
+            var newUserCriteria = new List<UserCriterion>();
+            foreach (var criterionId in criterionIds)
+            {
+                var newUserCriterion = new UserCriterion
+                {
+                    CriterionId = criterionId,
+                    CriterionStatusId = (int)CriterionStatuses.NotStarted,
+                    UserId = model.User.UserId
+                };
+
+                newUserCriteria.Add(newUserCriterion);
+            }
+
+            DatabaseContext.UserCriterions.AddRange(newUserCriteria);
+            DatabaseContext.SaveChanges();
+
+            return RedirectToAction("Details", "Members", new { id = model.User.UserId });
         }
     }
 }

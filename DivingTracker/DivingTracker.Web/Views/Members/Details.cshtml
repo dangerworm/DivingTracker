@@ -20,34 +20,34 @@
                 </div>
                 <div class="col-md-12 headed-item">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <p>
                                 <strong>@Html.DisplayNameFor(model => model.User.Role)</strong>
                             </p>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <p>@Html.DisplayFor(model => model.User.Role)</p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <p>
                                 <strong>@Html.DisplayNameFor(model => model.User.EmailAddress)</strong>
                             </p>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <p>
                                 @Html.DisplayFor(model => model.User.EmailAddress)
                             </p>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <p>
                                 <strong>@Html.DisplayNameFor(model => model.User.DateOfBirth)</strong>
                             </p>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-8">
                             <p>
                                 @Html.DisplayFor(model => model.User.DateOfBirth)
                             </p>
@@ -65,16 +65,23 @@
                     <h2>Qualifications</h2>
                 </div>
                 <div class="col-md-12 headed-item">
-                    @foreach (var qualification in Model.QualificationsCompleted)
+                    @if (!Model.QualificationsCompleted.Any())
                     {
-                        <div class="row">
-                            <div class="col-xs-2">
-                                <p class="@qualification.GlyphClass fa-2x"></p>
+                        <p>No qualifications (yet!)</p>
+                    }
+                    else
+                    {
+                        foreach (var qualification in Model.QualificationsCompleted)
+                        {
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <p class="@qualification.GlyphClass fa-2x"></p>
+                                </div>
+                                <div class="col-xs-10">
+                                    <p>@qualification.Name
+                                </div>
                             </div>
-                            <div class="col-xs-10">
-                                <p>@qualification.Name
-                            </div>
-                        </div>
+                        }
                     }
                 </div>
             </div>
@@ -87,6 +94,10 @@
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
                 <div class="col-md-12 header">
+                    @if (ViewBag.CurrentUser.SystemRole.SystemRoleId > (int)DivingTracker.ServiceLayer.Enums.SystemRoles.Student)
+                    {
+                        <a href="@Url.Action("Enrol", "Training", new { id = Model.User.UserId })" class="btn btn-default enrol">Enrol</a>
+                    }
                     <h2>Training</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -98,28 +109,21 @@
                                 <div class="col-md-12">
                                     <h3>@qualification.Name</h3>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <h4>Modules Complete</h4>
                                             @foreach (var module in qualification.Modules.Where(x => x.Completeness >= 1))
                                             {
-                                                <p>@module.Name</p>
+                                                <p>@module.Name: @module.Description</p>
                                             }
                                         </div>
-                                        <div class="col-md-6">
-                                            <h4>Modules Remaining</h4>
+                                        <div class="col-md-9">
+                                            <h4>Modules Remaining <span class="toggle-detail small">(Click here to show/hide more detail)</span></h4>
                                             @foreach (var module in qualification.Modules.Where(x => x.Completeness < 1))
                                             {
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <p>@module.Name</p>
-                                                        @foreach (var moduleSection in module.ModuleSections)
-                                                        {
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <h5>@moduleSection.Name</h5>
-                                                                </div>
-                                                            </div>
-                                                        }
+                                                        <p>@module.Name: @module.Description</p>
+                                                        <h5 class="collapsible">@string.Join("; ", module.ModuleSections.Select(x => x.Name))</h5>
                                                     </div>
                                                 </div>
                                             }
@@ -151,8 +155,23 @@
 <div class="row">
     <div class="col-md-12">
         <p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.User.UserId }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+            @if (ViewBag.CurrentUser.SystemRoleId > (int)DivingTracker.ServiceLayer.Enums.SystemRoles.Student)
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.User.UserId }, new { @class = "btn btn-primary" })
+                <text>&nbsp;</text>
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+            }
         </p>
     </div>
 </div>
+
+@section Scripts
+{
+    <script language="javascript">
+        $(document).ready(function () {
+            $(".toggle-detail").click(function () {
+                $('.collapsible').slideToggle();
+            });
+        });
+    </script>
+}

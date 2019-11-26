@@ -19,10 +19,10 @@ namespace DivingTracker.Web.Controllers
         {
             var qualificationsCompleted = DatabaseContext.UserQualifications.Where(x => x.UserId == CurrentUserId).Select(x => x.Qualification);
 
-            var trainingModuleIds = DatabaseContext.UserCriterions.Select(x => x.Criterion.ModuleSection.Module.ModuleId);
-            var qualifiactionsInProgress = DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != CurrentUserId) && x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
+            var trainingModuleIds = DatabaseContext.UserCriterions.Where(x => x.UserId == CurrentUserId).Select(x => x.Criterion.ModuleSection.Module.ModuleId);
+            var qualificationsInProgress = DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != CurrentUserId) && x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
 
-            var model = new UserQualificationsModel(CurrentUser, qualificationsCompleted, qualifiactionsInProgress);
+            var model = new UserQualificationsModel(CurrentUser, qualificationsCompleted, qualificationsInProgress);
             return View(model);
         }
 

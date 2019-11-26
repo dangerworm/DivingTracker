@@ -6,22 +6,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Qualifications and Training</h1>
+<div class="row">
+    <div class="col-md-12">
+        <h1>Qualifications and Training</h1>
+        <h2>@Model.Qualification.Name</h2>
+    </div>
+</div>
+
 @if (Model == null)
 {
-    <p>We couldn't find that qualification. Please go back and try again.</p>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-12 headed-collection card light-background">
+                <div class="row">
+                    <div class="col-md-12 header">
+                        <h2>Courses</h2>
+                    </div>
+                    <div class="col-md-12 headed-item">
+                        <p>We couldn't find that qualification. Please go back and try again.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 else
 {
-    <h2>@Model.Qualification.Name</h2>
-
     foreach (var module in Model.Modules)
     {
-        <div class="row">
-            <div class="col-md-12">
-                @Html.Partial("_TrainingModule", module)
-            </div>
-        </div>
+        @Html.Partial("_TrainingModule", module)
     }
 }
 
@@ -29,11 +42,8 @@ else
 {
     <script language="javascript">
         $(document).ready(function () {
-            $(".open-close").on("click",
-                function () {
-                    $("div.module-users#" + this.classList[1]).slideToggle();
-                    $("div.module-table#" + this.classList[1]).slideToggle();
-                    $("th.user-name." + this.classList[1]).fadeToggle();
+            $(".open-close").click(function () {
+                    $("div.collapsible#" + this.classList[2]).slideToggle();
                 });
         });
     </script>

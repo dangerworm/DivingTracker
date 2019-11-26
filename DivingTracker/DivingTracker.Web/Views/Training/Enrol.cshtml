@@ -1,0 +1,68 @@
+﻿@using DivingTracker.Web.Models
+@model DivingTracker.Web.Models.EnrolModel
+
+@{
+    ViewBag.Title = ViewBag.SiteName + ": Enrol User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h1>Enrolment for @Model.User.Name</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Qualifications</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    @using (Html.BeginForm("Enrol", "Training", null, FormMethod.Post, new { @class = "" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(x => x.User.UserId)
+
+                        for (var modelIndex = 0; modelIndex < Model.EnrolPostModels.Count(); ++modelIndex)
+                        {
+                            <div class="row">
+                                <div class="col-xs-12 col-md-1 center">
+                                    @Html.HiddenFor(x => x.EnrolPostModels[modelIndex].UserId)
+                                    @Html.HiddenFor(x => x.EnrolPostModels[modelIndex].Qualification.QualificationId)
+                                    <p>
+                                        @Html.CheckBoxFor(x => x.EnrolPostModels[modelIndex].Selected)
+                                    </p>
+                                </div>
+                                <div class="col-xs-12 col-md-11">
+                                    <p>@Model.EnrolPostModels[modelIndex].Qualification.Name</p>
+                                </div>
+                            </div>
+                        }
+                        <br />
+
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <text>&nbsp;</text>
+                        <input type="button" value="Cancel" class="btn btn-default" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script language="javascript">
+        $(document).ready(function () {
+            $(".open-close").on("click",
+                function () {
+                    $("div.module-users#" + this.classList[1]).slideToggle();
+                    $("div.module-table#" + this.classList[1]).slideToggle();
+                    $("th.user-name." + this.classList[1]).fadeToggle();
+                });
+        });
+    </script>
+}

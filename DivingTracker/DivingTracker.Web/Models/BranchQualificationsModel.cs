@@ -27,6 +27,10 @@ namespace DivingTracker.Web.Models
 
         public string GlyphClass { get; set; }
 
+        public QualificationModel()
+        {
+        }
+
         public QualificationModel(Qualification qualification)
         {
             QualificationId = qualification.QualificationId;

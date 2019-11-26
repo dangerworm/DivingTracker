@@ -2,26 +2,39 @@
 @model IEnumerable<DivingTracker.Web.Models.TrainingModel>
 
 @{
-    ViewBag.Title = ViewBag.SiteName + ": Qualifications and Progress";
+    ViewBag.Title = ViewBag.SiteName + ": Qualifications and Training";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="row">
     <div class="col-md-12">
-        <h1>Qualifications and Progress</h1>
+        <h1>Qualifications and Training</h1>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-12">
-        <p>Click on a link below to see the progress tracker for that qualification.</p>
-        <ul>
-        @foreach (var trainingModel in Model)
-        {
-            <li><a href="@Url.Action("Qualification", "Training", new {trainingModel.Qualification.QualificationId})">@trainingModel.Qualification.Name
-                (@trainingModel.Qualification.AgencyName)</a></li>
-        }
-        </ul>
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2>Courses</h2>
+                </div>
+                <div class="col-md-12 headed-item">
+                    <p>Click on a link below to see the progress tracker for that qualification.</p>
+                    <ul>
+                        @foreach (var trainingModel in Model)
+                        {
+                            <li>
+                                <a href="@Url.Action("Qualification", "Training", new {trainingModel.Qualification.QualificationId})">
+                                    @trainingModel.Qualification.Name
+                                    (@trainingModel.Qualification.AgencyName)
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

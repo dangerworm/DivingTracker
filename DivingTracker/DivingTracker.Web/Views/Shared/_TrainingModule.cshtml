@@ -3,58 +3,67 @@
 @{
     var module = Model.Module;
 }
-<table class="table user-qualifications">
-    <thead>
-        <tr>
-            <th class="module-header">
-                <h2>@Model.Module.Name</h2>
-                <span class="open-close module-@Model.Module.ModuleId">(Click to open/close)</span>
-            </th>
-            @foreach (var user in Model.Users)
-            {
-                <th class="user-name module-@Model.Module.ModuleId">
-                    <p>@user.Name</p>
-                </th>
-            }
-        </tr>
-    </thead>
-</table>
 
-<div id="module-@module.ModuleId" class="module-table">
-    <table id="module-@module.ModuleId" class="table user-qualifications">
-        <tbody id="module-@module.ModuleId">
-            @foreach (var moduleSection in module.ModuleSections)
-            {
-                <tr>
-                    <td colspan="@(Model.Users.Length + 1) training-status">
-                        <h3>@moduleSection.Name</h3>
-                    </td>
-                </tr>
-
-                foreach (var criterion in moduleSection.Criteria)
-                {
-                    <tr>
-                        <td class="module-header">
-                            @criterion.Description
-                        </td>
-                        @foreach (var user in Model.Users)
-                        {
-                            var userData = criterion.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
-
-                            <td class="training-status">
-                                @if (userData != null)
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12 headed-collection card light-background">
+            <div class="row">
+                <div class="col-md-12 header">
+                    <h2 style="display: inline;">@module.Name</h2>
+                    <p class="small open-close module-@Model.Module.ModuleId">(Click to open/close)</p>
+                </div>
+                <div id="module-@module.ModuleId" class="col-md-12 headed-item collapsible">
+                    <table class="table user-qualifications">
+                        <thead>
+                            <tr>
+                                <th class="module-header">
+                                    <span>&nbsp;</span>
+                                </th>
+                                @foreach (var user in Model.Users)
                                 {
-                                    <i class="@userData.CriterionStatusGlyph"></i>
+                                    <th class="user-name">
+                                        <p>@user.Name</p>
+                                    </th>
                                 }
-                                else
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var moduleSection in module.ModuleSections)
+                            {
+                                <tr>
+                                    <td colspan="@(Model.Users.Length + 1) training-status">
+                                        <h3>@moduleSection.Name</h3>
+                                    </td>
+                                </tr>
+
+                                foreach (var criterion in moduleSection.Criteria)
                                 {
-                                    <text>&nbsp;</text>
+                                    <tr>
+                                        <td class="module-header">
+                                            @criterion.Description
+                                        </td>
+                                        @foreach (var user in Model.Users)
+                                        {
+                                            var userData = criterion.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
+
+                                            <td class="training-status">
+                                                @if (userData != null)
+                                                {
+                                                    <i class="@userData.CriterionStatusGlyph"></i>
+                                                }
+                                                else
+                                                {
+                                                    <text>&nbsp;</text>
+                                                }
+                                            </td>
+                                        }
+                                    </tr>
                                 }
-                            </td>
-                        }
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

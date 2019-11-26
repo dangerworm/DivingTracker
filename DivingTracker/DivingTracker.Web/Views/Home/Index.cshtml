@@ -18,16 +18,23 @@
                     <h2>Your Current Qualifications</h2>
                 </div>
                 <div class="col-md-12 headed-item">
-                    @foreach (var qualification in Model.QualificationsCompleted)
+                    @if (!Model.QualificationsCompleted.Any())
                     {
-                        <div class="row">
-                            <div class="col-xs-2">
-                                <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
+                        <p>You don't have any qualifications (yet!)</p>
+                    }
+                    else
+                    {
+                        foreach (var qualification in Model.QualificationsCompleted)
+                        {
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
+                                </div>
+                                <div class="col-xs-10">
+                                    <p>@qualification.Name: @qualification.Count</p>
+                                </div>
                             </div>
-                            <div class="col-xs-10">
-                                <p>@qualification.Name: @qualification.Count</p>
-                            </div>
-                        </div>
+                        }
                     }
                 </div>
             </div>
@@ -40,30 +47,68 @@
                     <h2>Qualifications In Progress</h2>
                 </div>
                 <div class="col-md-12 headed-item">
-                    @foreach (var qualification in Model.QualificationsInProgress)
+                    @if (!Model.QualificationsInProgress.Any())
                     {
-                        <div class="row">
-                            <div class="col-xs-2">
-                                <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
-                            </div>
-                            <div class="col-xs-10">
-                                <h3>@qualification.Name</h3>
-                                @foreach (var module in qualification.Modules)
-                                {
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            @module.Name
-                                        </div>
-                                        <div class="col-md-9">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: @module.Completeness.ToString("P")"
-                                                     aria-valuemin="0" aria-valuenow="@(module.Completeness * 100)" aria-valuemax="100"></div>
+                        <p>You aren't enrolled on any courses (yet!)</p>
+                    }
+                    else
+                    {
+                        foreach (var qualification in Model.QualificationsInProgress)
+                        {
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
+                                </div>
+                                <div class="col-xs-10">
+                                    <h3 class="popover">@qualification.Name</h3>
+                                    @foreach (var module in qualification.Modules)
+                                    {
+                                        <div class="row open-close module-@module.ModuleId">
+                                            <div class="col-md-2">
+                                                <p class="toggle-detail" data-toggle="tooltip" data-placement="left" title="@module.Description">@module.Name</p>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="row">
+                                                    <div class="col-md-10">
+                                                        <div class="progress">
+                                                            <div class="progress-bar" role="progressbar" style="width: @module.Completeness.ToString("P")"
+                                                                 aria-valuemin="0" aria-valuenow="@(module.Completeness * 100)" aria-valuemax="100"
+                                                                 data-toggle="tooltip" data-placement="top" title="@module.Completeness.ToString("P0") completed"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        @if (module.Completeness == 1)
+                                                        {
+                                                            <i class="fas fa-check-circle text-success" style="font-size: 1.5em"></i>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="row collapsible module-@module.ModuleId">
+                                                    <div class="col-md-11">
+                                                        @foreach (var moduleSection in module.ModuleSections)
+                                                        {
+                                                            <div class="row">
+                                                                <div class="col-md-1">
+                                                                    @if (moduleSection.Criteria.All(x => x.UserCriteria.All(y => y.CriterionStatus == CriterionStatuses.Complete)))
+                                                                    {
+                                                                        <i class="fas fa-check-circle text-success"></i>
+
+                                                                    }
+                                                                </div>
+                                                                <div class="col-md-10">
+                                                                    <h5>@moduleSection.Name</h5>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        <br />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                }
+                                    }
+                                </div>
                             </div>
-                        </div>
+                        }
                     }
                 </div>
             </div>
@@ -75,12 +120,9 @@
 {
     <script>
         $(document).ready(function () {
-            $('#Branch-members').DataTable({
-                "order": [[1, "asc"], [0, "asc"]],
-                "scrollY": '60vh',
-                "scrollCollapse": true,
-                "searching": true,
-                "paging": false
+            $('[data-toggle=tooltip]').tooltip();
+            $(".open-close").click(function () {
+                $("div.collapsible." + this.classList[2]).slideToggle();
             });
         });
     </script>

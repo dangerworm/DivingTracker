@@ -12,14 +12,22 @@ namespace DivingTracker.Web.Controllers
     public class DivingTrackerBaseController : BaseController
     {
         protected DivingTrackerEntities DatabaseContext;
-        protected User CurrentUser { get; set; }
-        protected int CurrentUserId { get; set; }
 
         public DivingTrackerBaseController(DivingTrackerEntities databaseContext)
         {
             Verify.NotNull(databaseContext, nameof(databaseContext));
 
             DatabaseContext = databaseContext;
+        }
+
+        protected User CurrentUser { get; set; }
+        protected int CurrentUserId { get; set; }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                DatabaseContext.Dispose();
+            base.Dispose(disposing);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -57,26 +65,20 @@ namespace DivingTracker.Web.Controllers
         private void RedirectToLoginPageIfNotAuthenticated(ActionExecutingContext filterContext)
         {
             var action = filterContext.ActionDescriptor.ActionName;
-            var allowedActions = new[] { "Register", "Registered", "ConfirmEmail", "Login" };
+            var allowedActions = new[] {"Register", "Registered", "ConfirmEmail", "Login"};
 
             if (!User.Identity.IsAuthenticated && !allowedActions.Contains(action))
-            {
                 filterContext.Result = new RedirectResult("~/Authentication/Login");
-            }
         }
 
         private void SetCurrentUser()
         {
             var authenticationCookie = Request?.Cookies[FormsAuthentication.FormsCookieName];
             if (authenticationCookie == null)
-            {
                 return;
-            }
             var ticket = FormsAuthentication.Decrypt(authenticationCookie.Value);
             if (ticket == null)
-            {
                 return;
-            }
 
             var systemLogin = DatabaseContext.SystemLogins.FirstOrDefault(x => x.EmailAddress.Equals(ticket.Name));
             if (systemLogin == null)
@@ -91,15 +93,6 @@ namespace DivingTracker.Web.Controllers
 
             ViewBag.CurrentUser = CurrentUser;
             ViewBag.CurrentUserId = CurrentUserId;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                DatabaseContext.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

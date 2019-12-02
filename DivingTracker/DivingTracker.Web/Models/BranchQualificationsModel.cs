@@ -8,25 +8,6 @@ namespace DivingTracker.Web.Models
 {
     public class QualificationModel
     {
-        public int QualificationId { get; set; }
-
-        public string Name { get; set; }
-
-        public QualificationTypes QualificationType { get; set; }
-
-        public string Description { get; set; }
-
-        public Agency Agency { get; set; }
-
-        [DisplayName("Agency")]
-        public string AgencyName => Agency.Name;
-
-        public IEnumerable<ModuleModel> Modules { get; set; }
-
-        public int Count { get; set; }
-
-        public string GlyphClass { get; set; }
-
         public QualificationModel()
         {
         }
@@ -75,5 +56,23 @@ namespace DivingTracker.Web.Models
                     break;
             }
         }
+
+        public Agency Agency { get; set; }
+
+        [DisplayName("Agency")]
+        public string AgencyName => Agency.Name;
+
+        public int Count { get; set; }
+
+        public string Description { get; set; }
+
+        public string GlyphClass { get; set; }
+
+        public IEnumerable<ModuleModel> Modules { get; set; }
+
+        public string Name { get; set; }
+        public int QualificationId { get; set; }
+
+        public QualificationTypes QualificationType { get; set; }
     }
 }

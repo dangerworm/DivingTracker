@@ -13,21 +13,6 @@ namespace DivingTracker.Web
 {
     public class MvcApplication : HttpApplication
     {
-        protected void Application_Start()
-        {
-            TelemetryConfiguration.Active.DisableTelemetry = true;
-
-            AreaRegistration.RegisterAllAreas();
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            var container = WindsorContainerFactory.Current(new ServiceInstaller());
-            var castleControllerFactory = new WindsorControllerFactory(container);
-
-            ControllerBuilder.Current.SetControllerFactory(castleControllerFactory);
-        }
-
         protected void Application_AuthenticateRequest(object sender, EventArgs eventArgs)
         {
             AuthenticateCookie();
@@ -55,26 +40,37 @@ namespace DivingTracker.Web
             }
         }
 
+        protected void Application_Start()
+        {
+            TelemetryConfiguration.Active.DisableTelemetry = true;
+
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            var container = WindsorContainerFactory.Current(new ServiceInstaller());
+            var castleControllerFactory = new WindsorControllerFactory(container);
+
+            ControllerBuilder.Current.SetControllerFactory(castleControllerFactory);
+        }
+
         private void AuthenticateCookie()
         {
             var authenticationCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
 
             if (!FormsAuthentication.CookiesSupported || authenticationCookie == null)
-            {
                 return;
-            }
 
             try
             {
                 var ticket = FormsAuthentication.Decrypt(authenticationCookie.Value);
                 if (ticket == null)
-                {
                     return;
-                }
 
                 var username = ticket.Name;
                 var identity = new GenericIdentity(username, "DivingTrackerUser");
-                Context.User = new GenericPrincipal(identity, new[] { "All" });
+                Context.User = new GenericPrincipal(identity, new[] {"All"});
             }
             catch (Exception e)
             {

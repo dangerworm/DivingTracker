@@ -4,12 +4,6 @@ namespace DivingTracker.Web.Models
 {
     public class EnrolPostModel
     {
-        public int UserId { get; set; }
-
-        public QualificationModel Qualification { get; set; }
-
-        public bool Selected { get; set; }
-
         public EnrolPostModel()
         {
         }
@@ -20,5 +14,10 @@ namespace DivingTracker.Web.Models
             Qualification = new QualificationModel(qualification);
             Selected = false;
         }
+
+        public QualificationModel Qualification { get; set; }
+
+        public bool Selected { get; set; }
+        public int UserId { get; set; }
     }
 }

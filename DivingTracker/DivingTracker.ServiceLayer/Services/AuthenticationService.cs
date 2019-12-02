@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using CommonCode.BusinessLayer;
 using CommonCode.BusinessLayer.Helpers;
 using CommonCode.BusinessLayer.Services;
@@ -14,7 +13,8 @@ namespace DivingTracker.ServiceLayer.Services
     {
         private readonly AuthenticationWorkflow _authenticationWorkflow;
 
-        public AuthenticationService(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork, AuthenticationWorkflow authenticationWorkflow)
+        public AuthenticationService(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork,
+            AuthenticationWorkflow authenticationWorkflow)
             : base(unitOfWork)
         {
             Verify.NotNull(authenticationWorkflow, nameof(authenticationWorkflow));

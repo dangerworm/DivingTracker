@@ -6,15 +6,10 @@ namespace DivingTracker.Web.Models
 {
     public class RegistrationModel
     {
-        [DisplayName("First Name")]
-        [Required]
-        public string FirstName { get; set; }
+        public Guid ConfirmationToken => Guid.NewGuid();
 
-        [DisplayName("Surname")]
-        [Required]
-        public string Surname { get; set; }
-
-        [DataType(DataType.DateTime, ErrorMessage = "The date of birth is not a valid date. Please use dd/mm/yyyy format.")]
+        [DataType(DataType.DateTime, ErrorMessage =
+            "The date of birth is not a valid date. Please use dd/mm/yyyy format.")]
         [DisplayName("Date of Birth")]
         [Required]
         public DateTime DateOfBirth { get; set; }
@@ -24,6 +19,12 @@ namespace DivingTracker.Web.Models
         [Required]
         //[RegularExpression(@"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", ErrorMessage = "The email address is not valid")]
         public string EmailAddress { get; set; }
+
+        [DisplayName("First Name")]
+        [Required]
+        public string FirstName { get; set; }
+
+        public bool IsEmailConfirmed { get; set; }
 
         [DisplayName("Password")]
         [Required]
@@ -35,8 +36,8 @@ namespace DivingTracker.Web.Models
         [Required]
         public string PasswordConfirmation { get; set; }
 
-        public Guid ConfirmationToken => Guid.NewGuid();
-
-        public bool IsEmailConfirmed { get; set; }
+        [DisplayName("Surname")]
+        [Required]
+        public string Surname { get; set; }
     }
 }

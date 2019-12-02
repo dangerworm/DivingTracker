@@ -6,22 +6,6 @@ namespace DivingTracker.Web.Models
 {
     public class AgencyModel
     {
-        public int AgencyId { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public string ContactEmail { get; set; }
-
-        public string ContactMobile { get; set; }
-
-        public string ContactLandLine { get; set; }
-
-        public AddressModel Address { get; set; }
-
-        public IEnumerable<QualificationModel> Qualifications { get; set; }
-
         public AgencyModel(Agency agency)
         {
             AgencyId = agency.AgencyId;
@@ -34,5 +18,20 @@ namespace DivingTracker.Web.Models
             Address = new AddressModel(agency.Address);
             Qualifications = agency.Qualifications.Select(x => new QualificationModel(x));
         }
+
+        public AddressModel Address { get; set; }
+        public int AgencyId { get; set; }
+
+        public string ContactEmail { get; set; }
+
+        public string ContactLandLine { get; set; }
+
+        public string ContactMobile { get; set; }
+
+        public string Description { get; set; }
+
+        public string Name { get; set; }
+
+        public IEnumerable<QualificationModel> Qualifications { get; set; }
     }
 }

@@ -1,12 +1,12 @@
-﻿using CommonCode.BusinessLayer.Helpers;
-using Neo4j.Driver.V1;
-using Neo4jClient;
-using Neo4jClient.Cypher;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using CommonCode.BusinessLayer.Helpers;
+using Neo4j.Driver.V1;
+using Neo4jClient;
+using Neo4jClient.Cypher;
 
 namespace CommonCode.BusinessLayer.Repositories
 {
@@ -23,12 +23,11 @@ namespace CommonCode.BusinessLayer.Repositories
         public const string Identifies = "IDENTIFIES"; // SystemLogin IDENTIFIES User
         public const string SelectedFor = "SELECTED_FOR"; // Answer SELECTED_FOR:UserId Question
 
-        private const string FriendlyReadMessage = "The system was unable to read the requested item(s) from the database.";
+        private const string FriendlyReadMessage =
+            "The system was unable to read the requested item(s) from the database.";
+
         private const string InternalReadMessage = "A database exception occurred when trying to read the value(s).";
         protected const string Success = "Success";
-
-        protected IUnitOfWork<IGraphClient, ITransaction> UnitOfWork { get; }
-        protected bool HasCustomReader { get; set; }
 
         protected Neo4JRepositoryBase(IUnitOfWork<IGraphClient, ITransaction> unitOfWork, bool hasCustomReader = false)
         {
@@ -38,148 +37,50 @@ namespace CommonCode.BusinessLayer.Repositories
             HasCustomReader = hasCustomReader;
         }
 
-        protected virtual T Map(ICypherFluentQuery<T> query)
+        protected bool HasCustomReader { get; set; }
+
+        protected IUnitOfWork<IGraphClient, ITransaction> UnitOfWork { get; }
+
+        protected DataResult<TResult> CreateDataResult<TResult>(string functionName, int rowCount,
+            TResult value, DataResultType resultType, string friendlyMessage, string internalMessage,
+            int? valueId = null, Exception exception = null)
         {
-            throw new NotImplementedException("HasCustomReader is set to true but Map has not been implemented.");
-        }
-
-        protected virtual IEnumerable<T> MapList(ICypherFluentQuery<T> query)
-        {
-            throw new NotImplementedException("HasCustomReader is set to true but MapList has not been implemented.");
-        }
-
-        protected DataResult<T> Read(ICypherFluentQuery<T> query)
-        {
-            if (HasCustomReader)
+            if (rowCount > 0)
             {
-                return Read(query, Map);
+                resultType = DataResultType.Success;
+                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) ? friendlyMessage : Success;
+                internalMessage = !string.IsNullOrWhiteSpace(internalMessage)
+                    ? internalMessage
+                    : $"Procedure {functionName} completed successfully.";
+            }
+            else if (resultType.Equals(DataResultType.Success) && !functionName.ToLower().Contains("return"))
+            {
+                resultType = DataResultType.NotRequired;
+                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) && !friendlyMessage.Equals(Success)
+                    ? friendlyMessage
+                    : "No actions required";
+                internalMessage = !string.IsNullOrWhiteSpace(internalMessage)
+                    ? internalMessage
+                    : $"Procedure {functionName} did not require any changes.";
+            }
+            else if (resultType.Equals(DataResultType.Success))
+            {
+                resultType = DataResultType.NoRecordsFound;
+                friendlyMessage = "Sorry, no results were returned.";
+                internalMessage = $"Procedure {functionName} returned 0 records.";
             }
 
-            try
-            {
-                var result = query.ResultsAsync.Result;
+            var dataResult = new DataResult<TResult>(value, resultType, friendlyMessage, internalMessage, exception);
+            dataResult.Data.Add("Command Details", functionName);
 
-                var value = result.SingleOrDefault();
-                var rowCount = value == null ? 0 : 1;
+            if (valueId.HasValue)
+                dataResult.ValueId = valueId.Value;
 
-                return CreateDataResult(query.Query.QueryText, rowCount,
-                    value, DataResultType.Success, Success, Success);
-            }
-            catch (DbException exception)
-            {
-                return CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
-                    FriendlyReadMessage, InternalReadMessage, null, exception);
-            }
-            catch (InvalidOperationException exception)
-            {
-                return CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
-                    "We got a few more results than expected just then, and DivingTracker doesn't know how to deal with the extra ones. We've woken up the developers and they'll get it working ASAP.",
-                    "An operation was performed that usually only returns a single record, but multiple records were returned.", null, exception);
-            }
-        }
+            exception?.Data.Add("ExceptionData.StringValue", functionName);
 
-        protected DataResult<TNew> ReadDynamic<TNew>(ICypherFluentQuery<TNew> query)
-        {
-            try
-            {
-                var result = query.ResultsAsync.Result;
+            UnitOfWork.AddDataResult(dataResult);
 
-                var value = result.SingleOrDefault();
-                var rowCount = value == null ? 0 : 1;
-
-                return CreateDataResult(query.Query.QueryText, rowCount,
-                    value, DataResultType.Success, Success, Success);
-            }
-            catch (DbException exception)
-            {
-                return CreateDataResult(query.Query.QueryText, 0, default(TNew), DataResultType.UnknownError,
-                    FriendlyReadMessage, InternalReadMessage, null, exception);
-            }
-            catch (InvalidOperationException exception)
-            {
-                return CreateDataResult(query.Query.QueryText, 0, default(TNew), DataResultType.UnknownError,
-                    "We got a few more results than expected just then, and DivingTracker doesn't know how to deal with the extra ones. We've woken up the developers and they'll get it working ASAP.",
-                    "An operation was performed that usually only returns a single record, but multiple records were returned.", null, exception);
-            }
-        }
-
-        protected DataResult<IEnumerable<T>> ReadList(ICypherFluentQuery<T> query)
-        {
-            if (HasCustomReader)
-            {
-                return ReadList(query, MapList);
-            }
-
-            try
-            {
-                var values = query.Results;
-
-                var rowCount = values.Count();
-
-                return CreateDataResult(query.Query.QueryText, rowCount, values, DataResultType.Success,
-                    Success, Success);
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
-                    FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
-
-        protected DataResult<IEnumerable<TNew>> ReadDynamicList<TNew>(ICypherFluentQuery<TNew> query)
-        {
-            try
-            {
-                var values = query.Results;
-
-                var rowCount = values.Count();
-
-                return CreateDataResult(query.Query.QueryText, rowCount, values, DataResultType.Success,
-                    Success, Success);
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
-                    FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
-
-        protected DataResult<T> Read(ICypherFluentQuery<T> query, Func<ICypherFluentQuery<T>, T> map)
-        {
-            try
-            {
-                var value = map(query);
-                var itemCount = value == null ? 0 : 1;
-
-                return CreateDataResult(query.Query.QueryText, itemCount, value, DataResultType.Success,
-                    Success, Success);
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
-                    FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
-
-        protected DataResult<IEnumerable<T>> ReadList(ICypherFluentQuery<T> query, Func<ICypherFluentQuery<T>, IEnumerable<T>> map)
-        {
-            try
-            {
-                var values = map(query);
-                var itemCount = ((ICollection)values).Count;
-
-                return CreateDataResult(query.Query.QueryText, itemCount, values, DataResultType.Success,
-                    Success, Success);
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
-                    FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
+            return dataResult;
         }
 
         public DataResult Delete(string functionName, List<string> parameters)
@@ -187,8 +88,16 @@ namespace CommonCode.BusinessLayer.Repositories
             throw new NotImplementedException();
         }
 
+        private string GetFormattedCallString(string functionName, IEnumerable<string> parameters)
+        {
+            var parametersWithQuotes = parameters.Select(x => $"\"{x}\"");
+
+            return $"CALL {functionName}({string.Join(",", parametersWithQuotes)})";
+        }
+
         protected static void InitialiseInformativeVariables(string commandText, out string commandType,
-        out string commandTypePastTense, out DataResultType resultType, out string friendlyMessage, out string internalMessage)
+            out string commandTypePastTense, out DataResultType resultType, out string friendlyMessage,
+            out string internalMessage)
         {
             commandType = "process";
             resultType = DataResultType.UnknownError;
@@ -220,65 +129,157 @@ namespace CommonCode.BusinessLayer.Repositories
             }
 
             if (commandType.Equals("process"))
-            {
                 commandTypePastTense = $"{commandType}ed";
-            }
             else if (!commandType.Equals("read"))
-            {
                 commandTypePastTense = $"{commandType}d";
-            }
             else
-            {
                 commandTypePastTense = commandType;
-            }
 
             friendlyMessage = "Sorry, an unexpected error has occurred.";
             internalMessage = $"Unable to {commandType} record. No records affected.";
         }
 
-        protected DataResult<TResult> CreateDataResult<TResult>(string functionName, int rowCount,
-        TResult value, DataResultType resultType, string friendlyMessage, string internalMessage,
-        int? valueId = null, Exception exception = null)
+        protected virtual T Map(ICypherFluentQuery<T> query)
         {
-            if (rowCount > 0)
-            {
-                resultType = DataResultType.Success;
-                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) ? friendlyMessage : Success;
-                internalMessage = !string.IsNullOrWhiteSpace(internalMessage) ? internalMessage : $"Procedure {functionName} completed successfully.";
-            }
-            else if (resultType.Equals(DataResultType.Success) && !functionName.ToLower().Contains("return"))
-            {
-                resultType = DataResultType.NotRequired;
-                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) && !friendlyMessage.Equals(Success) ? friendlyMessage : "No actions required";
-                internalMessage = !string.IsNullOrWhiteSpace(internalMessage) ? internalMessage : $"Procedure {functionName} did not require any changes.";
-            }
-            else if (resultType.Equals(DataResultType.Success))
-            {
-                resultType = DataResultType.NoRecordsFound;
-                friendlyMessage = "Sorry, no results were returned.";
-                internalMessage = $"Procedure {functionName} returned 0 records.";
-            }
-
-            var dataResult = new DataResult<TResult>(value, resultType, friendlyMessage, internalMessage, exception);
-            dataResult.Data.Add("Command Details", functionName);
-
-            if (valueId.HasValue)
-            {
-                dataResult.ValueId = valueId.Value;
-            }
-
-            exception?.Data.Add("ExceptionData.StringValue", functionName);
-
-            UnitOfWork.AddDataResult(dataResult);
-
-            return dataResult;
+            throw new NotImplementedException("HasCustomReader is set to true but Map has not been implemented.");
         }
 
-        private string GetFormattedCallString(string functionName, IEnumerable<string> parameters)
+        protected virtual IEnumerable<T> MapList(ICypherFluentQuery<T> query)
         {
-            var parametersWithQuotes = parameters.Select(x => $"\"{x}\"");
+            throw new NotImplementedException("HasCustomReader is set to true but MapList has not been implemented.");
+        }
 
-            return $"CALL {functionName}({string.Join(",", parametersWithQuotes)})";
+        protected DataResult<T> Read(ICypherFluentQuery<T> query)
+        {
+            if (HasCustomReader)
+                return Read(query, Map);
+
+            try
+            {
+                var result = query.ResultsAsync.Result;
+
+                var value = result.SingleOrDefault();
+                var rowCount = value == null ? 0 : 1;
+
+                return CreateDataResult(query.Query.QueryText, rowCount,
+                    value, DataResultType.Success, Success, Success);
+            }
+            catch (DbException exception)
+            {
+                return CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
+                    FriendlyReadMessage, InternalReadMessage, null, exception);
+            }
+            catch (InvalidOperationException exception)
+            {
+                return CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
+                    "We got a few more results than expected just then, and DivingTracker doesn't know how to deal with the extra ones. We've woken up the developers and they'll get it working ASAP.",
+                    "An operation was performed that usually only returns a single record, but multiple records were returned.",
+                    null, exception);
+            }
+        }
+
+        protected DataResult<T> Read(ICypherFluentQuery<T> query, Func<ICypherFluentQuery<T>, T> map)
+        {
+            try
+            {
+                var value = map(query);
+                var itemCount = value == null ? 0 : 1;
+
+                return CreateDataResult(query.Query.QueryText, itemCount, value, DataResultType.Success,
+                    Success, Success);
+            }
+            catch (DbException exception)
+            {
+                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
+                    FriendlyReadMessage, InternalReadMessage, null, exception);
+                throw;
+            }
+        }
+
+        protected DataResult<TNew> ReadDynamic<TNew>(ICypherFluentQuery<TNew> query)
+        {
+            try
+            {
+                var result = query.ResultsAsync.Result;
+
+                var value = result.SingleOrDefault();
+                var rowCount = value == null ? 0 : 1;
+
+                return CreateDataResult(query.Query.QueryText, rowCount,
+                    value, DataResultType.Success, Success, Success);
+            }
+            catch (DbException exception)
+            {
+                return CreateDataResult(query.Query.QueryText, 0, default(TNew), DataResultType.UnknownError,
+                    FriendlyReadMessage, InternalReadMessage, null, exception);
+            }
+            catch (InvalidOperationException exception)
+            {
+                return CreateDataResult(query.Query.QueryText, 0, default(TNew), DataResultType.UnknownError,
+                    "We got a few more results than expected just then, and DivingTracker doesn't know how to deal with the extra ones. We've woken up the developers and they'll get it working ASAP.",
+                    "An operation was performed that usually only returns a single record, but multiple records were returned.",
+                    null, exception);
+            }
+        }
+
+        protected DataResult<IEnumerable<TNew>> ReadDynamicList<TNew>(ICypherFluentQuery<TNew> query)
+        {
+            try
+            {
+                var values = query.Results;
+
+                var rowCount = values.Count();
+
+                return CreateDataResult(query.Query.QueryText, rowCount, values, DataResultType.Success,
+                    Success, Success);
+            }
+            catch (DbException exception)
+            {
+                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
+                    FriendlyReadMessage, InternalReadMessage, null, exception);
+                throw;
+            }
+        }
+
+        protected DataResult<IEnumerable<T>> ReadList(ICypherFluentQuery<T> query)
+        {
+            if (HasCustomReader)
+                return ReadList(query, MapList);
+
+            try
+            {
+                var values = query.Results;
+
+                var rowCount = values.Count();
+
+                return CreateDataResult(query.Query.QueryText, rowCount, values, DataResultType.Success,
+                    Success, Success);
+            }
+            catch (DbException exception)
+            {
+                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
+                    FriendlyReadMessage, InternalReadMessage, null, exception);
+                throw;
+            }
+        }
+
+        protected DataResult<IEnumerable<T>> ReadList(ICypherFluentQuery<T> query,
+            Func<ICypherFluentQuery<T>, IEnumerable<T>> map)
+        {
+            try
+            {
+                var values = map(query);
+                var itemCount = ((ICollection)values).Count;
+
+                return CreateDataResult(query.Query.QueryText, itemCount, values, DataResultType.Success,
+                    Success, Success);
+            }
+            catch (DbException exception)
+            {
+                CreateDataResult(query.Query.QueryText, 0, default(T), DataResultType.UnknownError,
+                    FriendlyReadMessage, InternalReadMessage, null, exception);
+                throw;
+            }
         }
     }
 }

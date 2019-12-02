@@ -4,9 +4,6 @@ namespace CommonCode.BusinessLayer
 {
     public class DataResult<T> : DataResult
     {
-        public int? ValueId { get; set; }
-        public T Value { get; set; }
-
         public DataResult(DataResultType type, string friendlyMessage, string internalMessage)
             : base(type, friendlyMessage, internalMessage)
         {
@@ -61,7 +58,8 @@ namespace CommonCode.BusinessLayer
         {
         }
 
-        public DataResult(T value, DataResultType type, string friendlyMessage, string internalMessage, Exception exception)
+        public DataResult(T value, DataResultType type, string friendlyMessage, string internalMessage,
+            Exception exception)
             : base(type, friendlyMessage, internalMessage, exception)
         {
             Value = value;
@@ -79,10 +77,11 @@ namespace CommonCode.BusinessLayer
             Validation.Add(result.Validation);
 
             foreach (var item in result.Data)
-            {
                 Data.Add(item);
-            }
         }
+
+        public T Value { get; set; }
+        public int? ValueId { get; set; }
 
         public static implicit operator T(DataResult<T> dataResult)
         {

@@ -207,6 +207,7 @@
     <Compile Include="Models\CriterionModel.cs" />
     <Compile Include="Models\EnrolPostModel.cs" />
     <Compile Include="Models\EnrolModel.cs" />
+    <Compile Include="Models\SystemRoleModel.cs" />
     <Compile Include="Models\UserQualificationsModel.cs" />
     <Compile Include="Models\InfoModel.cs" />
     <Compile Include="Models\LoginModel.cs" />

@@ -2,17 +2,17 @@
 @Html.HiddenFor(x => x.QuestionId)
 @Html.HiddenFor(x => x.UserId)
 <div class="form-group">
-    @Html.LabelFor(x => x.QuestionText, "Question", new { @class = "col-md-3 control-label" })
+    @Html.LabelFor(x => x.QuestionText, "Question", new {@class = "col-md-3 control-label"})
     <div class="col-md-9">
-        @Html.TextBoxFor(x => x.QuestionText, new { @class = "form-control modal-control", placeholder = "What's your question?" })
-        @Html.ValidationMessageFor(x => x.QuestionText, "", new { @class = "help-block label label-danger pull-right" })
+        @Html.TextBoxFor(x => x.QuestionText, new {@class = "form-control modal-control", placeholder = "What's your question?"})
+        @Html.ValidationMessageFor(x => x.QuestionText, "", new {@class = "help-block label label-danger pull-right"})
     </div>
 </div>
 <div class="form-group">
-    @Html.LabelFor(x => x.QuestionDescription, "Description", new { @class = "col-md-3 control-label" })
+    @Html.LabelFor(x => x.QuestionDescription, "Description", new {@class = "col-md-3 control-label"})
     <div class="col-md-9">
-        @Html.TextBoxFor(x => x.QuestionDescription, new { @class = "form-control", placeholder = "Add some context" })
-        @Html.ValidationMessageFor(x => x.QuestionDescription, "", new { @class = "help-block label label-danger pull-right" })
+        @Html.TextBoxFor(x => x.QuestionDescription, new {@class = "form-control", placeholder = "Add some context"})
+        @Html.ValidationMessageFor(x => x.QuestionDescription, "", new {@class = "help-block label label-danger pull-right"})
     </div>
 </div>
 <div id="question-search-results">
@@ -20,22 +20,22 @@
     <div id="similar-questions"></div>
 </div>
 <script>
-    (function ($) {
+    (function($) {
         function getSimilarQuestions(term) {
             $.ajax({
-                url: '/Ajax/GetSimilarQuestions?term=' + term,
-                type: 'GET',
-                cache: false
-            })
-            .done(function (data) {
-                if (data.html.length > 10) {
-                    $('#similar-questions').html(data.html);
-                    $('#question-search-results').show();
-                }
-            });
+                    url: '/Ajax/GetSimilarQuestions?term=' + term,
+                    type: 'GET',
+                    cache: false
+                })
+                .done(function(data) {
+                    if (data.html.length > 10) {
+                        $('#similar-questions').html(data.html);
+                        $('#question-search-results').show();
+                    }
+                });
         }
 
-        $('#QuestionText.modal-control').keyup(function () {
+        $('#QuestionText.modal-control').keyup(function() {
             getSimilarQuestions($(this)[0].value);
         });
 

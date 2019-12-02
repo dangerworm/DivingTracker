@@ -1,5 +1,4 @@
-﻿@using System.Web.Mvc.Html
-@model IEnumerable<DivingTracker.Web.Models.TrainingModel>
+﻿@model IEnumerable<DivingTracker.Web.Models.TrainingModel>
 
 @{
     ViewBag.Title = ViewBag.SiteName + ": Qualifications and Training";
@@ -41,9 +40,9 @@
 @section Scripts
 {
     <script language="javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             $(".open-close").on("click",
-                function () {
+                function() {
                     $("div.module-users#" + this.classList[1]).slideToggle();
                     $("div.module-table#" + this.classList[1]).slideToggle();
                     $("th.user-name." + this.classList[1]).fadeToggle();

@@ -9,9 +9,7 @@ namespace CommonCode.BusinessLayer
         public TConnection GetConnection()
         {
             if (_connection == null)
-            {
                 throw new InvalidOperationException("You must call Begin() before you can access the connection.");
-            }
 
             // Dapper closes the connection after each call.
             // We can tell the difference between our operations and Dapper's because
@@ -35,10 +33,7 @@ namespace CommonCode.BusinessLayer
         public IUnitOfWork<TConnection, TTransaction> Begin()
         {
             if (_connection != null && _connection.State != ConnectionState.Closed)
-            {
                 return this;
-                //throw new InvalidOperationException("Unit of Work has already been started. You must call End() before calling Begin() again.");
-            }
 
             _connection = (TConnection)_connectionFactory.Make(_connectionString);
             _connection.Open();
@@ -50,17 +45,13 @@ namespace CommonCode.BusinessLayer
         public void End()
         {
             if (_connection == null)
-            {
                 throw new InvalidOperationException(
                     "Unit of work has not been started. You must call Begin() before calling End().");
-            }
 
             if (_connection.State != ConnectionState.Open)
             {
                 if (_transaction != null)
-                {
                     EndTransaction();
-                }
 
                 _connection.Close();
             }

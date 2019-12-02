@@ -10,19 +10,19 @@
 </ul>
 
 <script>
-    (function ($) {
-        $('.answer-description').click(function () {
+    (function($) {
+        $('.answer-description').click(function() {
             $('#AnswerText')[0].value = $(this)[0].innerText;
             $.ajax({
-                url: '/Ajax/GetWikipediaContent?pageId=' + $(this).attr('aria-label'),
-                type: 'GET',
-                cache: false
-            })
-            .done(function (data) {
-                $('#wikipedia-page')[0].innerHTML = data.content;
-                $('#wikipedia-page-container').show();
-                $('#AnswerDescription')[0].value = $('<div/>').html(data.description).text();
-            });
+                    url: '/Ajax/GetWikipediaContent?pageId=' + $(this).attr('aria-label'),
+                    type: 'GET',
+                    cache: false
+                })
+                .done(function(data) {
+                    $('#wikipedia-page')[0].innerHTML = data.content;
+                    $('#wikipedia-page-container').show();
+                    $('#AnswerDescription')[0].value = $('<div/>').html(data.description).text();
+                });
         });
         return true;
     })(jQuery);

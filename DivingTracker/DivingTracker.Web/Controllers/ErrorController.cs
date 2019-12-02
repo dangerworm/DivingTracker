@@ -12,12 +12,6 @@ namespace DivingTracker.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
         public ActionResult Error401()
         {
             return RedirectToAction("Login", "Authentication");
@@ -25,6 +19,12 @@ namespace DivingTracker.Web.Controllers
 
         [HttpGet]
         public ActionResult Error404()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult Index()
         {
             return View();
         }

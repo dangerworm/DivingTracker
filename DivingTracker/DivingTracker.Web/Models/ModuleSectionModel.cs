@@ -6,16 +6,6 @@ namespace DivingTracker.Web.Models
 {
     public class ModuleSectionModel
     {
-        public int ModuleSectionId { get; set; }
-
-        public string Name { get; set; }
-
-        public string Description { get; set; }
-
-        public ModuleModel Module { get; set; }
-
-        public IEnumerable<CriterionModel> Criteria { get; set; }
-
         public ModuleSectionModel()
         {
         }
@@ -31,5 +21,14 @@ namespace DivingTracker.Web.Models
                 .Where(x => ignoreIncludeInSyllabus || x.IncludeInSyllabus)
                 .Select(x => new CriterionModel(x));
         }
+
+        public IEnumerable<CriterionModel> Criteria { get; set; }
+
+        public string Description { get; set; }
+
+        public ModuleModel Module { get; set; }
+        public int ModuleSectionId { get; set; }
+
+        public string Name { get; set; }
     }
 }

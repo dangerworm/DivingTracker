@@ -73,7 +73,8 @@
                                                         <div class="progress">
                                                             <div class="progress-bar" role="progressbar" style="width: @module.Completeness.ToString("P")"
                                                                  aria-valuemin="0" aria-valuenow="@(module.Completeness * 100)" aria-valuemax="100"
-                                                                 data-toggle="tooltip" data-placement="top" title="@module.Completeness.ToString("P0") completed"></div>
+                                                                 data-toggle="tooltip" data-placement="top" title="@module.Completeness.ToString("P0") completed">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
@@ -92,7 +93,6 @@
                                                                     @if (moduleSection.Criteria.All(x => x.UserCriteria.All(y => y.CriterionStatus == CriterionStatuses.Complete)))
                                                                     {
                                                                         <i class="fas fa-check-circle text-success"></i>
-
                                                                     }
                                                                 </div>
                                                                 <div class="col-md-10">
@@ -100,7 +100,7 @@
                                                                 </div>
                                                             </div>
                                                         }
-                                                        <br />
+                                                        <br/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,9 +119,9 @@
 @section Scripts
 {
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('[data-toggle=tooltip]').tooltip();
-            $(".open-close").click(function () {
+            $(".open-close").click(function() {
                 $("div.collapsible." + this.classList[2]).slideToggle();
             });
         });

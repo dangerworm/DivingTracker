@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommonCode.BusinessLayer.Helpers;
-using DivingTracker.ServiceLayer;
 using Neo4j.Driver.V1;
 using Neo4jClient;
 
 namespace CommonCode.BusinessLayer
 {
-    public partial class Neo4JUnitOfWork<TConnection, TTransaction> 
+    public partial class Neo4JUnitOfWork<TConnection, TTransaction>
         : IUnitOfWork<TConnection, TTransaction>
-            where TConnection : IGraphClient
-            where TTransaction : ITransaction
+        where TConnection : IGraphClient
+        where TTransaction : ITransaction
     {
         private readonly Neo4JClientFactory _clientFactory;
         private readonly string _id;
@@ -52,9 +51,7 @@ namespace CommonCode.BusinessLayer
         public void Dispose()
         {
             if (_client != null)
-            {
                 End();
-            }
         }
 
         public override string ToString()

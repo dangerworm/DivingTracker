@@ -6,22 +6,12 @@ namespace CommonCode.BusinessLayer.Helpers
 {
     public static class BuildTableValuedParameters
     {
-        private static DataTable GetIntListTable()
-        {
-            var table = new DataTable("List");
-            table.Columns.Add("Id", typeof(int));
-
-            return table;
-        }
-
         public static DataTable BuildTable(IEnumerable<int> integers)
         {
             var table = GetIntListTable();
 
             foreach (var integer in integers)
-            {
                 table.Rows.Add(integer);
-            }
 
             return table;
         }
@@ -30,16 +20,12 @@ namespace CommonCode.BusinessLayer.Helpers
             where T : struct
         {
             if (!typeof(T).IsEnum)
-            {
                 throw new InvalidOperationException("Values must be a type of enum");
-            }
 
             var table = GetIntListTable();
 
             foreach (var value in values)
-            {
                 table.Rows.Add(value);
-            }
 
             return table;
         }
@@ -64,6 +50,14 @@ namespace CommonCode.BusinessLayer.Helpers
             var table = new DataTable("List");
             table.Columns.Add("Id", typeof(TId));
             table.Columns.Add("Value", typeof(TValue));
+
+            return table;
+        }
+
+        private static DataTable GetIntListTable()
+        {
+            var table = new DataTable("List");
+            table.Columns.Add("Id", typeof(int));
 
             return table;
         }

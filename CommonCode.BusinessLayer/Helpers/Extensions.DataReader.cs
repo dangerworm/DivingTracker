@@ -28,9 +28,7 @@ namespace CommonCode.BusinessLayer.Helpers
         private static T Get<T>(IDataRecord reader, int columnIndex, T nullValue, string columnName)
         {
             if (reader.IsDBNull(columnIndex))
-            {
                 return nullValue;
-            }
 
             // SQL char type is a string. Need to box and unbox to support generic
             if (typeof(T) == typeof(char) || typeof(T) == typeof(char?))
@@ -38,9 +36,7 @@ namespace CommonCode.BusinessLayer.Helpers
                 var stringResult = reader.GetString(columnIndex);
 
                 if (stringResult.Length == 1)
-                {
                     return (T)(object)stringResult[0];
-                }
 
                 return nullValue;
             }

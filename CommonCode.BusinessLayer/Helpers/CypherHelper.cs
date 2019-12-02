@@ -68,7 +68,8 @@ namespace CommonCode.BusinessLayer.Helpers
             var objectValues = string.Join(delimiter, elements);
 
             if (includeValues)
-                objectValues = objectValues.FormatFromDictionary(properties, !properties.Values.All(x => x.StartsWith("\"")));
+                objectValues =
+                    objectValues.FormatFromDictionary(properties, !properties.Values.All(x => x.StartsWith("\"")));
 
             return objectValues;
         }

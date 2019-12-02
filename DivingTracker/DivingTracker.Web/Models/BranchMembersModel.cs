@@ -7,6 +7,12 @@ namespace DivingTracker.Web.Models
 {
     public class BranchMembersModel
     {
+        public BranchMembersModel(IEnumerable<UserQualification> qualifications, IEnumerable<User> users)
+        {
+            BranchQualifications = GetBranchQualifications(qualifications);
+            Users = users.Select(x => new UserModel(x));
+        }
+
         public Dictionary<int, QualificationModel> BranchQualifications { get; set; }
 
         public IEnumerable<QualificationModel> DivingQualifications => BranchQualifications.Values
@@ -17,13 +23,8 @@ namespace DivingTracker.Web.Models
 
         public IEnumerable<UserModel> Users { get; set; }
 
-        public BranchMembersModel(IEnumerable<UserQualification> qualifications, IEnumerable<User> users)
-        {
-            BranchQualifications = GetBranchQualifications(qualifications);
-            Users = users.Select(x => new UserModel(x));
-        }
-
-        private static Dictionary<int, QualificationModel> GetBranchQualifications(IEnumerable<UserQualification> qualifications)
+        private static Dictionary<int, QualificationModel> GetBranchQualifications(
+            IEnumerable<UserQualification> qualifications)
         {
             var branchQualifications = new Dictionary<int, QualificationModel>();
 
@@ -32,13 +33,9 @@ namespace DivingTracker.Web.Models
                 var key = qualification.QualificationId;
 
                 if (branchQualifications.ContainsKey(key))
-                {
                     branchQualifications[key].Count += 1;
-                }
                 else
-                {
                     branchQualifications.Add(key, new QualificationModel(qualification.Qualification));
-                }
             }
 
             return branchQualifications;

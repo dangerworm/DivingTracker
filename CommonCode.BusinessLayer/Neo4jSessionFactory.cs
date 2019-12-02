@@ -1,8 +1,6 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using CommonCode.BusinessLayer.Helpers;
 using Neo4j.Driver.V1;
-using Neo4jClient;
 
 namespace DivingTracker.ServiceLayer
 {

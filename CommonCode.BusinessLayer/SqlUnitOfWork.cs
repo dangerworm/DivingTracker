@@ -1,16 +1,16 @@
-﻿using CommonCode.BusinessLayer.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using CommonCode.BusinessLayer.Helpers;
 
 namespace CommonCode.BusinessLayer
 {
-    public partial class SqlUnitOfWork<TConnection, TTransaction> 
+    public partial class SqlUnitOfWork<TConnection, TTransaction>
         : IUnitOfWork<TConnection, TTransaction>
-            where TConnection : IDbConnection
-            where TTransaction : IDbTransaction
+        where TConnection : IDbConnection
+        where TTransaction : IDbTransaction
     {
         private readonly DbConnectionFactory _connectionFactory;
         private readonly string _connectionString;
@@ -50,14 +50,10 @@ namespace CommonCode.BusinessLayer
         public void Dispose()
         {
             if (_transaction != null)
-            {
                 EndTransaction();
-            }
 
             if (_connection != null)
-            {
                 End();
-            }
         }
 
         public override string ToString()

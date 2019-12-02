@@ -87,29 +87,26 @@ namespace DivingTracker.Web.Infrastructure
                 .WithServiceAllInterfaces()
                 .LifestyleTransient());
 
-            var controllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(Controller)).ToList();
+            var controllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(Controller))
+                .ToList();
             foreach (var controller in controllers)
-            {
                 container.Register(Component
                     .For(controller)
                     .LifestyleTransient());
-            }
 
-            var baseControllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(BaseController)).ToList();
+            var baseControllers = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(x => x.BaseType == typeof(BaseController)).ToList();
             foreach (var controller in baseControllers)
-            {
                 container.Register(Component
                     .For(controller)
                     .LifestyleTransient());
-            }
 
-            var divingControllers = Assembly.GetExecutingAssembly().GetTypes().Where(x => x.BaseType == typeof(DivingTrackerBaseController)).ToList();
+            var divingControllers = Assembly.GetExecutingAssembly().GetTypes()
+                .Where(x => x.BaseType == typeof(DivingTrackerBaseController)).ToList();
             foreach (var controller in divingControllers)
-            {
                 container.Register(Component
                     .For(controller)
                     .LifestyleTransient());
-            }
         }
     }
 }

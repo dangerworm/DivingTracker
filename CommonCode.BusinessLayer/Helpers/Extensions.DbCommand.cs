@@ -9,6 +9,55 @@ namespace CommonCode.BusinessLayer.Helpers
 {
     public static partial class Extensions
     {
+        public static IDbCommand AddIntTable(this IDbCommand command, string name, IEnumerable<int> values)
+        {
+            Verify.ValidString(name, nameof(name));
+
+            var parameter = new SqlParameter(name, BuildTableValuedParameters.BuildTable(values ?? new List<int>()))
+            {
+                SqlDbType = SqlDbType.Structured
+            };
+
+            command.Parameters.Add(parameter);
+
+            return command;
+        }
+
+        public static IDbCommand AddKeyValueTable<TId, TValue>(this IDbCommand command, string name,
+            IEnumerable<KeyValuePair<TId, TValue>> list)
+        {
+            var statusParam = new SqlParameter(name,
+                BuildTableValuedParameters.BuildTable(list ?? Enumerable.Empty<KeyValuePair<TId, TValue>>()))
+            {
+                SqlDbType = SqlDbType.Structured
+            };
+
+            command.Parameters.Add(statusParam);
+
+            return command;
+        }
+
+        public static IDbDataParameter AddOutput(this IDbCommand command, string name, DbType parameterType,
+            object parameterValue = null)
+        {
+            if (parameterType != DbType.Time)
+                return parameterValue == null
+                    ? command.AddParameter(name, parameterType, ParameterDirection.Output)
+                    : command.AddParameter(name, parameterType, ParameterDirection.InputOutput, parameterValue);
+
+            var sqlParameter = new SqlParameter(name, SqlDbType.Time)
+            {
+                Direction = ParameterDirection.InputOutput
+            };
+
+            if (parameterValue != null)
+                sqlParameter.Value = parameterValue;
+
+            command.Parameters.Add(sqlParameter);
+
+            return sqlParameter;
+        }
+
         public static IDbDataParameter AddParameter(this IDbCommand command, string name, IEnumerable<int> value)
         {
             Verify.ValidString(name, nameof(name));
@@ -23,7 +72,8 @@ namespace CommonCode.BusinessLayer.Helpers
             return parameter;
         }
 
-        public static IDbDataParameter AddParameter<TEnum>(this IDbCommand command, string name, IEnumerable<TEnum> value)
+        public static IDbDataParameter AddParameter<TEnum>(this IDbCommand command, string name,
+            IEnumerable<TEnum> value)
             where TEnum : struct
         {
             Verify.ValidString(name, nameof(name));
@@ -38,7 +88,8 @@ namespace CommonCode.BusinessLayer.Helpers
             return parameter;
         }
 
-        public static IDbDataParameter AddParameter(this IDbCommand command, string name, DbType parameterType, ParameterDirection? direction = null, int? size = null)
+        public static IDbDataParameter AddParameter(this IDbCommand command, string name, DbType parameterType,
+            ParameterDirection? direction = null, int? size = null)
         {
             Verify.ValidString(name, nameof(name));
 
@@ -46,13 +97,9 @@ namespace CommonCode.BusinessLayer.Helpers
             {
                 var sqlParameter = new SqlParameter(name, SqlDbType.Time);
                 if (direction.HasValue)
-                {
                     sqlParameter.Direction = direction.Value;
-                }
                 if (size.HasValue)
-                {
                     sqlParameter.Size = size.Value;
-                }
 
                 command.Parameters.Add(sqlParameter);
 
@@ -64,21 +111,18 @@ namespace CommonCode.BusinessLayer.Helpers
             parameter.DbType = parameterType;
 
             if (direction.HasValue)
-            {
                 parameter.Direction = direction.Value;
-            }
 
             if (size.HasValue)
-            {
                 parameter.Size = size.Value;
-            }
 
             command.Parameters.Add(parameter);
 
             return parameter;
         }
 
-        public static IDbDataParameter AddParameter(this IDbCommand command, string name, DbType parameterType, ParameterDirection direction, object parameterValue)
+        public static IDbDataParameter AddParameter(this IDbCommand command, string name, DbType parameterType,
+            ParameterDirection direction, object parameterValue)
         {
             Verify.ValidString(name, nameof(name));
 
@@ -106,46 +150,6 @@ namespace CommonCode.BusinessLayer.Helpers
             return parameter;
         }
 
-        public static IDbCommand AddWithValue(this IDbCommand command, string name, DbType parameterType, object parameterValue)
-        {
-            Verify.ValidString(name, nameof(name));
-
-            if (parameterValue == null)
-            {
-                parameterValue = DBNull.Value;
-            }
-
-            command.AddParameter(name, parameterType).SetValue(parameterValue);
-
-            return command;
-        }
-
-        public static IDbCommand AddIntTable(this IDbCommand command, string name, IEnumerable<int> values)
-        {
-            Verify.ValidString(name, nameof(name));
-
-            var parameter = new SqlParameter(name, BuildTableValuedParameters.BuildTable(values ?? new List<int>()))
-            {
-                SqlDbType = SqlDbType.Structured
-            };
-
-            command.Parameters.Add(parameter);
-
-            return command;
-        }
-
-        public static IDbCommand AddKeyValueTable<TId, TValue>(this IDbCommand command, string name, IEnumerable<KeyValuePair<TId, TValue>> list)
-        {
-            var statusParam = new SqlParameter(name, BuildTableValuedParameters.BuildTable(list ?? Enumerable.Empty<KeyValuePair<TId, TValue>>()))
-            {
-                SqlDbType = SqlDbType.Structured
-            };
-
-            command.Parameters.Add(statusParam);
-
-            return command;
-        }
-
         public static IDbDataParameter AddReturnValue(this IDbCommand command)
         {
             var parameter = command.CreateParameter();
@@ -156,28 +160,17 @@ namespace CommonCode.BusinessLayer.Helpers
             return parameter;
         }
 
-        public static IDbDataParameter AddOutput(this IDbCommand command, string name, DbType parameterType, object parameterValue = null)
+        public static IDbCommand AddWithValue(this IDbCommand command, string name, DbType parameterType,
+            object parameterValue)
         {
-            if (parameterType != DbType.Time)
-            {
-                return parameterValue == null
-                    ? command.AddParameter(name, parameterType, ParameterDirection.Output)
-                    : command.AddParameter(name, parameterType, ParameterDirection.InputOutput, parameterValue);
-            }
+            Verify.ValidString(name, nameof(name));
 
-            var sqlParameter = new SqlParameter(name, SqlDbType.Time)
-            {
-                Direction = ParameterDirection.InputOutput
-            };
+            if (parameterValue == null)
+                parameterValue = DBNull.Value;
 
-            if (parameterValue != null)
-            {
-                sqlParameter.Value = parameterValue;
-            }
+            command.AddParameter(name, parameterType).SetValue(parameterValue);
 
-            command.Parameters.Add(sqlParameter);
-
-            return sqlParameter;
+            return command;
         }
 
         public static string GetDetails(this IDbCommand command)

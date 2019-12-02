@@ -12,71 +12,65 @@
     </div>
 </div>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="row">
+    <div class="col-md-6">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>User</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UserId)
+        <div class="form-horizontal">
+            <h4>User</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.UserId)
+            @Html.HiddenFor(model => model.CreatedDate)
+            @Html.Hidden("BranchId", Model.Branch.BranchId)
+            @Html.Hidden("SystemLoginId", Model.SystemLogin.SystemLoginId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.SystemRole.SystemRoleId, "Role", new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownList("SystemRoleId", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SystemRole.SystemRoleId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Surname, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DateOfBirth, new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div id="date-of-birth" class="input-group date">
+                        @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon"><i class="fa fa-calendar"> </i></span>
+                        @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SystemLogin.SystemLoginId, "SystemLoginId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("SystemLoginId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SystemLogin.SystemLoginId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SystemRole.SystemRoleId, "SystemRoleId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("SystemRoleId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SystemRole.SystemRoleId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+        }
     </div>
-}
+</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -84,4 +78,22 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/Scripts/jquery-3.1.1.js")
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.min.js")
+    @Scripts.Render("~/Scripts/moment.js")
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+            $('#date-of-birth').datetimepicker({
+                format: 'L',
+                locale: 'en-gb'
+            });
+
+            $(function () {
+                $.validator.methods.date = function (value, element) {
+                    return this.optional(element) || moment(value, "DD/MM/YYYY", true).isValid();
+                }
+            });
+        });
+    </script>
 }

@@ -6,12 +6,6 @@ namespace DivingTracker.Web.Models
 {
     public class UserQualificationModel
     {
-        public UserModel User { get; set; }
-        public QualificationModel Qualification { get; set; }
-        public QualificationTypes QualificationType { get; set; }
-
-        public DateTime? DateAwarded { get; set; }
-
         public UserQualificationModel(UserQualification userQualification)
         {
             User = new UserModel(userQualification.User);
@@ -20,5 +14,10 @@ namespace DivingTracker.Web.Models
 
             DateAwarded = userQualification.UpdatedDate;
         }
+
+        public DateTime? DateAwarded { get; set; }
+        public QualificationModel Qualification { get; set; }
+        public QualificationTypes QualificationType { get; set; }
+        public UserModel User { get; set; }
     }
 }

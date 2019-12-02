@@ -1,5 +1,4 @@
-﻿@using DivingTracker.Web.Models
-@model DivingTracker.Web.Models.TrainingModel
+﻿@model DivingTracker.Web.Models.TrainingModel
 
 @{
     ViewBag.Title = ViewBag.SiteName + ": Qualifications and Training";
@@ -41,10 +40,10 @@ else
 @section Scripts
 {
     <script language="javascript">
-        $(document).ready(function () {
-            $(".open-close").click(function () {
-                    $("div.collapsible#" + this.classList[2]).slideToggle();
-                });
+        $(document).ready(function() {
+            $(".open-close").click(function() {
+                $("div.collapsible#" + this.classList[2]).slideToggle();
+            });
         });
     </script>
 }

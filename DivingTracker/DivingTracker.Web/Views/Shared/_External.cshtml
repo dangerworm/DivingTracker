@@ -2,53 +2,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/less")
 </head>
 <body>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="container external-container">
-                <div class="card col-md-offset-3 col-md-6">
-                    <div class="row">
-                        <div class="col-xs-3 brand-bsac">
-                            <img class="bsac-logo" src="/Content/images/bsac-logo.png" />
-                        </div>
-                        <div class="col-xs-6 site-title text-center">
-                            <h2>
-                                Manchester University Sub Aqua Club<br/>
-                                Diving Tracker
-                            </h2>
-                        </div>
-                        <div class="col-xs-3 brand-musac">
-                            <img class="scubee-logo" src="/Content/images/scubee-musac-logo.jpg" />
-                        </div>
-                    @{
-                        var messages = (Collection<string>)ViewBag.Messages;
-                    }
-                    @if (messages != null && messages.Any())
-                    {
-                        <div class="col-md-12 alert alert-info">
-                            @foreach (var message in messages)
-                            {
-                                <p>message</p>
-                            }
-                        </div>
-                    }
-                    @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
-                    {
-                        <div class="col-md-12">
-                            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
-                        </div>
-                    }
-                    @RenderBody()
+<div class="row">
+<div class="col-sm-12">
+    <div class="container external-container">
+        <div class="card col-md-offset-3 col-md-6">
+            <div class="row">
+                <div class="col-xs-3 brand-bsac">
+                    <img class="bsac-logo" src="/Content/images/bsac-logo.png"/>
                 </div>
+                <div class="col-xs-6 site-title text-center">
+                    <h2>
+                        Manchester University Sub Aqua Club<br/>
+                        Diving Tracker
+                    </h2>
+                </div>
+                <div class="col-xs-3 brand-musac">
+                    <img class="scubee-logo" src="/Content/images/scubee-musac-logo.jpg"/>
+                </div>
+                @{
+                    var messages = (Collection<string>)ViewBag.Messages;
+                }
+                @if (messages != null && messages.Any())
+                {
+                    <div class="col-md-12 alert alert-info">
+                        @foreach (var message in messages)
+                        {
+                            <p>message</p>
+                        }
+                    </div>
+                }
+                @if (ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                {
+                    <div class="col-md-12">
+                        @Html.ValidationSummary(false, "", new {@class = "alert alert-danger"})
+                    </div>
+                }
+                @RenderBody()
             </div>
         </div>
     </div>
-    @Scripts.Render("~/bundles/javascript")
-    @RenderSection("Scripts", required: false)
+</div>
+@Scripts.Render("~/bundles/javascript")
+@RenderSection("Scripts", false)
 </body>
 </html>

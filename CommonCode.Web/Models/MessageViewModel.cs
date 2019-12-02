@@ -4,7 +4,7 @@
     {
         public string Class { get; set; }
         public string Message { get; set; }
-        public int TimesSeen { get; set; } = 0;
+        public int TimesSeen { get; set; }
 
         public MessageViewModel Clone()
         {

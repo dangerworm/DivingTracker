@@ -7,7 +7,9 @@
     if (Model.Answers == null || !Model.Answers.Any())
     {
         @Html.Partial("_AddAnswerButton")
-        <p class="no-answers">&nbsp; &nbsp;<i>No answers yet!</i></p>
+        <p class="no-answers">
+            &nbsp; &nbsp;<i>No answers yet!</i>
+        </p>
     }
     else
     {

@@ -1,17 +1,15 @@
-﻿using CommonCode.BusinessLayer.Helpers;
-using Dapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using CommonCode.BusinessLayer.Helpers;
+using Dapper;
 
 namespace CommonCode.BusinessLayer.Repositories
 {
     public abstract partial class SqlRepositoryBase<T>
     {
-        protected string Schema { get; set; }
-        protected string TableName { get; set; }
-
-        protected SqlRepositoryBase(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork, string tableName, string schema = "dbo")
+        protected SqlRepositoryBase(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork, string tableName,
+            string schema = "dbo")
         {
             Verify.NotNull(unitOfWork, nameof(unitOfWork));
             Verify.ValidString(tableName, nameof(tableName));
@@ -21,12 +19,8 @@ namespace CommonCode.BusinessLayer.Repositories
             Schema = schema;
         }
 
-        protected void Initialise(string tableName)
-        {
-            Verify.ValidString(tableName, nameof(tableName));
-
-            TableName = tableName;
-        }
+        protected string Schema { get; set; }
+        protected string TableName { get; set; }
 
         public virtual DataResult<T> Create(T value)
         {
@@ -94,16 +88,12 @@ namespace CommonCode.BusinessLayer.Repositories
             var properties = typeof(T).GetProperties();
 
             if (propertyNames != null)
-            {
                 properties = properties.Where(p => propertyNames.Contains(p.Name)).ToArray();
-            }
 
             foreach (var property in properties)
             {
                 if (property.Name.Equals("Id"))
-                {
                     continue;
-                }
 
                 DbType dbType;
                 switch (property.PropertyType.Name)
@@ -143,6 +133,13 @@ namespace CommonCode.BusinessLayer.Repositories
 
                 parameters.Add($"@{property.Name}", property.GetGetMethod().Invoke(value, null), dbType);
             }
+        }
+
+        protected void Initialise(string tableName)
+        {
+            Verify.ValidString(tableName, nameof(tableName));
+
+            TableName = tableName;
         }
     }
 }

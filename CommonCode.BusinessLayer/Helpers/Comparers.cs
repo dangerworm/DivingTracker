@@ -18,14 +18,10 @@ namespace CommonCode.BusinessLayer.Helpers
             }
 
             if (s1IsNumeric && !s2IsNumeric)
-            {
                 return -1;
-            }
 
             if (!s1IsNumeric && s2IsNumeric)
-            {
                 return 1;
-            }
 
             return string.Compare(s1, s2, StringComparison.OrdinalIgnoreCase);
         }

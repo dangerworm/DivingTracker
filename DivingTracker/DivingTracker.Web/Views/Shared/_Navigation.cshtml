@@ -9,23 +9,49 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="@Url.Action("Index", "Home", new { area = "" })" class="navbar-brand"><img class="scubee-logo-nav" src="/Content/images/scubee-musac-logo.jpg" /></a>
+            <a href="@Url.Action("Index", "Home", new {area = ""})" class="navbar-brand">
+                <img class="scubee-logo-nav" src="/Content/images/scubee-musac-logo.jpg"/>
+            </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav col-sm-10 expand-right">
-                <li><a href="@Url.Action("Index", "Home", new {area = ""})"><i class="fas fa-home fa-2x fa-fw"></i><span>Home</span></a></li>
-                <li><a href="@Url.Action("Details", "Members", new {area = "", id = ViewBag.CurrentUserId})"><i class="fas fa-user fa-2x fa-fw"></i><span>My Details</span></a></li>
-                
+                <li>
+                    <a href="@Url.Action("Index", "Home", new {area = ""})">
+                        <i class="fas fa-home fa-2x fa-fw"></i><span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Details", "Members", new {area = "", id = ViewBag.CurrentUserId})">
+                        <i class="fas fa-user fa-2x fa-fw"></i><span>My Details</span>
+                    </a>
+                </li>
+
                 @if ((ViewBag.CurrentUser as User).SystemRoleId > (int)SystemRoles.Student)
                 {
-                    <li><a href="@Url.Action("Index", "Members", new {area = ""})"><i class="fas fa-users fa-2x fa-fw"></i><span>Branch Members</span></a></li>
-                    <li><a href="@Url.Action("Index", "Training", new {area = ""})"><i class="fas fa-chalkboard-teacher fa-2x fa-fw"></i><span>Training</span></a></li>
+                    <li>
+                        <a href="@Url.Action("Index", "Members", new {area = ""})">
+                            <i class="fas fa-users fa-2x fa-fw"></i><span>Branch Members</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Training", new {area = ""})">
+                            <i class="fas fa-chalkboard-teacher fa-2x fa-fw"></i><span>Training</span>
+                        </a>
+                    </li>
                 }
-                <li><a href="@Url.Action("Info", "Home", new {area = ""})"><i class="fas fa-info fa-2x fa-fw"></i><span>Useful Info</span></a></li>
-                <li><a href="@Url.Action("Logout", "Authentication", new {area = ""})" class="sublink"><i class="fas fa-sign-out-alt fa-2x fa-fw"></i><span>Logout</span></a></li>
+                <li>
+                    <a href="@Url.Action("Info", "Home", new {area = ""})">
+                        <i class="fas fa-info fa-2x fa-fw"></i><span>Useful Info</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Logout", "Authentication", new {area = ""})" class="sublink">
+                        <i class="fas fa-sign-out-alt fa-2x fa-fw"></i><span>Logout</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
-<br />
-<br />
+<br/>
+<br/>

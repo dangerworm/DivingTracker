@@ -3,31 +3,28 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 
 namespace CommonCode.BusinessLayer.Helpers
 {
     public static class EnumUtils<T>
     {
-        public static IList<T> GetValues(Enum value)
+        public static string GetDisplayValue(T value)
         {
-            var enumValues = new List<T>();
+            var fieldInfo = value.GetType().GetField(value.ToString());
 
-            foreach (FieldInfo fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
-            {
-                enumValues.Add((T)Enum.Parse(value.GetType(), fi.Name, false));
-            }
+            var descriptionAttributes =
+                fieldInfo?.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
 
-            return enumValues;
-        }
+            if (descriptionAttributes == null)
+                return string.Empty;
 
-        public static T Parse(string value)
-        {
-            return (T)Enum.Parse(typeof(T), value, true);
-        }
+            if (descriptionAttributes.Length > 0 && descriptionAttributes[0].ResourceType != null)
+                return LookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
 
-        public static IList<string> GetNames(Enum value)
-        {
-            return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
+            return descriptionAttributes.Length > 0
+                ? descriptionAttributes[0].Name
+                : value.ToString();
         }
 
         public static IList<string> GetDisplayValues(Enum value)
@@ -35,41 +32,39 @@ namespace CommonCode.BusinessLayer.Helpers
             return GetNames(value).Select(x => GetDisplayValue(Parse(x))).ToList();
         }
 
-        public static string GetDisplayValue(T value)
+        public static IList<string> GetNames(Enum value)
         {
-            var fieldInfo = value.GetType().GetField(value.ToString());
+            return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
+        }
 
-            var descriptionAttributes = fieldInfo?.GetCustomAttributes(typeof(DisplayAttribute), false) as DisplayAttribute[];
+        public static IList<T> GetValues(Enum value)
+        {
+            var enumValues = new List<T>();
 
-            if (descriptionAttributes == null)
-            {
-                return string.Empty;
-            }
+            foreach (var fi in value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public))
+                enumValues.Add((T)Enum.Parse(value.GetType(), fi.Name, false));
 
-            if (descriptionAttributes.Length > 0 && descriptionAttributes[0].ResourceType != null)
-            {
-                return LookupResource(descriptionAttributes[0].ResourceType, descriptionAttributes[0].Name);
-            }
-
-            return descriptionAttributes.Length > 0
-                ? descriptionAttributes[0].Name
-                : value.ToString();
+            return enumValues;
         }
 
         private static string LookupResource(IReflect resourceManagerProvider, string resourceKey)
         {
-            foreach (var staticProperty in resourceManagerProvider.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
+            foreach (var staticProperty in resourceManagerProvider.GetProperties(
+                BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
             {
-                if (staticProperty.PropertyType != typeof(System.Resources.ResourceManager))
-                {
+                if (staticProperty.PropertyType != typeof(ResourceManager))
                     continue;
-                }
 
-                System.Resources.ResourceManager resourceManager = (System.Resources.ResourceManager)staticProperty.GetValue(null, null);
+                var resourceManager = (ResourceManager)staticProperty.GetValue(null, null);
                 return resourceManager.GetString(resourceKey);
             }
 
             return resourceKey;
+        }
+
+        public static T Parse(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
         }
     }
 }

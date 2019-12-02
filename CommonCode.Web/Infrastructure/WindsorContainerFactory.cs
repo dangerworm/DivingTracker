@@ -11,9 +11,7 @@ namespace CommonCode.Web.Infrastructure
         public static IWindsorContainer Current(IWindsorInstaller windsorInstaller)
         {
             if (_container != null)
-            {
                 return _container;
-            }
 
             lock (SyncObject)
             {

@@ -14,13 +14,9 @@ namespace CommonCode.BusinessLayer.Helpers
             where T : struct
         {
             if (value.HasValue)
-            {
                 parameter.Value = value.Value;
-            }
             else
-            {
                 parameter.Value = DBNull.Value;
-            }
         }
     }
 }

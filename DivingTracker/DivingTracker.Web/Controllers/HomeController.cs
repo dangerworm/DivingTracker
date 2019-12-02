@@ -17,10 +17,14 @@ namespace DivingTracker.Web.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var qualificationsCompleted = DatabaseContext.UserQualifications.Where(x => x.UserId == CurrentUserId).Select(x => x.Qualification);
+            var qualificationsCompleted = DatabaseContext.UserQualifications.Where(x => x.UserId == CurrentUserId)
+                .Select(x => x.Qualification);
 
-            var trainingModuleIds = DatabaseContext.UserCriterions.Where(x => x.UserId == CurrentUserId).Select(x => x.Criterion.ModuleSection.Module.ModuleId);
-            var qualificationsInProgress = DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != CurrentUserId) && x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
+            var trainingModuleIds = DatabaseContext.UserCriterions.Where(x => x.UserId == CurrentUserId)
+                .Select(x => x.Criterion.ModuleSection.Module.ModuleId);
+            var qualificationsInProgress =
+                DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != CurrentUserId) &&
+                                                          x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
 
             var model = new UserQualificationsModel(CurrentUser, qualificationsCompleted, qualificationsInProgress);
             return View(model);
@@ -31,9 +35,7 @@ namespace DivingTracker.Web.Controllers
         {
             var branch = DatabaseContext.Branches.Find(CurrentUser.BranchId);
             if (branch == null)
-            {
                 return HttpNotFound();
-            }
 
             var model = new InfoModel(CurrentUser, branch);
             return View(model);

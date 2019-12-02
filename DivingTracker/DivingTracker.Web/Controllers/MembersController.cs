@@ -16,34 +16,48 @@ namespace DivingTracker.Web.Controllers
         {
         }
 
-        [AuthoriseRoles(SystemRoles.Admin, SystemRoles.Instructor)]
-        public ActionResult Index()
+        [AuthoriseRoles(SystemRoles.Admin)]
+        public ActionResult Delete(int? id)
         {
-            var userQualifications = DatabaseContext.UserQualifications;
-            var users = DatabaseContext.Users;
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var model = new BranchMembersModel(userQualifications, users);
+            var user = DatabaseContext.Users.Find(id);
+            if (user == null)
+                return HttpNotFound();
+            return View(user);
+        }
 
-            return View(model);
+        [AuthoriseRoles(SystemRoles.Admin)]
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var user = DatabaseContext.Users.Find(id);
+            DatabaseContext.Users.Remove(user);
+            DatabaseContext.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Details(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
             var user = DatabaseContext.Users.Find(id);
             if (user == null)
-            {
                 return HttpNotFound();
-            }
 
-            var qualificationsCompleted = DatabaseContext.UserQualifications.Where(x => x.UserId == id).Select(x => x.Qualification);
+            var qualificationsCompleted = DatabaseContext.UserQualifications.Where(x => x.UserId == id)
+                .Select(x => x.Qualification);
 
-            var trainingModuleIds = DatabaseContext.UserCriterions.Where(x => x.UserId == id).Select(x => x.Criterion.ModuleSection.Module.ModuleId);
-            var qualificationsInProgress = DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != id) && x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
+            var trainingModuleIds = DatabaseContext.UserCriterions.Where(x => x.UserId == id)
+                .Select(x => x.Criterion.ModuleSection.Module.ModuleId);
+            var qualificationsInProgress =
+                DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != id) &&
+                                                          x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));
 
             var model = new UserQualificationsModel(user, qualificationsCompleted, qualificationsInProgress);
             return View(model);
@@ -53,20 +67,16 @@ namespace DivingTracker.Web.Controllers
         public ActionResult Edit(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
             var user = DatabaseContext.Users.Find(id);
             if (user == null)
-            {
                 return HttpNotFound();
-            }
 
             var model = new UserModel(user);
 
-            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
-            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles.Where(x => x.SystemRoleId > 0), "SystemRoleId", "Description", user.SystemRoleId);
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles, "SystemRoleId", "Description",
+                user.SystemRoleId);
             ViewBag.UserId = new SelectList(DatabaseContext.UserCriterions, "UserId", "UserId", user.UserId);
 
             return View(model);
@@ -77,7 +87,7 @@ namespace DivingTracker.Web.Controllers
         [HttpPost]
         [AuthoriseRoles(SystemRoles.Admin)]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
+        public ActionResult Edit([Bind(Include = "UserId,SystemLoginId,SystemRoleId,FirstName,Surname,DateOfBirth")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -86,40 +96,29 @@ namespace DivingTracker.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SystemLoginId = new SelectList(DatabaseContext.SystemLogins, "SystemLoginId", "EmailAddress", user.SystemLoginId);
-            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles.Where(x => x.SystemRoleId > 0), "SystemRoleId", "Description", user.SystemRoleId);
+            var dbUser = DatabaseContext.Users.Find(user.UserId);
+            if (dbUser == null)
+                return HttpNotFound();
+
+            user.SystemLogin = dbUser.SystemLogin;
+
+            ViewBag.SystemRoleId = new SelectList(DatabaseContext.SystemRoles.Where(x => x.SystemRoleId > 0),
+                "SystemRoleId", "Description", user.SystemRoleId);
             ViewBag.UserId = new SelectList(DatabaseContext.UserCriterions, "UserId", "UserId", user.UserId);
 
             var model = new UserModel(user);
             return View(model);
         }
 
-        [AuthoriseRoles(SystemRoles.Admin)]
-        public ActionResult Delete(int? id)
+        [AuthoriseRoles(SystemRoles.Admin, SystemRoles.Instructor)]
+        public ActionResult Index()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            var userQualifications = DatabaseContext.UserQualifications;
+            var users = DatabaseContext.Users;
 
-            var user = DatabaseContext.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
-        }
+            var model = new BranchMembersModel(userQualifications, users);
 
-        [AuthoriseRoles(SystemRoles.Admin)]
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            User user = DatabaseContext.Users.Find(id);
-            DatabaseContext.Users.Remove(user);
-            DatabaseContext.SaveChanges();
-
-            return RedirectToAction("Index");
+            return View(model);
         }
     }
 }

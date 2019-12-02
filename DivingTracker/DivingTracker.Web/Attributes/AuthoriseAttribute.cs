@@ -16,7 +16,7 @@ namespace DivingTracker.Web.Attributes
 
             return base.AuthorizeCore(httpContext);
         }
-        
+
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             base.HandleUnauthorizedRequest(filterContext);

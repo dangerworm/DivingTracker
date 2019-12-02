@@ -6,12 +6,6 @@ namespace DivingTracker.Web.Models
 {
     public class TrainingModuleModel
     {
-        public ModuleModel Module { get; set; }
-
-        public UserModel[] Users { get; set; }
-
-        public UserCriterionModel[] UserCriteria { get; set; }
-
         public TrainingModuleModel(Module module, bool ignoreIncludeInSyllabus = false)
         {
             Module = new ModuleModel(module, ignoreIncludeInSyllabus);
@@ -19,5 +13,11 @@ namespace DivingTracker.Web.Models
                 .Select(x => new UserCriterionModel(x)).ToArray();
             Users = UserCriteria.Select(x => x.User).Distinct(new UserModelComparer()).ToArray();
         }
+
+        public ModuleModel Module { get; set; }
+
+        public UserCriterionModel[] UserCriteria { get; set; }
+
+        public UserModel[] Users { get; set; }
     }
 }

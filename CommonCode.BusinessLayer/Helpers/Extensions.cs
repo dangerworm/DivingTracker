@@ -13,11 +13,6 @@ namespace CommonCode.BusinessLayer.Helpers
             return SecurityElement.Escape(value);
         }
 
-        public static string Unescape(this string value)
-        {
-            return SecurityElement.FromString($"<xml>{value}</xml>")?.Text ?? "";
-        }
-
         public static string FormatFromDictionary(this string formatString, Dictionary<string, string> values,
             bool surroundWithQuotes = false)
         {
@@ -32,7 +27,8 @@ namespace CommonCode.BusinessLayer.Helpers
                 i++;
             }
 
-            var orderedValues = values.OrderBy(x => keyToInt[x.Key]).Select(x => surroundWithQuotes ? $"\"{x.Value}\"" : x.Value as object).ToArray();
+            var orderedValues = values.OrderBy(x => keyToInt[x.Key])
+                .Select(x => surroundWithQuotes ? $"\"{x.Value}\"" : x.Value as object).ToArray();
             return string.Format(newFormatString.ToString(), orderedValues);
         }
 
@@ -43,7 +39,8 @@ namespace CommonCode.BusinessLayer.Helpers
 
         public static bool IsNumeric(this object value)
         {
-            return !string.IsNullOrWhiteSpace(value.ToString()) && value.ToString().Replace(",", "").Replace(".", "").All(char.IsDigit);
+            return !string.IsNullOrWhiteSpace(value.ToString()) &&
+                   value.ToString().Replace(",", "").Replace(".", "").All(char.IsDigit);
         }
 
         public static string ToSentenceCase(this string input)
@@ -58,14 +55,10 @@ namespace CommonCode.BusinessLayer.Helpers
                 var indexToCapitalise = 0;
                 while (indexToCapitalise < newSentence.Length &&
                        newSentence[indexToCapitalise].IsAny("\"'()*@".ToCharArray()))
-                {
                     indexToCapitalise++;
-                }
 
                 if (builder.Length > 0)
-                {
                     builder.Append(" ");
-                }
 
                 if (indexToCapitalise == newSentence.Length)
                 {
@@ -74,9 +67,7 @@ namespace CommonCode.BusinessLayer.Helpers
                 }
 
                 if (indexToCapitalise > 0)
-                {
                     builder.Append(newSentence.Substring(0, indexToCapitalise));
-                }
 
                 builder.Append(newSentence[indexToCapitalise].ToString().ToUpper());
 
@@ -84,6 +75,11 @@ namespace CommonCode.BusinessLayer.Helpers
             }
 
             return builder.ToString();
+        }
+
+        public static string Unescape(this string value)
+        {
+            return SecurityElement.FromString($"<xml>{value}</xml>")?.Text ?? "";
         }
     }
 }

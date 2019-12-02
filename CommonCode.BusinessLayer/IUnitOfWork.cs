@@ -4,25 +4,29 @@ namespace CommonCode.BusinessLayer
 {
     public interface IUnitOfWork<TConnection, TTransaction>
     {
+        // DataResults
+        void AddDataResult(DataResult result);
+
+        IUnitOfWork<TConnection, TTransaction> Begin();
+        void BeginTransaction();
+        void Commit();
+
+        void Dispose();
+        void End();
+        void EndTransaction();
+
+        IReadOnlyCollection<DataResult> GetAllDataResults();
+
         // Connection handling
         TConnection GetConnection();
-        bool HasConnectionOrSession();
-        IUnitOfWork<TConnection, TTransaction> Begin();
-        void End();
+
+        DataResult GetLastDataResult();
 
         // Transaction handling
         TTransaction GetTransaction();
-        void BeginTransaction();
+
+        bool HasConnectionOrSession();
         bool IsSuccess();
-        void Commit();
         void Rollback();
-        void EndTransaction();
-
-        // DataResults
-        void AddDataResult(DataResult result);
-        IReadOnlyCollection<DataResult> GetAllDataResults();
-        DataResult GetLastDataResult();
-
-        void Dispose();
     }
 }

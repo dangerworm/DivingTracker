@@ -6,10 +6,6 @@ namespace DivingTracker.Web.Models
 {
     public class EnrolModel
     {
-        public UserModel User { get; set; }
-
-        public EnrolPostModel[] EnrolPostModels { get; set; }
-
         public EnrolModel()
         {
         }
@@ -19,5 +15,8 @@ namespace DivingTracker.Web.Models
             User = new UserModel(user);
             EnrolPostModels = qualifications.Select(x => new EnrolPostModel(user.UserId, x)).ToArray();
         }
+
+        public EnrolPostModel[] EnrolPostModels { get; set; }
+        public UserModel User { get; set; }
     }
 }

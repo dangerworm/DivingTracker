@@ -1,11 +1,11 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System;
+using System.Data;
 using System.Linq;
 using System.Net.Mail;
 using CommonCode.BusinessLayer;
-using DivingTracker.ServiceLayer.Enums;
 using CommonCode.BusinessLayer.Helpers;
 using CommonCode.BusinessLayer.Services;
+using DivingTracker.ServiceLayer.Enums;
 using DivingTracker.ServiceLayer.Interfaces;
 using DivingTracker.ServiceLayer.Workflows;
 
@@ -40,9 +40,7 @@ namespace DivingTracker.ServiceLayer.Services
                 case EmailType.ConfirmEmail:
                     var emailsResult = _emailWorkflow.GetConfirmationEmail(userIds);
                     if (emailsResult.Type != DataResultType.Success)
-                    {
                         return emailsResult;
-                    }
                     emails = emailsResult.Value;
                     break;
             }
@@ -50,16 +48,14 @@ namespace DivingTracker.ServiceLayer.Services
             UnitOfWork.End();
 
             foreach (var email in emails)
-            {
                 _smtpClient.Send(email);
-            }
 
             return new DataResult(DataResultType.Success, "Emails sent successfully.");
         }
 
         public DataResult Send(EmailType emailType, string subject, string body)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

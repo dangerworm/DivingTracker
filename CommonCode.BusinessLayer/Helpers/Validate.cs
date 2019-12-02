@@ -1,4 +1,6 @@
-﻿namespace CommonCode.BusinessLayer.Helpers
+﻿using System.Net.Mail;
+
+namespace CommonCode.BusinessLayer.Helpers
 {
     public static class Validate
     {
@@ -6,7 +8,7 @@
         {
             try
             {
-                return new System.Net.Mail.MailAddress(address).Address.Equals(address);
+                return new MailAddress(address).Address.Equals(address);
             }
             catch
             {

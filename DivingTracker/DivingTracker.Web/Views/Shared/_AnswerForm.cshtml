@@ -5,18 +5,18 @@
 @Html.HiddenFor(x => x.QuestionId)
 
 <div class="form-group">
-    @Html.LabelFor(x => x.AnswerText, "Answer", new { @class = "col-md-3 control-label" })
+    @Html.LabelFor(x => x.AnswerText, "Answer", new {@class = "col-md-3 control-label"})
     <div class="col-md-9">
-        @Html.TextBoxFor(x => x.AnswerText, new { @class = "form-control", placeholder = "What's your answer?" })
-        @Html.ValidationMessageFor(x => x.AnswerText, "", new { @class = "help-block label label-danger pull-right" })
+        @Html.TextBoxFor(x => x.AnswerText, new {@class = "form-control", placeholder = "What's your answer?"})
+        @Html.ValidationMessageFor(x => x.AnswerText, "", new {@class = "help-block label label-danger pull-right"})
     </div>
 </div>
 @Html.HiddenFor(x => x.ResourceIdentifier)
 <div class="form-group">
-    @Html.LabelFor(x => x.AnswerDescription, "Description", new { @class = "col-md-3 control-label" })
+    @Html.LabelFor(x => x.AnswerDescription, "Description", new {@class = "col-md-3 control-label"})
     <div class="col-md-9">
-        @Html.TextBoxFor(x => x.AnswerDescription, new { @class = "form-control", placeholder = "Add some context" })
-        @Html.ValidationMessageFor(x => x.AnswerDescription, "", new { @class = "help-block label label-danger pull-right" })
+        @Html.TextBoxFor(x => x.AnswerDescription, new {@class = "form-control", placeholder = "Add some context"})
+        @Html.ValidationMessageFor(x => x.AnswerDescription, "", new {@class = "help-block label label-danger pull-right"})
     </div>
 </div>
 <div id="wikipedia-search-results"></div>
@@ -25,14 +25,14 @@
     <div id="wikipedia-page"></div>
 </div>
 <script>
-    (function ($) {
-        $('#AnswerText').keyup(function () {
+    (function($) {
+        $('#AnswerText').keyup(function() {
             $.ajax({
-                url: '/Ajax/SearchWikipedia?query=' + $(this)[0].value,
-                type: 'GET',
-                cache: false
-            })
-                .done(function (data) {
+                    url: '/Ajax/SearchWikipedia?query=' + $(this)[0].value,
+                    type: 'GET',
+                    cache: false
+                })
+                .done(function(data) {
                     $('#wikipedia-search-results').html(data.html);
                 });
         });

@@ -15,51 +15,51 @@
                 <div id="module-@module.ModuleId" class="col-md-12 headed-item collapsible">
                     <table class="table user-qualifications">
                         <thead>
-                            <tr>
-                                <th class="module-header">
-                                    <span>&nbsp;</span>
+                        <tr>
+                            <th class="module-header">
+                                <span>&nbsp;</span>
+                            </th>
+                            @foreach (var user in Model.Users)
+                            {
+                                <th class="user-name">
+                                    <p>@user.Name</p>
                                 </th>
-                                @foreach (var user in Model.Users)
-                                {
-                                    <th class="user-name">
-                                        <p>@user.Name</p>
-                                    </th>
-                                }
-                            </tr>
+                            }
+                        </tr>
                         </thead>
                         <tbody>
-                            @foreach (var moduleSection in module.ModuleSections)
+                        @foreach (var moduleSection in module.ModuleSections)
+                        {
+                            <tr>
+                                <td colspan="@(Model.Users.Length + 1) training-status">
+                                    <h3>@moduleSection.Name</h3>
+                                </td>
+                            </tr>
+
+                            foreach (var criterion in moduleSection.Criteria)
                             {
                                 <tr>
-                                    <td colspan="@(Model.Users.Length + 1) training-status">
-                                        <h3>@moduleSection.Name</h3>
+                                    <td class="module-header">
+                                        @criterion.Description
                                     </td>
-                                </tr>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        var userData = criterion.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
 
-                                foreach (var criterion in moduleSection.Criteria)
-                                {
-                                    <tr>
-                                        <td class="module-header">
-                                            @criterion.Description
+                                        <td class="training-status">
+                                            @if (userData != null)
+                                            {
+                                                <i class="@userData.CriterionStatusGlyph"></i>
+                                            }
+                                            else
+                                            {
+                                                <text>&nbsp;</text>
+                                            }
                                         </td>
-                                        @foreach (var user in Model.Users)
-                                        {
-                                            var userData = criterion.UserCriteria.FirstOrDefault(x => x.User.UserId == user.UserId && x.CriterionId == criterion.CriterionId);
-
-                                            <td class="training-status">
-                                                @if (userData != null)
-                                                {
-                                                    <i class="@userData.CriterionStatusGlyph"></i>
-                                                }
-                                                else
-                                                {
-                                                    <text>&nbsp;</text>
-                                                }
-                                            </td>
-                                        }
-                                    </tr>
-                                }
+                                    }
+                                </tr>
                             }
+                        }
                         </tbody>
                     </table>
                 </div>

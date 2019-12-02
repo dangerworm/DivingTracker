@@ -1,7 +1,7 @@
-﻿using CommonCode.BusinessLayer.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using CommonCode.BusinessLayer.Helpers;
 
 namespace CommonCode.BusinessLayer
 {
@@ -21,16 +21,10 @@ namespace CommonCode.BusinessLayer
         public void Add(NameValueCollection collection, string prefix)
         {
             if (string.IsNullOrWhiteSpace(prefix))
-            {
                 Add(collection);
-            }
             else
-            {
                 foreach (var key in collection.AllKeys)
-                {
                     Add(key, collection[key], prefix);
-                }
-            }
         }
 
         public void AddRange(ValidationCollection validationCollection)
@@ -45,9 +39,19 @@ namespace CommonCode.BusinessLayer
             return AllKeys.Any(x => KeyMatches(x, key));
         }
 
+        public IEnumerable<string> GetErrors()
+        {
+            return AllKeys.Select(key => this[key]);
+        }
+
         public bool IsValidField(string key)
         {
             return !ContainsKey(key);
+        }
+
+        private static bool KeyMatches(string key, string value)
+        {
+            return key == value || key.EndsWith($".{value}");
         }
 
         public new void Remove(string key)
@@ -55,19 +59,7 @@ namespace CommonCode.BusinessLayer
             var keys = AllKeys.Where(x => KeyMatches(x, key));
 
             foreach (var keyName in keys)
-            {
                 base.Remove(keyName);
-            }
-        }
-
-        public IEnumerable<string> GetErrors()
-        {
-            return AllKeys.Select(key => this[key]);
-        }
-
-        private static bool KeyMatches(string key, string value)
-        {
-            return key == value || key.EndsWith($".{value}");
         }
     }
 }

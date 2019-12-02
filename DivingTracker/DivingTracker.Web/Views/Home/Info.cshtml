@@ -1,5 +1,4 @@
-﻿@using DivingTracker.ServiceLayer.Enums
-@model DivingTracker.Web.Models.InfoModel
+﻿@model DivingTracker.Web.Models.InfoModel
 @{
     ViewBag.Title = ViewBag.SiteName + ": Useful Info";
 }
@@ -18,16 +17,20 @@
                     <h2>People</h2>
                 </div>
                 <div class="col-md-12 headed-item">
-                    <h3><i class="fas fa-user-tie fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.President)</h3>
+                    <h3>
+                        <i class="fas fa-user-tie fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.President)</h3>
                     <p>@Model.Branch.President.Name</p>
 
-                    <h3><i class="far fa-clipboard fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.Secretary)</h3>
+                    <h3>
+                        <i class="far fa-clipboard fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.Secretary)</h3>
                     <p>@Model.Branch.Secretary.Name</p>
 
-                    <h3><i class="fas fa-coins fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.Treasurer)</h3>
+                    <h3>
+                        <i class="fas fa-coins fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.Treasurer)</h3>
                     <p>@Model.Branch.Treasurer.Name</p>
 
-                    <h3><i class="fas fa-id-card-alt fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.DivingOfficer)</h3>
+                    <h3>
+                        <i class="fas fa-id-card-alt fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.DivingOfficer)</h3>
                     <p>@Model.Branch.DivingOfficer.Name</p>
                 </div>
             </div>
@@ -42,17 +45,23 @@
                 <div class="col-md-12 headed-item">
                     @if (!string.IsNullOrWhiteSpace(Model.Branch.ContactEmail))
                     {
-                        <h3><i class="fas fa-envelope fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.ContactEmail) </h3>
+                        <h3>
+                            <i class="fas fa-envelope fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.ContactEmail)
+                        </h3>
                         <p>@Model.Branch.ContactEmail</p>
                     }
                     @if (!string.IsNullOrWhiteSpace(Model.Branch.ContactLandLine))
                     {
-                        <h3><i class="fas fa-phone fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.ContactLandLine) </h3>
+                        <h3>
+                            <i class="fas fa-phone fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.ContactLandLine)
+                        </h3>
                         <p>@Model.Branch.ContactLandLine</p>
                     }
                     @if (!string.IsNullOrWhiteSpace(Model.Branch.ContactMobile))
                     {
-                        <h3><i class="fas fa-mobile-alt fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.ContactMobile) </h3>
+                        <h3>
+                            <i class="fas fa-mobile-alt fa-fw"></i> @Html.DisplayNameFor(model => model.Branch.ContactMobile)
+                        </h3>
                         <p>@Model.Branch.ContactMobile</p>
                     }
                 </div>
@@ -69,49 +78,99 @@
                     <h3>@Html.DisplayNameFor(model => model.Branch.BranchAddress) </h3>
                     <p>
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.OrganisationName))
-                        {@Model.Branch.BranchAddress.OrganisationName <br />}
+                        {
+                            @Model.Branch.BranchAddress.OrganisationName
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.BuildingName))
-                        {@Model.Branch.BranchAddress.BuildingName <br />}
+                        {
+                            @Model.Branch.BranchAddress.BuildingName
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.BuildingNumber))
-                        {@Model.Branch.BranchAddress.BuildingNumber}
+                        {
+                            @Model.Branch.BranchAddress.BuildingNumber
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.Street))
-                        {@Model.Branch.BranchAddress.Street <br />}
+                        {
+                            @Model.Branch.BranchAddress.Street
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.Village))
-                        {@Model.Branch.BranchAddress.Village <br />}
+                        {
+                            @Model.Branch.BranchAddress.Village
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.Town))
-                        {@Model.Branch.BranchAddress.Town <br />}
+                        {
+                            @Model.Branch.BranchAddress.Town
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.County))
-                        {@Model.Branch.BranchAddress.County <br />}
+                        {
+                            @Model.Branch.BranchAddress.County
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.Postcode))
-                        {@Model.Branch.BranchAddress.Postcode <br />}
+                        {
+                            @Model.Branch.BranchAddress.Postcode
+                            <br/>
+                        }
 
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.GoogleMapsSearchString))
                         {
-                            <a href="@Model.Branch.BranchAddress.GoogleMapsSearchString"><strong>See it on Google Maps</strong></a>
+                            <a href="@Model.Branch.BranchAddress.GoogleMapsSearchString">
+                                <strong>See it on Google Maps</strong>
+                            </a>
                         }
                     </p>
                     <h3>@Html.DisplayNameFor(model => model.Branch.PoolAddress) </h3>
                     <p>
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.OrganisationName))
-                        {@Model.Branch.PoolAddress.OrganisationName <br />}
+                        {
+                            @Model.Branch.PoolAddress.OrganisationName
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.BuildingName))
-                        {@Model.Branch.PoolAddress.BuildingName <br />}
+                        {
+                            @Model.Branch.PoolAddress.BuildingName
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.BuildingNumber))
-                        {@Model.Branch.PoolAddress.BuildingNumber}
+                        {
+                            @Model.Branch.PoolAddress.BuildingNumber
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.Street))
-                        {@Model.Branch.PoolAddress.Street <br />}
+                        {
+                            @Model.Branch.PoolAddress.Street
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.Village))
-                        {@Model.Branch.PoolAddress.Village <br />}
+                        {
+                            @Model.Branch.PoolAddress.Village
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.Town))
-                        {@Model.Branch.PoolAddress.Town <br />}
+                        {
+                            @Model.Branch.PoolAddress.Town
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.County))
-                        {@Model.Branch.PoolAddress.County <br />}
+                        {
+                            @Model.Branch.PoolAddress.County
+                            <br/>
+                        }
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.Postcode))
-                        {@Model.Branch.PoolAddress.Postcode <br />}
+                        {
+                            @Model.Branch.PoolAddress.Postcode
+                            <br/>
+                        }
 
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.GoogleMapsSearchString))
                         {
-                            <a href="@Model.Branch.PoolAddress.GoogleMapsSearchString"><strong>See it on Google Maps</strong></a>
+                            <a href="@Model.Branch.PoolAddress.GoogleMapsSearchString">
+                                <strong>See it on Google Maps</strong>
+                            </a>
                         }
                     </p>
                 </div>
@@ -123,7 +182,7 @@
 @section Scripts
 {
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#Branch-members').DataTable({
                 "order": [[1, "asc"], [0, "asc"]],
                 "scrollY": '60vh',

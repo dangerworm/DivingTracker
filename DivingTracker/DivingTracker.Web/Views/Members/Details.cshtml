@@ -1,4 +1,5 @@
-﻿@model DivingTracker.Web.Models.UserQualificationsModel
+﻿@using DivingTracker.ServiceLayer.Enums
+@model DivingTracker.Web.Models.UserQualificationsModel
 
 @{
     ViewBag.Title = ViewBag.SiteName + ": Member Details - " + Model.User.Name;
@@ -16,6 +17,10 @@
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
                 <div class="col-md-12 header">
+                    @if (ViewBag.CurrentUser.SystemRole.SystemRoleId > (int)SystemRoles.Student)
+                    {
+                        <a href="@Url.Action("Edit", "Members", new {id = Model.User.UserId})" class="btn btn-default enrol">Edit</a>
+                    }
                     <h2>Member Details</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -94,9 +99,9 @@
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
                 <div class="col-md-12 header">
-                    @if (ViewBag.CurrentUser.SystemRole.SystemRoleId > (int)DivingTracker.ServiceLayer.Enums.SystemRoles.Student)
+                    @if (ViewBag.CurrentUser.SystemRole.SystemRoleId > (int)SystemRoles.Student)
                     {
-                        <a href="@Url.Action("Enrol", "Training", new { id = Model.User.UserId })" class="btn btn-default enrol">Enrol</a>
+                        <a href="@Url.Action("Enrol", "Training", new {id = Model.User.UserId})" class="btn btn-default enrol">Enrol</a>
                     }
                     <h2>Training</h2>
                 </div>
@@ -117,10 +122,10 @@
                                             }
                                             else
                                             {
-                                                 foreach (var module in qualification.Modules.Where(x => x.Completeness >= 1))
-                                                 {
-                                                     <p>@module.Name: @module.Description</p>
-                                                 }
+                                                foreach (var module in qualification.Modules.Where(x => x.Completeness >= 1))
+                                                {
+                                                    <p>@module.Name: @module.Description</p>
+                                                }
                                             }
                                         </div>
                                         <div class="col-md-9">
@@ -162,11 +167,11 @@
 <div class="row">
     <div class="col-md-12">
         <p>
-            @if (ViewBag.CurrentUser.SystemRoleId > (int)DivingTracker.ServiceLayer.Enums.SystemRoles.Student)
+            @if (ViewBag.CurrentUser.SystemRoleId > (int)SystemRoles.Student)
             {
-                @Html.ActionLink("Edit", "Edit", new { id = Model.User.UserId }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Edit", "Edit", new {id = Model.User.UserId}, new {@class = "btn btn-primary"})
                 <text>&nbsp;</text>
-                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Back to List", "Index", null, new {@class = "btn btn-primary"})
             }
         </p>
     </div>
@@ -175,8 +180,8 @@
 @section Scripts
 {
     <script language="javascript">
-        $(document).ready(function () {
-            $(".toggle-detail").click(function () {
+        $(document).ready(function() {
+            $(".toggle-detail").click(function() {
                 $('.collapsible').slideToggle();
             });
         });

@@ -6,11 +6,11 @@ namespace DivingTracker.Web.Models
 {
     public class QualificationsModel
     {
-        public IEnumerable<QualificationModel> Qualifications { get; set; }
-
         public QualificationsModel(IEnumerable<Qualification> qualifications)
         {
             Qualifications = qualifications.Select(x => new QualificationModel(x));
         }
+
+        public IEnumerable<QualificationModel> Qualifications { get; set; }
     }
 }

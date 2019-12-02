@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace DivingTracker.Web
 {
@@ -13,7 +12,7 @@ namespace DivingTracker.Web
                 .Include("~/Content/font-awesome.css", new CssRewriteUrlTransform()));
 
             bundles.Add(new LessBundle("~/Content/less")
-                .Include("~/Content/bootstrap-datetimepicker-build.less", 
+                .Include("~/Content/bootstrap-datetimepicker-build.less",
                     "~/Content/colours.less",
                     "~/Content/site.less"));
 

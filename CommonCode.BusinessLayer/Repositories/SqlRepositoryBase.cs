@@ -1,23 +1,22 @@
-﻿using CommonCode.BusinessLayer.Helpers;
-using CommonCode.BusinessLayer.Interfaces;
-using Dapper;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using CommonCode.BusinessLayer.Helpers;
+using CommonCode.BusinessLayer.Interfaces;
+using Dapper;
 
 namespace CommonCode.BusinessLayer.Repositories
 {
     public abstract partial class SqlRepositoryBase<T>
         : IRepositoryBase<T> where T : IIdentifiableByInteger
     {
-        private const string FriendlyReadMessage = "The system was unable to read the requested item(s) from the database.";
+        private const string FriendlyReadMessage =
+            "The system was unable to read the requested item(s) from the database.";
+
         private const string InternalReadMessage = "A database exception occurred when trying to read the value(s).";
         private const string Success = "Success";
-
-        protected IUnitOfWork<IDbConnection, IDbTransaction> UnitOfWork { get; }
-        protected bool HasCustomReader { get; set; }
 
         protected SqlRepositoryBase(IUnitOfWork<IDbConnection, IDbTransaction> unitOfWork, bool hasCustomReader = false)
         {
@@ -27,109 +26,56 @@ namespace CommonCode.BusinessLayer.Repositories
             HasCustomReader = hasCustomReader;
         }
 
-        protected virtual T Map(string storedProcedureName, DynamicParameters parameters)
-        {
-            throw new NotImplementedException("HasCustomReader is set to true but Map has not been implemented.");
-        }
+        protected bool HasCustomReader { get; set; }
 
-        protected virtual IEnumerable<T> MapList(string storedProcedureName, DynamicParameters parameters)
-        {
-            throw new NotImplementedException("HasCustomReader is set to true but MapList has not been implemented.");
-        }
-
-        protected DataResult<T> Read(string storedProcedureName, DynamicParameters parameters)
-        {
-            if (HasCustomReader)
-            {
-                return Read(storedProcedureName, parameters, Map);
-            }
-
-            parameters = parameters ?? new DynamicParameters();
-            parameters.Add("RowCount", null, DbType.Int32, ParameterDirection.ReturnValue);
-
-            try
-            {
-                using (var connection = UnitOfWork.GetConnection())
-                {
-                    var value = connection.QueryFirstOrDefault<T>(storedProcedureName,
-                        parameters, commandType: CommandType.StoredProcedure);
-
-                    var rowCount = parameters.Get<int>("RowCount");
-
-                    return CreateDataResult(storedProcedureName, rowCount,
-                        value, DataResultType.Success, Success, Success);
-                }
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
-
-        protected DataResult<IEnumerable<T>> ReadList(string storedProcedureName, DynamicParameters parameters)
-        {
-            if (HasCustomReader)
-            {
-                return ReadList(storedProcedureName, parameters, MapList);
-            }
-
-            parameters = parameters ?? new DynamicParameters();
-            parameters.Add("RowCount", null, DbType.Int32, ParameterDirection.ReturnValue);
-
-            try
-            {
-                using (var connection = UnitOfWork.GetConnection())
-                {
-                    var values = connection.Query<T>(storedProcedureName,
-                        parameters, commandType: CommandType.StoredProcedure);
-
-                    var rowCount = parameters.Get<int>("RowCount");
-
-                    return CreateDataResult(storedProcedureName, rowCount,
-                        values, DataResultType.Success, Success, Success);
-                }
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
-
-        protected DataResult<T> Read(string storedProcedureName, DynamicParameters parameters, Func<string, DynamicParameters, T> map)
-        {
-            try
-            {
-                var value = map(storedProcedureName, parameters);
-
-                return CreateDataResult(storedProcedureName, value == null ? 0 : 1, value, DataResultType.Success, Success, Success);
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
-
-        protected DataResult<IEnumerable<T>> ReadList(string storedProcedureName, DynamicParameters parameters, Func<string, DynamicParameters, IEnumerable<T>> map)
-        {
-            try
-            {
-                var values = map(storedProcedureName, parameters);
-
-                return CreateDataResult(storedProcedureName, ((ICollection)values).Count, values, DataResultType.Success, Success, Success);
-            }
-            catch (DbException exception)
-            {
-                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage, InternalReadMessage, null, exception);
-                throw;
-            }
-        }
+        protected IUnitOfWork<IDbConnection, IDbTransaction> UnitOfWork { get; }
 
         public DataResult Delete(string storedProcedureName, DynamicParameters parameters)
         {
             return ExecuteStoredProcedure(storedProcedureName, parameters);
+        }
+
+        protected DataResult<TResult> CreateDataResult<TResult>(string storedProcedureName, int rowCount,
+            TResult value, DataResultType resultType, string friendlyMessage, string internalMessage,
+            int? valueId = null, DbException exception = null)
+        {
+            if (rowCount > 0)
+            {
+                resultType = DataResultType.Success;
+                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) ? friendlyMessage : Success;
+                internalMessage = !string.IsNullOrWhiteSpace(internalMessage)
+                    ? internalMessage
+                    : $"Procedure {storedProcedureName} completed successfully.";
+            }
+            else if (resultType.Equals(DataResultType.Success) && !storedProcedureName.ToLower().Contains("get") &&
+                     !storedProcedureName.ToLower().Contains("read"))
+            {
+                resultType = DataResultType.NotRequired;
+                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) && !friendlyMessage.Equals(Success)
+                    ? friendlyMessage
+                    : "No actions required";
+                internalMessage = !string.IsNullOrWhiteSpace(internalMessage)
+                    ? internalMessage
+                    : $"Procedure {storedProcedureName} did not require any changes.";
+            }
+            else if (resultType.Equals(DataResultType.Success))
+            {
+                resultType = DataResultType.NoRecordsFound;
+                friendlyMessage = "Sorry, no results were returned.";
+                internalMessage = $"Procedure {storedProcedureName} returned 0 records.";
+            }
+
+            var dataResult = new DataResult<TResult>(value, resultType, friendlyMessage, internalMessage, exception);
+            dataResult.Data.Add("Command Details", storedProcedureName);
+
+            if (valueId.HasValue)
+                dataResult.ValueId = valueId.Value;
+
+            exception?.Data.Add("ExceptionData.StringValue", storedProcedureName);
+
+            UnitOfWork.AddDataResult(dataResult);
+
+            return dataResult;
         }
 
         protected DataResult ExecuteStoredProcedure(string storedProcedureName, DynamicParameters parameters)
@@ -141,7 +87,7 @@ namespace CommonCode.BusinessLayer.Repositories
             string internalMessage;
 
             InitialiseInformativeVariables(storedProcedureName, out commandType, out commandTypePastTense,
-            out resultType, out friendlyMessage, out internalMessage);
+                out resultType, out friendlyMessage, out internalMessage);
 
             var rowCount = 0;
             DbException dbException = null;
@@ -149,9 +95,7 @@ namespace CommonCode.BusinessLayer.Repositories
             try
             {
                 if (parameters == null)
-                {
                     parameters = new DynamicParameters();
-                }
 
                 parameters.Add("RowCount", null, DbType.Int32, ParameterDirection.ReturnValue);
 
@@ -182,11 +126,13 @@ namespace CommonCode.BusinessLayer.Repositories
                 dbException = exception;
             }
 
-            return CreateDataResult(storedProcedureName, rowCount, default(T), resultType, friendlyMessage, internalMessage, null, dbException);
+            return CreateDataResult(storedProcedureName, rowCount, default(T), resultType, friendlyMessage,
+                internalMessage, null, dbException);
         }
 
         protected static void InitialiseInformativeVariables(string commandText, out string commandType,
-        out string commandTypePastTense, out DataResultType resultType, out string friendlyMessage, out string internalMessage)
+            out string commandTypePastTense, out DataResultType resultType, out string friendlyMessage,
+            out string internalMessage)
         {
             commandType = "process";
             resultType = DataResultType.UnknownError;
@@ -218,58 +164,118 @@ namespace CommonCode.BusinessLayer.Repositories
             }
 
             if (commandType.Equals("process"))
-            {
                 commandTypePastTense = $"{commandType}ed";
-            }
             else if (!commandType.Equals("read"))
-            {
                 commandTypePastTense = $"{commandType}d";
-            }
             else
-            {
                 commandTypePastTense = commandType;
-            }
 
             friendlyMessage = "Sorry, an unexpected error has occurred.";
             internalMessage = $"Unable to {commandType} record. No records affected.";
         }
 
-        protected DataResult<TResult> CreateDataResult<TResult>(string storedProcedureName, int rowCount,
-        TResult value, DataResultType resultType, string friendlyMessage, string internalMessage,
-        int? valueId = null, DbException exception = null)
+        protected virtual T Map(string storedProcedureName, DynamicParameters parameters)
         {
-            if (rowCount > 0)
+            throw new NotImplementedException("HasCustomReader is set to true but Map has not been implemented.");
+        }
+
+        protected virtual IEnumerable<T> MapList(string storedProcedureName, DynamicParameters parameters)
+        {
+            throw new NotImplementedException("HasCustomReader is set to true but MapList has not been implemented.");
+        }
+
+        protected DataResult<T> Read(string storedProcedureName, DynamicParameters parameters)
+        {
+            if (HasCustomReader)
+                return Read(storedProcedureName, parameters, Map);
+
+            parameters = parameters ?? new DynamicParameters();
+            parameters.Add("RowCount", null, DbType.Int32, ParameterDirection.ReturnValue);
+
+            try
             {
-                resultType = DataResultType.Success;
-                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) ? friendlyMessage : Success;
-                internalMessage = !string.IsNullOrWhiteSpace(internalMessage) ? internalMessage : $"Procedure {storedProcedureName} completed successfully.";
+                using (var connection = UnitOfWork.GetConnection())
+                {
+                    var value = connection.QueryFirstOrDefault<T>(storedProcedureName,
+                        parameters, commandType: CommandType.StoredProcedure);
+
+                    var rowCount = parameters.Get<int>("RowCount");
+
+                    return CreateDataResult(storedProcedureName, rowCount,
+                        value, DataResultType.Success, Success, Success);
+                }
             }
-            else if (resultType.Equals(DataResultType.Success) && !storedProcedureName.ToLower().Contains("get") && !storedProcedureName.ToLower().Contains("read"))
+            catch (DbException exception)
             {
-                resultType = DataResultType.NotRequired;
-                friendlyMessage = !string.IsNullOrWhiteSpace(friendlyMessage) && !friendlyMessage.Equals(Success) ? friendlyMessage : "No actions required";
-                internalMessage = !string.IsNullOrWhiteSpace(internalMessage) ? internalMessage : $"Procedure {storedProcedureName} did not require any changes.";
+                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage,
+                    InternalReadMessage, null, exception);
+                throw;
             }
-            else if (resultType.Equals(DataResultType.Success))
+        }
+
+        protected DataResult<T> Read(string storedProcedureName, DynamicParameters parameters,
+            Func<string, DynamicParameters, T> map)
+        {
+            try
             {
-                resultType = DataResultType.NoRecordsFound;
-                friendlyMessage = "Sorry, no results were returned.";
-                internalMessage = $"Procedure {storedProcedureName} returned 0 records.";
+                var value = map(storedProcedureName, parameters);
+
+                return CreateDataResult(storedProcedureName, value == null ? 0 : 1, value, DataResultType.Success,
+                    Success, Success);
             }
-
-            var dataResult = new DataResult<TResult>(value, resultType, friendlyMessage, internalMessage, exception);
-            dataResult.Data.Add("Command Details", storedProcedureName);
-
-            if (valueId.HasValue)
+            catch (DbException exception)
             {
-                dataResult.ValueId = valueId.Value;
+                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage,
+                    InternalReadMessage, null, exception);
+                throw;
             }
+        }
 
-            exception?.Data.Add("ExceptionData.StringValue", storedProcedureName);
+        protected DataResult<IEnumerable<T>> ReadList(string storedProcedureName, DynamicParameters parameters)
+        {
+            if (HasCustomReader)
+                return ReadList(storedProcedureName, parameters, MapList);
 
-            UnitOfWork.AddDataResult(dataResult);
+            parameters = parameters ?? new DynamicParameters();
+            parameters.Add("RowCount", null, DbType.Int32, ParameterDirection.ReturnValue);
 
-            return dataResult;
+            try
+            {
+                using (var connection = UnitOfWork.GetConnection())
+                {
+                    var values = connection.Query<T>(storedProcedureName,
+                        parameters, commandType: CommandType.StoredProcedure);
+
+                    var rowCount = parameters.Get<int>("RowCount");
+
+                    return CreateDataResult(storedProcedureName, rowCount,
+                        values, DataResultType.Success, Success, Success);
+                }
+            }
+            catch (DbException exception)
+            {
+                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage,
+                    InternalReadMessage, null, exception);
+                throw;
+            }
+        }
+
+        protected DataResult<IEnumerable<T>> ReadList(string storedProcedureName, DynamicParameters parameters,
+            Func<string, DynamicParameters, IEnumerable<T>> map)
+        {
+            try
+            {
+                var values = map(storedProcedureName, parameters);
+
+                return CreateDataResult(storedProcedureName, ((ICollection)values).Count, values,
+                    DataResultType.Success, Success, Success);
+            }
+            catch (DbException exception)
+            {
+                CreateDataResult(storedProcedureName, 0, default(T), DataResultType.UnknownError, FriendlyReadMessage,
+                    InternalReadMessage, null, exception);
+                throw;
+            }
         }
     }
 }

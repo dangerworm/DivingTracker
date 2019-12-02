@@ -13,75 +13,67 @@ using CommonCode.BusinessLayer.Interfaces;
 namespace CommonCode.BusinessLayer.Helpers
 {
     /// <summary>
-    /// A dictionary object that allows rapid hash lookups using keys, but also
-    /// maintains the key insertion order so that values can be retrieved by
-    /// key index.
+    ///     A dictionary object that allows rapid hash lookups using keys, but also
+    ///     maintains the key insertion order so that values can be retrieved by
+    ///     key index.
     /// </summary>
     public class OrderedDictionary<TKey, TValue> : IOrderedDictionary<TKey, TValue>
     {
+        #region IEnumerable<KeyValuePair<TKey, TValue>>
+
+        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
 
         #region Fields/Properties
 
         private KeyedCollection2<TKey, KeyValuePair<TKey, TValue>> _keyedCollection;
 
         /// <summary>
-        /// Gets or sets the value associated with the specified key.
+        ///     Gets or sets the value associated with the specified key.
         /// </summary>
         /// <param name="key">The key associated with the value to get or set.</param>
         public TValue this[TKey key]
         {
-            get
-            {
-                return GetValue(key);
-            }
-            set
-            {
-                SetValue(key, value);
-            }
+            get => GetValue(key);
+            set => SetValue(key, value);
         }
 
         /// <summary>
-        /// Gets or sets the value at the specified index.
+        ///     Gets or sets the value at the specified index.
         /// </summary>
         /// <param name="index">The index of the value to get or set.</param>
         public TValue this[int index]
         {
-            get
-            {
-                return GetItem(index).Value;
-            }
-            set
-            {
-                SetItem(index, value);
-            }
+            get => GetItem(index).Value;
+            set => SetItem(index, value);
         }
 
-        public int Count
-        {
-            get { return _keyedCollection.Count; }
-        }
+        public int Count => _keyedCollection.Count;
 
         public ICollection<TKey> Keys
         {
-            get
-            {
-                return _keyedCollection.Select(x => x.Key).ToList();
-            }
+            get { return _keyedCollection.Select(x => x.Key).ToList(); }
         }
 
         public ICollection<TValue> Values
         {
-            get
-            {
-                return _keyedCollection.Select(x => x.Value).ToList();
-            }
+            get { return _keyedCollection.Select(x => x.Value).ToList(); }
         }
 
-        public IEqualityComparer<TKey> Comparer
-        {
-            get;
-            private set;
-        }
+        public IEqualityComparer<TKey> Comparer { get; private set; }
 
         #endregion
 
@@ -100,19 +92,15 @@ namespace CommonCode.BusinessLayer.Helpers
         public OrderedDictionary(IOrderedDictionary<TKey, TValue> dictionary)
         {
             Initialize();
-            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
-            {
+            foreach (var pair in dictionary)
                 _keyedCollection.Add(pair);
-            }
         }
 
         public OrderedDictionary(IOrderedDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
         {
             Initialize(comparer);
-            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
-            {
+            foreach (var pair in dictionary)
                 _keyedCollection.Add(pair);
-            }
         }
 
         #endregion
@@ -121,15 +109,11 @@ namespace CommonCode.BusinessLayer.Helpers
 
         private void Initialize(IEqualityComparer<TKey> comparer = null)
         {
-            this.Comparer = comparer;
+            Comparer = comparer;
             if (comparer != null)
-            {
                 _keyedCollection = new KeyedCollection2<TKey, KeyValuePair<TKey, TValue>>(x => x.Key, comparer);
-            }
             else
-            {
                 _keyedCollection = new KeyedCollection2<TKey, KeyValuePair<TKey, TValue>>(x => x.Key);
-            }
         }
 
         public void Add(TKey key, TValue value)
@@ -150,23 +134,18 @@ namespace CommonCode.BusinessLayer.Helpers
         public int IndexOf(TKey key)
         {
             if (_keyedCollection.Contains(key))
-            {
                 return _keyedCollection.IndexOf(_keyedCollection[key]);
-            }
-            else
-            {
-                return -1;
-            }
+            return -1;
         }
 
         public bool ContainsValue(TValue value)
         {
-            return this.Values.Contains(value);
+            return Values.Contains(value);
         }
 
         public bool ContainsValue(TValue value, IEqualityComparer<TValue> comparer)
         {
-            return this.Values.Contains(value, comparer);
+            return Values.Contains(value, comparer);
         }
 
         public bool ContainsKey(TKey key)
@@ -177,26 +156,22 @@ namespace CommonCode.BusinessLayer.Helpers
         public KeyValuePair<TKey, TValue> GetItem(int index)
         {
             if (index < 0 || index >= _keyedCollection.Count)
-            {
                 throw new ArgumentException($"The index was outside the bounds of the dictionary: {index}");
-            }
             return _keyedCollection[index];
         }
 
         /// <summary>
-        /// Sets the value at the index specified.
+        ///     Sets the value at the index specified.
         /// </summary>
         /// <param name="index">The index of the value desired</param>
         /// <param name="value">The value to set</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when the index specified does not refer to a KeyValuePair in this object
+        ///     Thrown when the index specified does not refer to a KeyValuePair in this object
         /// </exception>
         public void SetItem(int index, TValue value)
         {
             if (index < 0 || index >= _keyedCollection.Count)
-            {
                 throw new ArgumentException($"The index is outside the bounds of the dictionary: {index}");
-            }
             var kvp = new KeyValuePair<TKey, TValue>(_keyedCollection[index].Key, value);
             _keyedCollection[index] = kvp;
         }
@@ -214,28 +189,25 @@ namespace CommonCode.BusinessLayer.Helpers
         public void RemoveAt(int index)
         {
             if (index < 0 || index >= _keyedCollection.Count)
-            {
-                throw new ArgumentException(String.Format("The index was outside the bounds of the dictionary: {0}", index));
-            }
+                throw new ArgumentException(string.Format("The index was outside the bounds of the dictionary: {0}",
+                    index));
             _keyedCollection.RemoveAt(index);
         }
 
         /// <summary>
-        /// Gets the value associated with the specified key.
+        ///     Gets the value associated with the specified key.
         /// </summary>
         /// <param name="key">The key associated with the value to get.</param>
         public TValue GetValue(TKey key)
         {
             if (_keyedCollection.Contains(key) == false)
-            {
                 throw new ArgumentException($"The given key is not present in the dictionary: {key}");
-            }
             var kvp = _keyedCollection[key];
             return kvp.Value;
         }
 
         /// <summary>
-        /// Sets the value associated with the specified key.
+        ///     Sets the value associated with the specified key.
         /// </summary>
         /// <param name="key">The key associated with the value to set.</param>
         /// <param name="value">The the value to set.</param>
@@ -244,13 +216,9 @@ namespace CommonCode.BusinessLayer.Helpers
             var kvp = new KeyValuePair<TKey, TValue>(key, value);
             var idx = IndexOf(key);
             if (idx > -1)
-            {
                 _keyedCollection[idx] = kvp;
-            }
             else
-            {
                 _keyedCollection.Add(kvp);
-            }
         }
 
         public bool TryGetValue(TKey key, out TValue value)
@@ -260,16 +228,14 @@ namespace CommonCode.BusinessLayer.Helpers
                 value = _keyedCollection[key].Value;
                 return true;
             }
-            else
-            {
-                value = default(TValue);
-                return false;
-            }
+            value = default(TValue);
+            return false;
         }
 
         #endregion
 
         #region sorting
+
         public void SortKeys()
         {
             _keyedCollection.SortByKeys();
@@ -300,6 +266,7 @@ namespace CommonCode.BusinessLayer.Helpers
         {
             _keyedCollection.Sort((x, y) => comparison(x.Value, y.Value));
         }
+
         #endregion
 
         #region IDictionary<TKey, TValue>
@@ -314,10 +281,7 @@ namespace CommonCode.BusinessLayer.Helpers
             return ContainsKey(key);
         }
 
-        ICollection<TKey> IDictionary<TKey, TValue>.Keys
-        {
-            get { return Keys; }
-        }
+        ICollection<TKey> IDictionary<TKey, TValue>.Keys => Keys;
 
         bool IDictionary<TKey, TValue>.Remove(TKey key)
         {
@@ -329,21 +293,12 @@ namespace CommonCode.BusinessLayer.Helpers
             return TryGetValue(key, out value);
         }
 
-        ICollection<TValue> IDictionary<TKey, TValue>.Values
-        {
-            get { return Values; }
-        }
+        ICollection<TValue> IDictionary<TKey, TValue>.Values => Values;
 
         TValue IDictionary<TKey, TValue>.this[TKey key]
         {
-            get
-            {
-                return this[key];
-            }
-            set
-            {
-                this[key] = value;
-            }
+            get => this[key];
+            set => this[key] = value;
         }
 
         #endregion
@@ -370,37 +325,13 @@ namespace CommonCode.BusinessLayer.Helpers
             _keyedCollection.CopyTo(array, arrayIndex);
         }
 
-        int ICollection<KeyValuePair<TKey, TValue>>.Count
-        {
-            get { return _keyedCollection.Count; }
-        }
+        int ICollection<KeyValuePair<TKey, TValue>>.Count => _keyedCollection.Count;
 
-        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
             return _keyedCollection.Remove(item);
-        }
-
-        #endregion
-
-        #region IEnumerable<KeyValuePair<TKey, TValue>>
-
-        IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-        #region IEnumerable
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         #endregion
@@ -424,14 +355,8 @@ namespace CommonCode.BusinessLayer.Helpers
 
         object IOrderedDictionary.this[int index]
         {
-            get
-            {
-                return this[index];
-            }
-            set
-            {
-                this[index] = (TValue)value;
-            }
+            get => this[index];
+            set => this[index] = (TValue)value;
         }
 
         #endregion
@@ -458,41 +383,23 @@ namespace CommonCode.BusinessLayer.Helpers
             return new DictionaryEnumerator<TKey, TValue>(this);
         }
 
-        bool IDictionary.IsFixedSize
-        {
-            get { return false; }
-        }
+        bool IDictionary.IsFixedSize => false;
 
-        bool IDictionary.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool IDictionary.IsReadOnly => false;
 
-        ICollection IDictionary.Keys
-        {
-            get { return (ICollection)this.Keys; }
-        }
+        ICollection IDictionary.Keys => (ICollection)Keys;
 
         void IDictionary.Remove(object key)
         {
             Remove((TKey)key);
         }
 
-        ICollection IDictionary.Values
-        {
-            get { return (ICollection)this.Values; }
-        }
+        ICollection IDictionary.Values => (ICollection)Values;
 
         object IDictionary.this[object key]
         {
-            get
-            {
-                return this[(TKey)key];
-            }
-            set
-            {
-                this[(TKey)key] = (TValue)value;
-            }
+            get => this[(TKey)key];
+            set => this[(TKey)key] = (TValue)value;
         }
 
         #endregion
@@ -504,20 +411,11 @@ namespace CommonCode.BusinessLayer.Helpers
             ((ICollection)_keyedCollection).CopyTo(array, index);
         }
 
-        int ICollection.Count
-        {
-            get { return ((ICollection)_keyedCollection).Count; }
-        }
+        int ICollection.Count => ((ICollection)_keyedCollection).Count;
 
-        bool ICollection.IsSynchronized
-        {
-            get { return ((ICollection)_keyedCollection).IsSynchronized; }
-        }
+        bool ICollection.IsSynchronized => ((ICollection)_keyedCollection).IsSynchronized;
 
-        object ICollection.SyncRoot
-        {
-            get { return ((ICollection)_keyedCollection).SyncRoot; }
-        }
+        object ICollection.SyncRoot => ((ICollection)_keyedCollection).SyncRoot;
 
         #endregion
     }
@@ -525,10 +423,9 @@ namespace CommonCode.BusinessLayer.Helpers
     public class KeyedCollection2<TKey, TItem> : KeyedCollection<TKey, TItem>
     {
         private const string DelegateNullExceptionMessage = "Delegate passed cannot be null";
-        private Func<TItem, TKey> _getKeyForItemDelegate;
+        private readonly Func<TItem, TKey> _getKeyForItemDelegate;
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate)
-            : base()
         {
             if (getKeyForItemDelegate == null) throw new ArgumentNullException(DelegateNullExceptionMessage);
             _getKeyForItemDelegate = getKeyForItemDelegate;
@@ -544,6 +441,25 @@ namespace CommonCode.BusinessLayer.Helpers
         protected override TKey GetKeyForItem(TItem item)
         {
             return _getKeyForItemDelegate(item);
+        }
+
+        public void Sort()
+        {
+            var comparer = Comparer<TItem>.Default;
+            Sort(comparer);
+        }
+
+        public void Sort(Comparison<TItem> comparison)
+        {
+            var newComparer = new Comparer2<TItem>((x, y) => comparison(x, y));
+            Sort(newComparer);
+        }
+
+        public void Sort(IComparer<TItem> comparer)
+        {
+            var list = Items as List<TItem>;
+            if (list != null)
+                list.Sort(comparer);
         }
 
         public void SortByKeys()
@@ -562,27 +478,6 @@ namespace CommonCode.BusinessLayer.Helpers
         {
             var comparer = new Comparer2<TItem>((x, y) => keyComparison(GetKeyForItem(x), GetKeyForItem(y)));
             Sort(comparer);
-        }
-
-        public void Sort()
-        {
-            var comparer = Comparer<TItem>.Default;
-            Sort(comparer);
-        }
-
-        public void Sort(Comparison<TItem> comparison)
-        {
-            var newComparer = new Comparer2<TItem>((x, y) => comparison(x, y));
-            Sort(newComparer);
-        }
-
-        public void Sort(IComparer<TItem> comparer)
-        {
-            List<TItem> list = base.Items as List<TItem>;
-            if (list != null)
-            {
-                list.Sort(comparer);
-            }
         }
     }
 
@@ -609,14 +504,23 @@ namespace CommonCode.BusinessLayer.Helpers
 
     public class DictionaryEnumerator<TKey, TValue> : IDictionaryEnumerator, IDisposable
     {
-        readonly IEnumerator<KeyValuePair<TKey, TValue>> impl;
-        public void Dispose() { impl.Dispose(); }
+        private readonly IEnumerator<KeyValuePair<TKey, TValue>> impl;
+
         public DictionaryEnumerator(IDictionary<TKey, TValue> value)
         {
-            this.impl = value.GetEnumerator();
+            impl = value.GetEnumerator();
         }
-        public void Reset() { impl.Reset(); }
-        public bool MoveNext() { return impl.MoveNext(); }
+
+        public void Reset()
+        {
+            impl.Reset();
+        }
+
+        public bool MoveNext()
+        {
+            return impl.MoveNext();
+        }
+
         public DictionaryEntry Entry
         {
             get
@@ -625,8 +529,14 @@ namespace CommonCode.BusinessLayer.Helpers
                 return new DictionaryEntry(pair.Key, pair.Value);
             }
         }
-        public object Key { get { return impl.Current.Key; } }
-        public object Value { get { return impl.Current.Value; } }
-        public object Current { get { return Entry; } }
+
+        public object Key => impl.Current.Key;
+        public object Value => impl.Current.Value;
+        public object Current => Entry;
+
+        public void Dispose()
+        {
+            impl.Dispose();
+        }
     }
 }

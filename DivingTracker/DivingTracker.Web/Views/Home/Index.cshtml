@@ -14,7 +14,7 @@
     <div class="col-md-6">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Your Current Qualifications</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -27,10 +27,10 @@
                         foreach (var qualification in Model.QualificationsCompleted)
                         {
                             <div class="row">
-                                <div class="col-xs-2">
+                                <div class="col-2">
                                     <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
                                 </div>
-                                <div class="col-xs-10">
+                                <div class="col-10">
                                     <p>@qualification.Name: @qualification.Count</p>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
     <div class="col-md-6">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Qualifications In Progress</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -56,10 +56,10 @@
                         foreach (var qualification in Model.QualificationsInProgress)
                         {
                             <div class="row">
-                                <div class="col-xs-2">
+                                <div class="col-2">
                                     <p class="@qualification.GlyphClass fa-2x fa-fw"></p>
                                 </div>
-                                <div class="col-xs-10">
+                                <div class="col-10">
                                     <h3 class="popover">@qualification.Name</h3>
                                     @foreach (var module in qualification.Modules)
                                     {

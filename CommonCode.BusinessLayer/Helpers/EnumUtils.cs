@@ -37,6 +37,11 @@ namespace CommonCode.BusinessLayer.Helpers
             return value.GetType().GetFields(BindingFlags.Static | BindingFlags.Public).Select(fi => fi.Name).ToList();
         }
 
+        public static string GetDescription(T value)
+        {
+            return "";
+        }
+
         public static IList<T> GetValues(Enum value)
         {
             var enumValues = new List<T>();

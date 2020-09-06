@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>People</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -39,7 +39,7 @@
     <div class="col-md-4">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Branch Contact Info</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -71,7 +71,7 @@
     <div class="col-md-4">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Useful Locations</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -119,7 +119,7 @@
 
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.BranchAddress.GoogleMapsSearchString))
                         {
-                            <a href="@Model.Branch.BranchAddress.GoogleMapsSearchString">
+                            <a href="@Model.Branch.BranchAddress.GoogleMapsSearchString" target="_blank">
                                 <strong>See it on Google Maps</strong>
                             </a>
                         }
@@ -168,7 +168,7 @@
 
                         @if (!string.IsNullOrWhiteSpace(Model.Branch.PoolAddress.GoogleMapsSearchString))
                         {
-                            <a href="@Model.Branch.PoolAddress.GoogleMapsSearchString">
+                            <a href="@Model.Branch.PoolAddress.GoogleMapsSearchString" target="_blank">
                                 <strong>See it on Google Maps</strong>
                             </a>
                         }

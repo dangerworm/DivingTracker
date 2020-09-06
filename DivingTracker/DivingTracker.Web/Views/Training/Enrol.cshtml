@@ -16,7 +16,7 @@
     <div class="col-md-12">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Qualifications</h2>
                 </div>
                 <div class="col-md-12 headed-item">
@@ -28,14 +28,14 @@
                         for (var modelIndex = 0; modelIndex < Model.EnrolPostModels.Count(); ++modelIndex)
                         {
                             <div class="row">
-                                <div class="col-xs-12 col-md-1 center">
+                                <div class="col-12 col-md-1 center">
                                     @Html.HiddenFor(x => x.EnrolPostModels[modelIndex].UserId)
                                     @Html.HiddenFor(x => x.EnrolPostModels[modelIndex].Qualification.QualificationId)
                                     <p>
                                         @Html.CheckBoxFor(x => x.EnrolPostModels[modelIndex].Selected)
                                     </p>
                                 </div>
-                                <div class="col-xs-12 col-md-11">
+                                <div class="col-12 col-md-11">
                                     <p>@Model.EnrolPostModels[modelIndex].Qualification.Name</p>
                                 </div>
                             </div>

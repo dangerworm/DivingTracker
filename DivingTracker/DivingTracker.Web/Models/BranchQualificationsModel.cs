@@ -18,7 +18,7 @@ namespace DivingTracker.Web.Models
             Name = qualification.Name;
             QualificationType = (QualificationTypes)qualification.QualificationTypeId;
             Description = qualification.Description;
-            Agency = qualification.Agency;
+            Agency = new AgencyModel(qualification.Agency);
             Modules = qualification.Modules.Select(x => new ModuleModel(x));
             Count = 1;
 
@@ -57,7 +57,7 @@ namespace DivingTracker.Web.Models
             }
         }
 
-        public Agency Agency { get; set; }
+        public AgencyModel Agency { get; set; }
 
         [DisplayName("Agency")]
         public string AgencyName => Agency.Name;
@@ -71,8 +71,11 @@ namespace DivingTracker.Web.Models
         public IEnumerable<ModuleModel> Modules { get; set; }
 
         public string Name { get; set; }
+        
+        [DisplayName ("Qualification ID")]
         public int QualificationId { get; set; }
 
+        [DisplayName ("Qualification Type")]
         public QualificationTypes QualificationType { get; set; }
     }
 }

@@ -15,22 +15,19 @@
     <div class="col-md-12">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Courses</h2>
                 </div>
                 <div class="col-md-12 headed-item">
                     <p>Click on a link below to see the progress tracker for that qualification.</p>
-                    <ul>
-                        @foreach (var trainingModel in Model)
-                        {
-                            <li>
-                                <a href="@Url.Action("Qualification", "Training", new {trainingModel.Qualification.QualificationId})">
-                                    @trainingModel.Qualification.Name
-                                    (@trainingModel.Qualification.AgencyName)
-                                </a>
-                            </li>
-                        }
-                    </ul>
+                    @foreach (var trainingModel in Model)
+                    {
+                        <h4>@trainingModel.Qualification.Name <small> (@trainingModel.Qualification.AgencyName)</small></h4>
+                        <p>
+                            <a class="btn btn-sm btn-success" href="@Url.Action("Qualification", "Training", new {trainingModel.Qualification.QualificationId})">View Progress Tracker</a>
+                            <a class="btn btn-sm btn-warning" href="@Url.Action("Edit", "Qualifications", new {id = trainingModel.Qualification.QualificationId})">Edit Qualification</a>
+                        </p>
+                    }
                 </div>
             </div>
         </div>
@@ -40,9 +37,9 @@
 @section Scripts
 {
     <script language="javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             $(".open-close").on("click",
-                function() {
+                function () {
                     $("div.module-users#" + this.classList[1]).slideToggle();
                     $("div.module-table#" + this.classList[1]).slideToggle();
                     $("th.user-name." + this.classList[1]).fadeToggle();

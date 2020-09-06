@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using DivingTracker.ServiceLayer;
 
@@ -20,16 +21,22 @@ namespace DivingTracker.Web.Models
         }
 
         public AddressModel Address { get; set; }
+        
+        [DisplayName ("Agency ID")]
         public int AgencyId { get; set; }
 
+        [DisplayName ("Contact Email")]
         public string ContactEmail { get; set; }
 
+        [DisplayName ("Contact Landline")]
         public string ContactLandLine { get; set; }
 
+        [DisplayName ("Contact Mobile")]
         public string ContactMobile { get; set; }
 
         public string Description { get; set; }
 
+        [DisplayName ("Agency Name")]
         public string Name { get; set; }
 
         public IEnumerable<QualificationModel> Qualifications { get; set; }

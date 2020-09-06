@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 
     @Styles.Render("~/Content/css")
@@ -14,203 +14,205 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-@Html.Partial("_Navigation")
-<div class="col-md-12">
-    <main role="main" class="container body-content">
-        <div class="content">
-            @{
-                var messages = (Collection<string>)ViewBag.Messages;
-            }
-            @if (messages != null && messages.Any())
-            {
-                <div class="col-md-12 alert alert-info">
-                    @foreach (var message in messages)
-                    {
-                        <p>message</p>
-                    }
-                </div>
-            }
-            @if (ViewData.ModelState.Any(x => x.Key.Equals("")))
-            {
-                <div class="col-md-12">
-                    @Html.ValidationSummary(true, "", new {@class = "alert alert-danger"})
-                </div>
-            }
-            @RenderBody()
-        </div>
-    </main>
-    @*<footer class="footer">
-            <div class="container">
-                <div class="row">
+    <header>
+        @Html.Partial("_Navigation")
+    </header>
+    <div class="col-md-12">
+        <main role="main" class="container body-content">
+            <div class="content">
+                @{
+                    var messages = (Collection<string>)ViewBag.Messages;
+                }
+                @if (messages != null && messages.Any())
+                {
+                    <div class="col-md-12 alert alert-info">
+                        @foreach (var message in messages)
+                        {
+                            <p>message</p>
+                        }
+                    </div>
+                }
+                @if (ViewData.ModelState.Any(x => x.Key.Equals("")))
+                {
                     <div class="col-md-12">
-                        <p class="copyright-notice-footer pull-left">&copy; @DateTime.Now.Year - Drew Morgan</p>
-                        <p class="pull-right"><a href="https://www.bsac.com/home/"><img class="bsac-logo-footer" src="/Content/images/bsac-logo.png" /></a></p>
+                        @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                    </div>
+                }
+                @RenderBody()
+            </div>
+        </main>
+        @*<footer class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="copyright-notice-footer pull-left">&copy; @DateTime.Now.Year - Drew Morgan</p>
+                            <p class="pull-right"><a href="https://www.bsac.com/home/"><img class="bsac-logo-footer" src="/Content/images/bsac-logo.png" /></a></p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>*@
-</div>
-<div id="popup-container" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary btn-ok">OK</button>
+            </footer>*@
+    </div>
+    <div id="popup-container" class="modal fade">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-ok">OK</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-@Scripts.Render("~/bundles/javascript")
-@*<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>*@
-<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    @Scripts.Render("~/bundles/javascript")
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>*@
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 
-<script language="javascript" type="text/javascript">
-    var modalTitle, url, type, data;
+    <script language="javascript" type="text/javascript">
+        var modalTitle, url, type, data;
 
-    function ajaxInit(currentControl) {
-        modalTitle = $(currentControl).attr('title');
-        url = $(currentControl).attr('data-href');
-        type = 'GET';
-        if (typeof url == 'undefined') {
-            // Could be an anchor/link
-            url = $(currentControl).attr('href');
-        }
-        if (typeof url == 'undefined') {
-            // Probably a form
-            var control = $(currentControl)[0];
-            var valueString = '';
-
-            if (control.localName == 'button') {
-                // It's a button, so its value needs adding to the response
-                valueString = '&' + control.name + '=' + control.value;
-            } else {
-                valueString = '';
+        function ajaxInit(currentControl) {
+            modalTitle = $(currentControl).attr('title');
+            url = $(currentControl).attr('data-href');
+            type = 'GET';
+            if (typeof url == 'undefined') {
+                // Could be an anchor/link
+                url = $(currentControl).attr('href');
             }
+            if (typeof url == 'undefined') {
+                // Probably a form
+                var control = $(currentControl)[0];
+                var valueString = '';
 
-            var form = $(currentControl).closest('form');
-            url = form[0].action;
-            type = form[0].method;
-            data = form.serialize() + valueString;
+                if (control.localName == 'button') {
+                    // It's a button, so its value needs adding to the response
+                    valueString = '&' + control.name + '=' + control.value;
+                } else {
+                    valueString = '';
+                }
+
+                var form = $(currentControl).closest('form');
+                url = form[0].action;
+                type = form[0].method;
+                data = form.serialize() + valueString;
+            }
         }
-    }
 
-    function setAttributes(control, data) {
-        $(control).attr('class', data.class);
-        $(control).siblings('.btn.btn-default.ajax-submit').removeClass('btn-default').addClass('btn-primary');
-    }
+        function setAttributes(control, data) {
+            $(control).attr('class', data.class);
+            $(control).siblings('.btn.btn-default.ajax-submit').removeClass('btn-default').addClass('btn-primary');
+        }
 
-    function setupModal(html) {
-        $('.modal-title').html(modalTitle);
-        $('.modal-body').html(html);
-        $('#popup-container').modal('show');
-    }
+        function setupModal(html) {
+            $('.modal-title').html(modalTitle);
+            $('.modal-body').html(html);
+            $('#popup-container').modal('show');
+        }
 
-    function response(data) {
-        console.log(data);
-    }
+        function response(data) {
+            console.log(data);
+        }
 
-    $(document).ready(function() {
-        $('#popup-container').hide();
+        $(document).ready(function () {
+            $('#popup-container').hide();
 
-        $('input.ui-autocomplete-input[type=text]').each(function(e) {
-            $(this).keypress(function(e) {
-                var code = (e.keyCode ? e.keyCode : e.which);
-                if (code == 13) { //Enter keycode
-                    return false;
-                }
-                return true;
-            });
+            $('input.ui-autocomplete-input[type=text]').each(function (e) {
+                $(this).keypress(function (e) {
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    if (code == 13) { //Enter keycode
+                        return false;
+                    }
+                    return true;
+                });
 
-            ajaxInit($(this));
-            $(this).autocomplete({
-                autofocus: true,
-                minLength: 3,
-                delay: 300,
-                source: function(request, response) {
-                    $.ajax({
-                        url: url,
-                        dataType: "json",
-                        data: data + request.term,
-                        type: type,
-                        success: function(data) {
-                            return response(data);
-                        }
-                    });
-                },
-                select: function(event, ui) {
-                    window.location = "/Question/Index/" + ui.item.id;
-                }
-            });
-        });
-
-        $('#popup-container').on('shown.bs.modal',
-            function(e) {
-                $(this).find('.btn-ok').click(function(e) {
-                    var form = $('.modal-body').find('form');
-                    $.ajax({
-                        url: form[0].action,
-                        type: 'POST',
-                        data: form.serialize(),
-                        success: function(data) {
-                            if (data.success == true) {
-                                $('#popup-container').modal('hide');
-                                if (typeof (data.url) != 'undefined') {
-                                    window.location = data.url;
-                                } else {
-                                    location.reload(false);
-                                }
-                            } else if (data.html) {
-                                $('.modal-body').html(data.html);
-                            } else {
-                                $('.modal-body').html(data);
+                ajaxInit($(this));
+                $(this).autocomplete({
+                    autofocus: true,
+                    minLength: 3,
+                    delay: 300,
+                    source: function (request, response) {
+                        $.ajax({
+                            url: url,
+                            dataType: "json",
+                            data: data + request.term,
+                            type: type,
+                            success: function (data) {
+                                return response(data);
                             }
-                        }
-                    });
-
-                    return false;
+                        });
+                    },
+                    select: function (event, ui) {
+                        window.location = "/Question/Index/" + ui.item.id;
+                    }
                 });
             });
 
-        $('.ajax-submit').click(function(e) {
-            e.preventDefault();
-            var button = this;
-            ajaxInit(button);
-            $.ajax({
+            $('#popup-container').on('shown.bs.modal',
+                function (e) {
+                    $(this).find('.btn-ok').click(function (e) {
+                        var form = $('.modal-body').find('form');
+                        $.ajax({
+                            url: form[0].action,
+                            type: 'POST',
+                            data: form.serialize(),
+                            success: function (data) {
+                                if (data.success == true) {
+                                    $('#popup-container').modal('hide');
+                                    if (typeof (data.url) != 'undefined') {
+                                        window.location = data.url;
+                                    } else {
+                                        location.reload(false);
+                                    }
+                                } else if (data.html) {
+                                    $('.modal-body').html(data.html);
+                                } else {
+                                    $('.modal-body').html(data);
+                                }
+                            }
+                        });
+
+                        return false;
+                    });
+                });
+
+            $('.ajax-submit').click(function (e) {
+                e.preventDefault();
+                var button = this;
+                ajaxInit(button);
+                $.ajax({
                     url: url,
                     type: type,
                     data: data,
                     cache: false
                 })
-                .done(function(data) {
-                    setAttributes(button, data);
-                });
-        });
+                    .done(function (data) {
+                        setAttributes(button, data);
+                    });
+            });
 
-        $('.popup').click(function(e) {
-            e.preventDefault();
-            ajaxInit(this);
-            $.ajax({
+            $('.popup').click(function (e) {
+                e.preventDefault();
+                ajaxInit(this);
+                $.ajax({
                     url: url,
                     type: type,
                     data: data,
                     cache: false
                 })
-                .done(function(html) {
-                    setupModal(html);
-                });
-        });
+                    .done(function (html) {
+                        setupModal(html);
+                    });
+            });
 
-        $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
-    });
-</script>
-@RenderSection("Scripts", false)
+            $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
+        });
+    </script>
+    @RenderSection("Scripts", false)
 </body>
 </html>

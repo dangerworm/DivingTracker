@@ -17,17 +17,17 @@
     <div class="col-md-6">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Divers</h2>
                 </div>
                 <div class="col-md-12 headed-item">
                     @foreach (var qualification in Model.DivingQualifications)
                     {
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-2">
                                 <p class="@qualification.GlyphClass fa-2x"></p>
                             </div>
-                            <div class="col-xs-10">
+                            <div class="col-10">
                                 <p>@qualification.Name: @qualification.Count</p>
                             </div>
                         </div>
@@ -39,17 +39,17 @@
     <div class="col-md-6">
         <div class="col-md-12 headed-collection card light-background">
             <div class="row">
-                <div class="col-md-12 header">
+                <div class="col-md-12 card-header">
                     <h2>Instructors</h2>
                 </div>
                 <div class="col-md-12 headed-item">
                     @foreach (var qualification in Model.InstructorQualifications)
                     {
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-2">
                                 <p class="@qualification.GlyphClass fa-2x"></p>
                             </div>
-                            <div class="col-xs-10">
+                            <div class="col-10">
                                 <p>@qualification.Name: @qualification.Count</p>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
             <div class="col-md-12">
                 <div class="col-md-12 headed-collection card light-background">
                     <div class="row">
-                        <div class="col-md-12 header">
+                        <div class="col-md-12 card-header">
                             <h2>Members</h2>
                         </div>
                         <div class="col-md-12 headed-item">

@@ -21,9 +21,12 @@ namespace DivingTracker.Web.Controllers
         public ActionResult Enrol(int id)
         {
             var user = DatabaseContext.Users.Find(id);
-            var qualifications =
-                DatabaseContext.Qualifications.Where(x => !x.UserQualifications.Select(y => y.UserId)
-                    .Contains(CurrentUserId));
+            var qualifications = DatabaseContext.Qualifications
+                .Where(q => !q.UserQualifications.Select(uq => uq.UserId).Contains(id) // Not already qualified
+                    && !q.Modules.Any(m =>
+                        m.ModuleSections.Any(ms =>
+                            ms.Criteria.Any(c =>
+                                c.UserCriterias.Any(uc => uc.UserId == id)))));
 
             var model = new EnrolModel(user, qualifications);
 
@@ -57,7 +60,7 @@ namespace DivingTracker.Web.Controllers
 
             DatabaseContext.SaveChanges();
 
-            return RedirectToAction("Details", "Members", new {id = model.User.UserId});
+            return RedirectToAction("Details", "Members", new { id = model.User.UserId });
         }
 
         [HttpGet]

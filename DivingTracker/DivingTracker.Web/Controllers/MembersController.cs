@@ -55,6 +55,7 @@ namespace DivingTracker.Web.Controllers
 
             var trainingModuleIds = DatabaseContext.UserCriterions.Where(x => x.UserId == id)
                 .Select(x => x.Criterion.ModuleSection.Module.ModuleId);
+
             var qualificationsInProgress =
                 DatabaseContext.Qualifications.Where(x => x.UserQualifications.All(y => y.UserId != id) &&
                                                           x.Modules.Any(y => trainingModuleIds.Contains(y.ModuleId)));

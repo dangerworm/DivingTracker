@@ -2,9 +2,10 @@
 @main-colour: #48c0dc;
 @main-colour-light: #78e0fc;
 @main-colour-lighter: #c4f0fc;
-@secondary-colour: #ffcf41;
+@secondary-colour: #f5b800; /*was #ffcf41*/
 @secondary-colour-light: #ffd866;
 @secondary-colour-lighter: #ffe493;
+@tertiary-color: #b89733;
 
 @black: #020500;
 @dark-grey: #666;
@@ -80,6 +81,21 @@ h3 {
     margin-top: 1pt;
 }
 
+a.secondary-link {
+
+    &, &:active, &:focus, &:visited {
+        color: @tertiary-color;
+    }
+
+    &:hover {
+        color: @secondary-colour;
+    }
+}
+
+ul > li.extra-bottom-padding {
+    padding-bottom: 1em;
+}
+
 main {
     padding-bottom: 10em;
 }
@@ -129,6 +145,7 @@ footer {
     border: 2px solid @secondary-colour;
     border-radius: 42px;
     height: 85px;
+    margin-top: 2.5em;
 }
 
 .external-container {
@@ -152,28 +169,18 @@ footer {
 .navbar-inverse {
     border-top: none;
     background: @main-colour;
+    height: 3.5em;
     padding-top: 6px;
-
-    & .navbar-header {
-
-        h1 {
-            margin: 0;
-
-            & .navbar-brand {
-                font-size: 20pt;
-                padding-top: 10pt;
-            }
-        }
-    }
 
     & .navbar-collapse {
         width: -webkit-fill-available;
 
-        & > ul > li.nav-item-right {
+        & > ul > li.nav-item {
 
             & > a {
                 display: inline;
                 float: right;
+                padding-left: 1em;
             }
         }
 
@@ -184,7 +191,7 @@ footer {
                 margin-top: 4em;
             }
 
-            & > ul > li.nav-item-right {
+            & > ul > li.nav-item {
                 float: none;
 
                 & > a {
@@ -206,7 +213,7 @@ footer {
 
             & span {
                 padding-left: 0.5em;
-                font-size: medium;
+                font-size: 11pt;
             }
         }
     }
@@ -251,22 +258,18 @@ footer {
 
     &.headed-collection {
         margin-bottom: 20px;
-        padding: 0 12px 10px 12px;
 
-        & div.header {
+        & div.card-header {
             border: solid 1px @main-colour;
             background-color: @main-colour;
             border-top-left-radius: 9px;
             border-top-right-radius: 9px;
-            float: none;
-            margin-left: 2px;
-            margin-right: 2px;
             margin-bottom: 14px;
-            padding-top: 10px;
             width: auto;
 
             & h1, h2, h3 {
                 margin-top: 0;
+                margin-bottom: 0;
                 color: white;
             }
         }
@@ -334,6 +337,10 @@ form .form-group.no-margin {
 
 .form-control {
     max-width: none;
+}
+
+.control-label {
+    padding-bottom: 0.5em;
 }
 
 table.user-qualifications {

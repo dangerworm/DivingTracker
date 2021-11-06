@@ -171,7 +171,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CommonCode\CommonCode.BusinessLayer\CommonCode.BusinessLayer.csproj">
+    <ProjectReference Include="..\..\CommonCode.BusinessLayer\CommonCode.BusinessLayer.csproj">
       <Project>{21ae5557-17b1-43bd-ba2b-13de670f2ca0}</Project>
       <Name>CommonCode.BusinessLayer</Name>
     </ProjectReference>
